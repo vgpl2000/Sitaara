@@ -21,6 +21,7 @@ Parenting is collaborative. This feature lets two parents securely join the same
 3. Recovery from ordinary errors should not require database intervention.
 4. Important invariants are enforced in both service logic and database constraints.
 5. The demo should be understandable without verbal guidance.
+6. The approved prototype and Flutter app should share one mobile design system and interaction model.
 
 ## Functional requirements
 
@@ -102,6 +103,11 @@ Parenting is collaborative. This feature lets two parents securely join the same
 - **NFR-OBS-001:** Requests carry a request ID and emit structured logs without sensitive fields.
 - **NFR-MOB-001:** UI supports common Android phone widths and survives rotation without corrupting state.
 - **NFR-MOB-002:** Loading, empty, validation, offline/network, unauthorized, and server-error states are explicit.
+- **NFR-UX-001:** Primary interaction color is `#462E91`; supplied Sitaara logo artwork retains its `#8AC340` treatment and original proportions.
+- **NFR-UX-002:** The mobile interface follows the tokens, components, accessibility rules, and content hierarchy in `design.md`.
+- **NFR-UX-003:** A separate `/prototype` implementation uses HTML, CSS, and JavaScript to validate all required journeys before Flutter UI implementation.
+- **NFR-UX-004:** The prototype works at 320, 390, and 430 logical-pixel widths and exposes visible keyboard focus.
+- **NFR-UX-005:** Prototype simulation is never treated as evidence for backend authorization, concurrency, persistence, or security behavior.
 - **NFR-MAINT-001:** Backend domain logic is testable without HTTP concerns.
 - **NFR-MAINT-002:** Flutter separates presentation, application state, domain models, and data access.
 
@@ -117,4 +123,4 @@ Parenting is collaborative. This feature lets two parents securely join the same
 
 ## Release acceptance
 
-The release is accepted only if the automated suite covers authorization, invite concurrency, idempotent likes, monotonic progress, and aggregate progress, and the release APK completes the two-account scenario against the hosted environment.
+Flutter UI implementation begins after the prototype approval gate in `design.md`. The release is accepted only if the automated suite covers authorization, invite concurrency, idempotent likes, monotonic progress, and aggregate progress, and the release APK completes the two-account scenario against the hosted environment.

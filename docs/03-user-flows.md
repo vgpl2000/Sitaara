@@ -27,6 +27,10 @@ flowchart TD
     Library --> Account
 ```
 
+## Prototype coverage
+
+The `/prototype` experience must make every flow below reachable with local mock data, including both linked and unlinked states. It may simulate latency, progress, authentication, invite redemption, and errors for design review, but those simulations do not define or prove backend behavior. The approved navigation, wording, hierarchy, and recovery patterns become the reference for Flutter.
+
 ## Flow A: register and create family
 
 1. User opens Sign Up.

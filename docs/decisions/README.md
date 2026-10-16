@@ -12,5 +12,6 @@ ADRs capture decisions that materially shape the project. Accepted ADRs are not 
 | [ADR-003](ADR-003-custom-go-authentication.md) | Implement email/password authentication in Go | Accepted |
 | [ADR-004](ADR-004-family-and-role-model.md) | One child, one Mom, and one Dad per family | Accepted |
 | [ADR-005](ADR-005-progress-calculation.md) | Monotonic video progress and duration-weighted masterclass progress | Accepted |
+| [ADR-006](ADR-006-html-prototype-before-flutter.md) | Validate the mobile experience in a separate HTML/CSS/JavaScript prototype before Flutter | Accepted |
 
 Each ADR includes context, decision, consequences, and alternatives.

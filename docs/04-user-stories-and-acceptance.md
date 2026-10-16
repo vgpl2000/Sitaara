@@ -135,3 +135,16 @@ The release candidate passes when a reviewer can complete this uninterrupted nar
 4. Register two fresh accounts.
 5. Create a child as one role, generate a code, and join as the opposite role.
 6. Confirm self-linking, code reuse, and role-conflict attempts are rejected safely.
+
+## Design and prototype validation
+
+### US-UX-001 - Understand the mobile experience before implementation
+
+As the project author, I want a high-fidelity interactive prototype so navigation and usability can be validated before Flutter implementation consumes delivery time.
+
+- **AC-UX-001:** Every screen in `05-mobile-screen-specification.md` is reachable in `/prototype`. (`NFR-UX-003`)
+- **AC-UX-002:** The prototype demonstrates the create-family, join-family, linked activity, invite, masterclass, and player journeys with local mock state.
+- **AC-UX-003:** The interface remains usable at 320, 390, and 430 logical-pixel widths. (`NFR-UX-004`)
+- **AC-UX-004:** Primary actions use `#462E91`; supplied logo artwork remains proportionally correct and visually unmodified. (`NFR-UX-001`)
+- **AC-UX-005:** Keyboard focus is visible, controls have accessible names, and status is not conveyed by color alone. (`NFR-UX-004`)
+- **AC-UX-006:** Prototype-only simulations are labelled in documentation and are not cited as proof of authorization, concurrency, or persistence. (`NFR-UX-005`)

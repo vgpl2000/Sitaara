@@ -93,9 +93,11 @@ No reset endpoint is provided. Reviewers can use unique email aliases for repeat
 
 ## Brand asset policy
 
-- Use the Sitaara logo and public palette as assignment branding references where appropriate.
-- Record the originating public page for each copied asset.
-- Store optimized local app assets rather than fetching website assets at runtime.
+- Treat `assets/200x200bb-75.webp`, `assets/jxCC0aq4hz0Upn8JHTZRPYU50.png`, and `assets/s8mITtcKeyymZ6Dh7cjaOk3o.png` as the supplied source assets.
+- Use primary purple `#462E91` and logo/accent green `#8AC340` according to `design.md`.
+- Preserve original files and create optimized copies inside `/prototype` and the future Flutter asset bundle as needed.
+- Store local app assets rather than fetching website assets at runtime.
+- Preserve aspect ratio and do not recolor, distort, outline, or add effects to the supplied wordmark.
 - Do not copy expert portraits or production editorial content.
 - Make clear in the README that this is an assignment prototype, not an official production release.
 

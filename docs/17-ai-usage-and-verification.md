@@ -20,6 +20,8 @@ The assignment explicitly welcomes AI and asks how it was used. This document re
 Human decisions already confirmed:
 
 - Deliver Android APK rather than Flutter Web.
+- Validate the full mobile experience first in a separate HTML/CSS/JavaScript `/prototype` folder.
+- Use primary purple `#462E91`, preserve the supplied green `#8AC340` logo treatment, and use local supplied assets.
 - Use Go-owned authentication.
 - Use Railway for the first hosting attempt.
 - Use Supabase for Postgres and media storage, not authentication.
@@ -38,6 +40,7 @@ Human decisions already confirmed:
 | 2026-10-16 | Assignment analysis | Extracted and organized requirements from the supplied brief | Confirmed mobile APK, hosting, auth, roles, progress, and scope | Compared against all three pages of the source brief |
 | 2026-10-16 | Hosting research | Compared Vercel, Railway, Render, and Supabase connection models | Selected Railway first, Render fallback | Checked current official provider documentation |
 | 2026-10-16 | Documentation | Drafted product, UX, architecture, schema, API, security, test, and delivery documents | Will review/approve before implementation | Cross-document consistency scan and later implementation traceability |
+| 2026-10-16 | Brand and prototype planning | Reconciled the website-derived design notes with confirmed mobile branding and proposed a prototype contract | Confirmed Flutter mobile only, separate HTML/CSS/JavaScript prototype, supplied logos, `#462E91` purple, and `#8AC340` green | Inspected all local assets and audited every Markdown document for conflicting platform or brand guidance |
 
 ## Verification methods
 
@@ -72,6 +75,13 @@ Human decisions already confirmed:
 - Apply migrations and smoke test the hosted environment.
 - Install the release APK, not only debug builds.
 - Repeat the exact README reviewer flow.
+
+### Prototype-generated code
+
+- Review every screen against `05-mobile-screen-specification.md` and `design.md`.
+- Test the mobile frame at 320px, 390px, and 430px widths.
+- Verify keyboard navigation, visible focus, accessible names, contrast, and reduced motion.
+- Treat local mock flows as design evidence only, never as proof of backend correctness.
 
 ## Mistake log template
 

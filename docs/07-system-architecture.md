@@ -17,6 +17,10 @@ flowchart LR
 
 The APK is untrusted. It may improve user experience, but every identity, authorization, role, and integrity decision is repeated by the backend.
 
+## Prototype boundary
+
+The root `/prototype` folder sits outside this runtime architecture. It is a local HTML/CSS/JavaScript design-validation artifact with mock state and no production credentials, database access, or authority. Its approved screen structure and interaction behavior guide Flutter; its simulated business behavior is not reused as a security or integrity implementation.
+
 ## Trust boundaries
 
 1. **Device boundary:** tokens stored on a user's device may be extracted on a compromised device. Limit access-token lifetime and support refresh revocation.

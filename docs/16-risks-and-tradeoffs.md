@@ -16,6 +16,7 @@
 | Custom auth implementation bug | Medium | High | Narrow scope, standard primitives, rotation tests, short JWT lifetime | No MFA/email verification/recovery |
 | Documentation drifts from code | Medium | Medium | Canonical ownership, ADRs, contract/test links, final audit | Requires discipline |
 | Brand/content rights ambiguity | Medium | Medium | Use public brand reference sparingly and licensed independent media | Formal brand permission is outside scope |
+| Prototype diverges from Flutter | Medium | Medium | Use one canonical `design.md`, approve flows first, and translate components deliberately | Some platform-specific differences remain |
 | Demo accounts modified by reviewers | Medium | Medium | Seed meaningful defaults, allow fresh signup, document behavior | No automated reset endpoint |
 
 ## Major trade-offs
@@ -23,6 +24,10 @@
 ### APK instead of Flutter Web
 
 Benefits: matches the intended mobile product and demonstrates Flutter directly. Costs: reviewer installation friction and Android-only distribution. Mitigation: provide a release APK, checksum, minimum Android version, and precise installation/demo steps.
+
+### HTML prototype before Flutter
+
+Benefits: validates hierarchy, navigation, copy, branding, and dense partner-progress states cheaply before Flutter work. Costs: creates a second UI artifact that can drift or tempt reuse of simulated business logic. Mitigation: keep it isolated in `/prototype`, use it only as an approved design reference, and implement security and domain rules independently in Go.
 
 ### Custom Go authentication instead of Supabase Auth
 
@@ -70,7 +75,7 @@ If time becomes constrained, preserve in this order:
 4. Hosted two-account flow.
 5. Clear README and AI disclosure.
 6. Robust mobile error states.
-7. Visual refinement.
+7. Fidelity to the approved prototype and visual refinement.
 8. Optional recording or enhancements.
 
 Never trade away family isolation or linking integrity for animation, real-time updates, or extra screens.

@@ -9,6 +9,8 @@ Build one correct, complete feature slice: two parents link their accounts aroun
 
 The deliverable is an Android APK backed by a hosted Go API and persistent Postgres database. Source code and a detailed write-up are submitted in a Git repository.
 
+Before implementation, a separate HTML/CSS/JavaScript mobile prototype will validate the complete experience and become the visual reference for Flutter. It is an internal design artifact, not Flutter Web and not a substitute for the required mobile deliverable.
+
 ## Assessment priorities
 
 Ordered by expected review importance:
@@ -41,6 +43,9 @@ Ordered by expected review importance:
 ## Explicit design decisions
 
 - The primary client is an Android APK, not Flutter Web.
+- A high-fidelity mobile prototype is built first in the root `/prototype` folder with HTML, CSS, and JavaScript.
+- The prototype uses local mock state to validate interaction and usability; production security and integrity remain Go/Postgres responsibilities.
+- The mobile visual system uses primary purple `#462E91` and logo/accent green `#8AC340`, with the supplied `/assets` logo files.
 - Supabase authentication is not used. Authentication belongs to the Go backend.
 - Supabase provides hosted Postgres and object storage only.
 - Railway is the first-choice Go host.
@@ -54,7 +59,7 @@ Ordered by expected review importance:
 
 ## Deliberately excluded
 
-- Flutter Web and iOS distribution.
+- Flutter Web and iOS distribution. The standalone HTML prototype is not a deployed Flutter client.
 - Multiple children or family switching.
 - Same-role couples in this assignment-specific model.
 - Unlinking, partner replacement, custody workflows, or family deletion.
@@ -87,4 +92,4 @@ The creator receives a child-creation form. Both parents see compact child conte
 
 ## Success definition
 
-The slice is complete when two independent accounts can register, create/join a family, play and like seeded content, refresh the other account, and observe correct shared activity without being able to view or mutate data belonging to another family.
+The design phase is complete when the standalone prototype passes the approval gate in `design.md`. The implementation slice is complete when two independent accounts can register, create/join a family, play and like seeded content, refresh the other account, and observe correct shared activity without being able to view or mutate data belonging to another family.

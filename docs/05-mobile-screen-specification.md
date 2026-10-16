@@ -5,9 +5,11 @@
 
 ## Experience direction
 
-Use Sitaara's public visual language as inspiration: calm, warm, credible, spacious, and family-oriented. Use the official logo and core purple/green direction where permitted, but do not copy production screens, expert portraits, or proprietary editorial content.
+Use Sitaara's public visual language as inspiration: calm, warm, credible, spacious, and family-oriented. The canonical mobile system is `design.md`: primary purple is `#462E91`, supplied logo/accent green is `#8AC340`, and the local files in `/assets` are the authoritative logo sources. Do not copy production screens, expert portraits, or proprietary editorial content.
 
 Partner activity is supportive context rather than surveillance. Prefer phrases such as `Dad is halfway through` over audit-like timestamps.
+
+The approved HTML/CSS/JavaScript prototype in `/prototype` is the interaction and visual reference for the Flutter implementation. It is not Flutter Web and must not be embedded in the final app.
 
 ## Screen inventory
 
@@ -155,4 +157,20 @@ Every data screen defines:
 
 ## Branding assets
 
-Before implementation, record each copied brand asset's source and intended use. Store optimized local assets in the Flutter project so app chrome does not depend on the website being online. Video content and thumbnails follow the licensing record in `14-demo-data-and-content.md`.
+Use the supplied assets as follows:
+
+- `assets/200x200bb-75.webp`: app-icon and prototype launcher/favicon reference.
+- `assets/jxCC0aq4hz0Upn8JHTZRPYU50.png`: primary horizontal lockup on purple/dark surfaces.
+- `assets/s8mITtcKeyymZ6Dh7cjaOk3o.png`: alternate horizontal lockup where its proportions fit better.
+
+Preserve original files, proportions, colors, and clear space. Create optimized copies inside `/prototype` and the future Flutter asset bundle rather than fetching website assets at runtime. Video content and thumbnails follow the licensing record in `14-demo-data-and-content.md`.
+
+## Prototype presentation requirements
+
+- Present a mobile app frame with a 390x844 baseline, not a desktop website layout.
+- Remain usable at widths of 320, 390, and 430 logical pixels.
+- Make all twelve screens and their primary transitions reachable with local mock data.
+- Provide a deliberate way to switch between Mom and Dad perspectives for shared-activity review.
+- Include linked, unlinked, progress, completed, liked, loading, validation, offline, and server-error states.
+- Use semantic HTML, visible keyboard focus, accessible names, and reduced-motion support.
+- Treat mock authentication, linking, likes, and progress as interaction simulation only; backend rules remain canonical elsewhere.

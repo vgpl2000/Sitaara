@@ -47,6 +47,19 @@ backend/
 
 Domain/use-case code must not depend on HTTP types. Handlers authenticate, parse, call a use case, and map typed errors to the API contract.
 
+## Design prototype
+
+| Concern | Choice | Reason |
+|---|---|---|
+| Location | Root `/prototype` folder | Keeps design validation separate from production Go and Flutter code |
+| Runtime | Browser | Fast review on desktop while presenting a constrained mobile viewport |
+| Technologies | Semantic HTML, CSS, and vanilla JavaScript | Matches the agreed prototype format and keeps the artifact portable |
+| State | Deterministic in-memory/local mock state | Enables two-account and error-state demonstrations without claiming backend behavior |
+| Styling | Tokens and components from `design.md` | Gives Flutter one approved visual and interaction reference |
+| Assets | Optimized copies of files from `/assets` | Avoids runtime dependency on the public website while preserving originals |
+
+The prototype is not Flutter Web, does not connect to production services, and is not part of the submitted runtime architecture. Business rules must be reimplemented and verified in Go rather than copied from client-side simulation.
+
 ## Mobile
 
 | Concern | Choice | Reason |

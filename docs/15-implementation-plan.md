@@ -5,17 +5,28 @@
 
 ## Delivery strategy
 
-Build vertically around the risky invariants before investing in visual polish. Each phase ends with runnable code, tests, and documentation updates. Git commits should be small enough to explain and review.
+Approve the mobile experience through a standalone high-fidelity prototype, then build vertically around the risky backend invariants. Each phase ends with runnable code, tests, and documentation updates. Git commits should be small enough to explain and review.
 
 ## Phase 0 - Approve contracts
 
 - Review and approve this documentation.
-- Resolve remaining branding/media sources.
+- Confirm the mobile design system, supplied logos, and purple/green brand roles.
 - Confirm repository checkout and Git remote.
 - Add root README skeleton, ignore rules, and environment examples.
 - Record dependency/toolchain versions at scaffold time.
 
 Definition of done: no unresolved product question blocks schema or API work.
+
+## Phase 0A - Mobile experience prototype
+
+- Create the separate root `/prototype` folder using semantic HTML, CSS, and vanilla JavaScript.
+- Implement all screens and transitions in `05-mobile-screen-specification.md` with deterministic mock state.
+- Demonstrate both account perspectives, linking, content progress, likes, and representative failure states.
+- Apply `design.md`, use optimized copies of the supplied assets, and validate 320/390/430px widths.
+- Run the prototype approval gate and revise navigation, hierarchy, copy, and accessibility findings.
+- Freeze an approved prototype reference before Flutter UI implementation begins.
+
+Definition of done: the prototype passes every approval criterion in `design.md`; no production backend or Flutter code is implied by this phase.
 
 ## Phase 1 - Backend foundation
 
@@ -61,6 +72,7 @@ Definition of done: API alone supports the complete assignment scenario.
 ## Phase 5 - Flutter foundation and onboarding
 
 - Scaffold app, theme, environment flavor, routing, networking, secure storage.
+- Translate the approved prototype into native Flutter components rather than embedding or shipping the HTML prototype.
 - Implement session restoration and coordinated refresh.
 - Build Welcome, Sign Up, Login, path choice, Create Child, and Join Family.
 - Build invite display/copy/share and account/logout.
@@ -106,17 +118,18 @@ Definition of done: a reviewer can follow the README without assistance.
 Examples of focused commits:
 
 1. `docs: define product and technical contracts`
-2. `chore: scaffold Go API and CI`
-3. `feat(api): add schema and account authentication`
-4. `feat(api): implement transactional partner linking`
-5. `feat(api): add content, likes, and progress read models`
-6. `test(api): cover concurrency and family authorization`
-7. `chore: scaffold Flutter app architecture`
-8. `feat(app): add authentication and family onboarding`
-9. `feat(app): add library and partner activity`
-10. `feat(app): add reusable player and progress reporting`
-11. `ops: add hosted configuration and demo seed`
-12. `docs: complete demo guide and AI verification report`
+2. `feat(prototype): validate mobile journeys and design system`
+3. `chore: scaffold Go API and CI`
+4. `feat(api): add schema and account authentication`
+5. `feat(api): implement transactional partner linking`
+6. `feat(api): add content, likes, and progress read models`
+7. `test(api): cover concurrency and family authorization`
+8. `chore: scaffold Flutter app architecture`
+9. `feat(app): add authentication and family onboarding`
+10. `feat(app): add library and partner activity`
+11. `feat(app): add reusable player and progress reporting`
+12. `ops: add hosted configuration and demo seed`
+13. `docs: complete demo guide and AI verification report`
 
 Do not manufacture artificial history after implementation; commit coherent working increments as they are built.
 

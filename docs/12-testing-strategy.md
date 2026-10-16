@@ -7,6 +7,17 @@
 
 Tests prioritize the failure modes the assignment explicitly evaluates: linking integrity, concurrency, authorization, idempotency, monotonic progress, and consistent cross-account reads. UI snapshot volume is secondary to proving behavior.
 
+## Prototype quality review
+
+Before Flutter UI implementation, verify the standalone prototype separately:
+
+- all screens and primary transitions in `05-mobile-screen-specification.md` are reachable;
+- create/join, linked/unlinked, progress, like, invite, loading, validation, offline, and server-error states can be demonstrated;
+- layouts remain usable at 320px, 390px, and 430px viewport widths;
+- keyboard navigation, visible focus, accessible names, contrast, and reduced motion are checked;
+- supplied logos preserve aspect ratio and the primary palette matches `design.md`;
+- prototype mock behavior is not counted as a backend test.
+
 ## Test layers
 
 ### Backend unit tests
