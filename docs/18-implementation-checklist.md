@@ -2,9 +2,11 @@
 
 **Status:** Active  
 **Last updated:** 2026-10-16  
-**Current phase:** Phase 0 - Contracts and repository readiness  
-**Next phase:** Phase 1 - Backend foundation  
-**Next milestone:** A locally runnable Go API that migrates Postgres and passes CI
+**Current phase:** Phase 1 - Backend foundation (local verification complete; hosted CI pending)
+
+**Next phase:** Phase 2 - Schema and authentication
+
+**Next milestone:** Confirm the backend foundation in hosted CI, then implement schema and authentication
 
 ## Purpose
 
@@ -26,9 +28,9 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 | Phase | Status | Exit gate |
 |---|---|---|
-| 0. Contracts and repository readiness | In progress | Contracts approved and toolchain/repository conventions recorded |
+| 0. Contracts and repository readiness | Ready for foundation work; final document approval sweep pending | Contracts approved and toolchain/repository conventions recorded |
 | 0A. HTML design prototype | Approved; baseline capture pending | Approved mobile reference exists separately from Flutter |
-| 1. Backend foundation | Not started | API builds, migrates, tests, and reports health/readiness |
+| 1. Backend foundation | Implemented locally; hosted CI pending | API builds, migrates, tests, and reports health/readiness |
 | 2. Schema and authentication | Not started | Registration, login, refresh, logout, and `/v1/me` work safely |
 | 3. Family, child, and partner linking | Not started | Linking invariants survive invalid and concurrent requests |
 | 4. Content and shared activity | Not started | API supports the complete assignment story without Flutter |
@@ -59,27 +61,30 @@ Do not treat a checked documentation task as proof that the corresponding code e
 ### Repository and local toolchain
 
 - [x] `P0-11` Confirm the Git repository and `origin` remote.
-- [ ] `P0-12` Add or verify root ignore rules for Go, Flutter, IDE, environment, signing, coverage, and generated artifacts.
-- [ ] `P0-13` Add a root README skeleton with project purpose, architecture summary, and placeholder run commands.
-- [ ] `P0-14` Add safe environment examples containing names/descriptions only.
-- [ ] `P0-15` Record the selected Go version.
-- [ ] `P0-16` Record the Flutter stable and Dart versions.
-- [ ] `P0-17` Record the Android SDK/minimum SDK targets.
-- [ ] `P0-18` Confirm local Postgres or Docker availability for integration tests.
-- [ ] `P0-19` Decide and document the common root commands (`Makefile`, scripts, or equivalent).
-- [ ] `P0-20` Confirm no credentials or generated secrets are already tracked.
+- [x] `P0-12` Add or verify root ignore rules for Go, Flutter, IDE, environment, signing, coverage, and generated artifacts.
+- [x] `P0-13` Add a root README skeleton with project purpose, architecture summary, and placeholder run commands.
+- [x] `P0-14` Add safe environment examples containing names/descriptions only.
+- [x] `P0-15` Record the selected Go version.
+- [x] `P0-16` Record the Flutter stable and Dart versions.
+- [x] `P0-17` Record the Android SDK/minimum SDK targets.
+- [x] `P0-18` Confirm local Postgres or Docker availability for integration tests.
+- [x] `P0-19` Decide and document the common root commands (`Makefile`, scripts, or equivalent).
+- [x] `P0-20` Confirm no credentials or generated secrets are already tracked.
 
 ### Exit gate
 
 - [ ] No unresolved product or architecture question blocks the schema or API foundation.
-- [ ] All required local tools report usable versions.
-- [ ] A new contributor can identify where backend, mobile, prototype, assets, and docs belong.
+- [x] All required local tools report usable versions.
+- [x] A new contributor can identify where backend, mobile, prototype, assets, and docs belong.
 
 ### Evidence
 
 - Documentation set: `docs/`
 - Git remote confirmed: `origin` points to the Sitaara repository.
-- Pending: approval sweep, toolchain versions, root project files.
+- Toolchain verified: Go 1.27.0, PostgreSQL 17.11, Flutter 3.47.7, Dart 3.13.5, OpenJDK 17, and Android SDK 36 with accepted licences.
+- Repository readiness: root ignore/environment/README files and the tracked Railway `/backend` service root are present.
+- Common backend commands: `backend/scripts/dev.ps1`, documented in `backend/README.md`.
+- Pending: final documentation approval sweep.
 
 ## Phase 0A - Mobile experience prototype
 
@@ -115,62 +120,63 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ## Phase 1 - Backend foundation
 
-**Status:** Not started  
+**Status:** Implemented locally; hosted CI pending
+
 **Depends on:** Phase 0 architecture and toolchain decisions  
 **Canonical references:** `06-technical-stack.md`, `07-system-architecture.md`, `12-testing-strategy.md`
 
 ### Project scaffold
 
-- [ ] `P1-01` Create `backend/` with a Go module and pinned Go version.
-- [ ] `P1-02` Create `cmd/api` and the agreed `internal/` package boundaries.
-- [ ] `P1-03` Add a minimal application entry point with clean startup/shutdown.
-- [ ] `P1-04` Add focused commands for format, lint, test, integration test, migration, seed, and run.
-- [ ] `P1-05` Add `.env.example` with safe placeholders and descriptions.
-- [ ] `P1-06` Ensure local secrets and binaries are ignored.
+- [x] `P1-01` Create `backend/` with a Go module and pinned Go version.
+- [x] `P1-02` Create `cmd/api` and the agreed `internal/` package boundaries.
+- [x] `P1-03` Add a minimal application entry point with clean startup/shutdown.
+- [x] `P1-04` Add focused commands for format, lint, test, integration test, migration, generation, and run; reserve seed until its Phase 4 model exists.
+- [x] `P1-05` Add `.env.example` with safe placeholders and descriptions.
+- [x] `P1-06` Ensure local secrets and binaries are ignored.
 
 ### Configuration and platform behavior
 
-- [ ] `P1-07` Parse configuration once at startup into typed values.
-- [ ] `P1-08` Reject missing or unsafe production configuration.
-- [ ] `P1-09` Add structured JSON logging with environment, service version, and request ID.
-- [ ] `P1-10` Redact secrets and sensitive request data from logs.
-- [ ] `P1-11` Add panic recovery and centralized safe error responses.
-- [ ] `P1-12` Configure HTTP read, write, idle, and graceful-shutdown timeouts.
-- [ ] `P1-13` Add request-body size limits.
-- [ ] `P1-14` Implement `/healthz` without dependency checks.
-- [ ] `P1-15` Implement `/readyz` with a bounded database ping.
+- [x] `P1-07` Parse configuration once at startup into typed values.
+- [x] `P1-08` Reject missing or unsafe production configuration.
+- [x] `P1-09` Add structured JSON logging with environment, service version, and request ID.
+- [x] `P1-10` Redact secrets and sensitive request data from logs.
+- [x] `P1-11` Add panic recovery and centralized safe error responses.
+- [x] `P1-12` Configure HTTP read, write, idle, and graceful-shutdown timeouts.
+- [x] `P1-13` Add request-body size limits.
+- [x] `P1-14` Implement `/healthz` without dependency checks.
+- [x] `P1-15` Implement `/readyz` with a bounded database ping.
 
 ### Postgres and migrations
 
-- [ ] `P1-16` Add `pgx` connection-pool setup using `DATABASE_URL` and TLS configuration.
-- [ ] `P1-17` Set conservative configurable connection limits and timeouts.
-- [ ] `P1-18` Add `goose` migration tooling and an empty/initial migration path.
-- [ ] `P1-19` Add `sqlc` configuration and query-generation command.
-- [ ] `P1-20` Verify migrations apply from zero and report their version.
-- [ ] `P1-21` Verify application shutdown closes the HTTP server and database pool cleanly.
+- [x] `P1-16` Add `pgx` connection-pool setup using `DATABASE_URL` and TLS configuration.
+- [x] `P1-17` Set conservative configurable connection limits and timeouts.
+- [x] `P1-18` Add `goose` migration tooling and an empty/initial migration path.
+- [x] `P1-19` Add `sqlc` configuration and query-generation command.
+- [x] `P1-20` Verify migrations apply from zero and report their version.
+- [x] `P1-21` Verify application shutdown closes the HTTP server and database pool cleanly.
 
 ### Automated verification
 
-- [ ] `P1-22` Add unit-test structure and reusable test helpers.
-- [ ] `P1-23` Add an integration-test Postgres environment.
-- [ ] `P1-24` Test configuration validation and production fail-closed behavior.
-- [ ] `P1-25` Test liveness and readiness success/failure behavior.
-- [ ] `P1-26` Add CI steps for formatting, vet/static analysis, migrations, tests, and API build.
-- [ ] `P1-27` Confirm CI does not require production credentials.
+- [x] `P1-22` Add unit-test structure and reusable test helpers.
+- [x] `P1-23` Add an integration-test Postgres environment.
+- [x] `P1-24` Test configuration validation and production fail-closed behavior.
+- [x] `P1-25` Test liveness and readiness success/failure behavior.
+- [x] `P1-26` Add CI steps for formatting, vet/static analysis, migrations, tests, and API build.
+- [x] `P1-27` Confirm CI does not require production credentials.
 
 ### Exit gate
 
-- [ ] A clean checkout can start Postgres, apply migrations, and run the API using documented commands.
-- [ ] `/healthz` returns 200 while the process is alive.
-- [ ] `/readyz` reflects database availability with a bounded timeout.
+- [x] A clean checkout can start Postgres, apply migrations, and run the API using documented commands.
+- [x] `/healthz` returns 200 while the process is alive.
+- [x] `/readyz` reflects database availability with a bounded timeout.
 - [ ] CI builds and tests the empty service successfully.
-- [ ] Logs contain request IDs and no secrets.
+- [x] Logs contain request IDs and no secrets.
 
 ### Evidence
 
-- Commit/PR: TBD
-- Commands run: TBD
-- Test/CI result: TBD
+- Commit/PR: local working tree; not committed or pushed yet.
+- Commands run: Go format, unit tests, vet, API/migration builds, sqlc generation, Goose migration up/status, integration tests, and local endpoint smoke checks.
+- Test result: local unit/integration/build/migration/API checks pass on 2026-10-16. Hosted CI remains pending.
 
 ## Phase 2 - Schema and authentication
 
@@ -600,3 +606,5 @@ These tasks are intentionally excluded from the assignment release unless all re
 | Date | Change | Result |
 |---|---|---|
 | 2026-10-16 | Created the living checklist from the approved prototype and current planning documents | Phase 0 is partially complete, Phase 0A is substantially complete, and Phase 1 is the next implementation focus |
+| 2026-10-16 | Completed local toolchain and repository preflight | Installed Go/PostgreSQL, repaired and upgraded Flutter/Android, added safe root files, and created the Railway backend service root |
+| 2026-10-16 | Implemented and verified the Phase 1 backend foundation | Added the Go API scaffold, typed configuration, safe logging/middleware, PostgreSQL pool, Goose/sqlc tooling, tests, Railway Dockerfile, and CI workflow; hosted CI remains pending |

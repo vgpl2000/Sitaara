@@ -1,0 +1,56 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Go
+backend/bin/
+backend/tmp/
+backend/coverage/
+*.test
+*.out
+coverage.out
+
+# Flutter and Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+mobile/android/.gradle/
+mobile/android/local.properties
+mobile/ios/Flutter/ephemeral/
+mobile/macos/Flutter/ephemeral/
+
+# Android signing and service configuration
+*.jks
+*.keystore
+key.properties
+google-services.json
+
+# IDE and editor state
+.idea/
+.vscode/
+*.iml
+*.code-workspace
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Railway local link state
+.railway/
+
+# Local workspace metadata
+.freebuff/
