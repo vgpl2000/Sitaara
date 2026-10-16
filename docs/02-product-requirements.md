@@ -58,7 +58,7 @@ Parenting is collaborative. This feature lets two parents securely join the same
 ### Content
 
 - **FR-CONT-001:** The app lists two ordered seeded masterclasses.
-- **FR-CONT-002:** Each masterclass contains four ordered videos with real durations.
+- **FR-CONT-002:** The two masterclasses contain four and five ordered videos respectively, with real durations.
 - **FR-CONT-003:** A linked or unlinked family creator can open a masterclass and its videos.
 - **FR-CONT-004:** An onboarded user can play a video from a remote HTTPS source.
 - **FR-CONT-005:** Content metadata is read-only to mobile users.

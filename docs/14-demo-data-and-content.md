@@ -13,21 +13,22 @@
 
 ## Seeded content
 
-### Masterclass 1: Understanding Big Feelings
+### Masterclass 1: Understanding Child Behaviour
 
-1. Naming the feeling
-2. Co-regulation before correction
-3. Building a calm-down routine
-4. Reconnecting after a difficult moment
+1. Understanding Child Behaviour
+2. Growth Comes With Tantrums
+3. A Story About Tantrums
+4. Children's Books as a Parenting Ally
 
-### Masterclass 2: Play That Builds Connection
+### Masterclass 2: Everyday Parenting Insights
 
-1. Following your child's lead
-2. Turning routines into play
-3. Simple open-ended play
-4. Ending play without a battle
+1. Why Your Baby Needs You
+2. The Secret Role of Children's Books
+3. The Truth About Isolation
+4. When Your Child Throws Things
+5. Stop Forcing Your Child
 
-Titles and descriptions are fictional demo editorial content, not claims of professional or medical advice.
+Titles and descriptions are concise editorial labels derived from the uploaded media and are not claims of professional or medical advice.
 
 ## Video acquisition policy
 
@@ -41,7 +42,7 @@ Titles and descriptions are fictional demo editorial content, not claims of prof
 
 ## Media processing
 
-- Eight separate clips, ideally 20-90 seconds each.
+- Nine separate clips: four landscape long-form lessons and five portrait short-form lessons.
 - MP4 with H.264 video and AAC audio for broad Android compatibility.
 - 720p target, optimized bitrate, fast-start metadata.
 - Consistent landscape aspect ratio unless the design deliberately supports portrait.
@@ -55,9 +56,17 @@ Titles and descriptions are fictional demo editorial content, not claims of prof
 
 | Video slug | Source page | Creator | Licence/terms | Downloaded | Attribution needed | Processed duration | Cloudinary public ID | Delivery URL |
 |---|---|---|---|---|---|---|---|---|
-| `naming-feelings` | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| `understanding-child-behaviour` | TBD | Nupur Paiva / Sitaara (verify) | TBD | TBD | TBD | 445s | `sitaara/masterclasses/understanding-child-behaviour/01-understanding-child-behaviour` | `https://res.cloudinary.com/g2g9bcrq/video/upload/sitaara/masterclasses/understanding-child-behaviour/01-understanding-child-behaviour.mp4` |
+| `growth-comes-with-tantrums` | TBD | Sitaara (verify) | TBD | TBD | TBD | 92s | `sitaara/masterclasses/understanding-child-behaviour/02-growth-comes-with-tantrums` | `https://res.cloudinary.com/g2g9bcrq/video/upload/sitaara/masterclasses/understanding-child-behaviour/02-growth-comes-with-tantrums.mp4` |
+| `story-about-tantrums` | TBD | Sitaara (verify) | TBD | TBD | TBD | 374s | `sitaara/masterclasses/understanding-child-behaviour/03-story-about-tantrums` | `https://res.cloudinary.com/g2g9bcrq/video/upload/sitaara/masterclasses/understanding-child-behaviour/03-story-about-tantrums.mp4` |
+| `childrens-books-parenting-ally` | TBD | Sitaara (verify) | TBD | TBD | TBD | 179s | `sitaara/masterclasses/understanding-child-behaviour/04-childrens-books-as-a-parenting-ally` | `https://res.cloudinary.com/g2g9bcrq/video/upload/sitaara/masterclasses/understanding-child-behaviour/04-childrens-books-as-a-parenting-ally.mp4` |
+| `why-your-baby-needs-you` | TBD | TBD | TBD | TBD | TBD | 74s | `sitaara/masterclasses/everyday-parenting-insights/01-why-your-baby-needs-you` | `https://res.cloudinary.com/g2g9bcrq/video/upload/sitaara/masterclasses/everyday-parenting-insights/01-why-your-baby-needs-you.mp4` |
+| `secret-role-of-childrens-books` | TBD | TBD | TBD | TBD | TBD | 97s | `sitaara/masterclasses/everyday-parenting-insights/02-secret-role-of-childrens-books` | `https://res.cloudinary.com/g2g9bcrq/video/upload/sitaara/masterclasses/everyday-parenting-insights/02-secret-role-of-childrens-books.mp4` |
+| `truth-about-isolation` | TBD | TBD | TBD | TBD | TBD | 141s | `sitaara/masterclasses/everyday-parenting-insights/03-truth-about-isolation` | `https://res.cloudinary.com/g2g9bcrq/video/upload/sitaara/masterclasses/everyday-parenting-insights/03-truth-about-isolation.mp4` |
+| `when-your-child-throws-things` | TBD | TBD | TBD | TBD | TBD | 77s | `sitaara/masterclasses/everyday-parenting-insights/04-when-your-child-throws-things` | `https://res.cloudinary.com/g2g9bcrq/video/upload/sitaara/masterclasses/everyday-parenting-insights/04-when-your-child-throws-things.mp4` |
+| `stop-forcing-your-child` | TBD | TBD | TBD | TBD | TBD | 66s | `sitaara/masterclasses/everyday-parenting-insights/05-stop-forcing-your-child` | `https://res.cloudinary.com/g2g9bcrq/video/upload/sitaara/masterclasses/everyday-parenting-insights/05-stop-forcing-your-child.mp4` |
 
-No clip enters the production seed until its row is complete.
+The technical seed is ready, but production/reviewer use remains blocked until every TBD provenance and licence field is resolved.
 
 ## Seeded accounts
 
@@ -109,4 +118,4 @@ No reset endpoint is provided. Reviewers can use unique email aliases for repeat
 - Upsert content by stable slug and video order.
 - Create demo users only when explicitly enabling demo seed.
 - Create likes/progress with database constraints and the same domain assumptions as the application.
-- Seed validation verifies two masterclasses, four videos each, positive durations, unique Cloudinary public IDs, HTTPS delivery URLs, and complete licence records.
+- Seed validation verifies two masterclasses with four and five videos, positive real durations, unique Cloudinary public IDs, HTTPS delivery URLs, and complete licence records.

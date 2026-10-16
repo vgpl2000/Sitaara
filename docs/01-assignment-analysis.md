@@ -30,7 +30,7 @@ Ordered by expected review importance:
 | Email/password signup and login | Authentication is implemented by the Go service; passwords are never stored directly. | Auth integration tests and APK flow |
 | Parent selects Mom or Dad | Role is assigned when the account creates or joins a family. | Database role constraint and onboarding UI |
 | One shared child | A family has exactly one child; the creator supplies name and DOB. | Unique database constraint and API test |
-| Two masterclasses with 4-5 videos | Seed two fictional masterclasses with four licensed sample videos each. | Seed migration and content screen |
+| Two masterclasses with 4-5 videos | Seed two masterclasses with four and five licensed Cloudinary videos. | Seed migration and content screen |
 | Video playback | Flutter uses a reusable video-player component with remote HTTPS MP4 sources. | Device demonstration |
 | Track likes and progress per user | Likes use a unique row; progress uses an atomic greatest-position update. | Integration and concurrency tests |
 | Invite-code linking | One family member generates a 24-hour, single-use code for one opposite-role partner. | Transactional redemption tests |

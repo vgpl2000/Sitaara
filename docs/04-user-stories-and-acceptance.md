@@ -66,7 +66,7 @@ As a family member, I want invalid redemption prevented so my family cannot be h
 
 As a parent, I want to browse masterclasses and play videos.
 
-- **AC-CONT-001:** Two ordered masterclasses are returned with four ordered videos each. (`FR-CONT-001`, `FR-CONT-002`)
+- **AC-CONT-001:** Two ordered masterclasses are returned with four and five ordered videos respectively. (`FR-CONT-001`, `FR-CONT-002`)
 - **AC-CONT-002:** Every video has a positive canonical duration and HTTPS media URL.
 - **AC-CONT-003:** The reusable player releases resources on exit and reports final progress. (`FR-CONT-004`)
 

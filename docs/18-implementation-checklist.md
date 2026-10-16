@@ -301,7 +301,7 @@ Do not treat a checked documentation task as proof that the corresponding code e
 - [x] `P4-03` Create likes with a composite uniqueness constraint.
 - [x] `P4-04` Create progress with furthest position, recency, completion, and supporting indexes.
 - [x] `P4-05` Implement an idempotent content seed using stable IDs/slugs.
-- [x] `P4-06` Validate two masterclasses with four ordered videos each and positive canonical durations.
+- [x] `P4-06` Validate two masterclasses with four and five ordered videos and positive canonical durations.
 
 ### Read models
 
@@ -467,21 +467,21 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ### Licensed media preparation
 
-- [ ] `P7-01` Select eight suitable clips under acceptable reuse terms.
+- [ ] `P7-01` Select nine suitable clips under acceptable reuse terms.
 - [ ] `P7-02` Complete the licence manifest for every clip before production seed inclusion.
 - [ ] `P7-03` Avoid unapproved Sitaara/Instagram content and unnecessary identifiable children.
 - [ ] `P7-04` Process each clip to verified MP4/H.264/AAC with practical 720p bitrate and fast-start metadata.
-- [ ] `P7-05` Generate consistent representative thumbnails/posters.
-- [ ] `P7-06` Verify and record exact integer durations.
+- [x] `P7-05` Generate consistent representative thumbnails/posters.
+- [x] `P7-06` Verify and record exact integer durations.
 - [ ] `P7-07` Retain processed source files and provenance outside Cloudinary for migration/recovery.
 
 ### Cloudinary
 
-- [ ] `P7-08` Create/select the project Cloudinary product environment.
-- [ ] `P7-09` Configure Cloudinary credentials only in trusted upload tooling.
-- [ ] `P7-10` Upload assets under stable project-owned public IDs.
-- [ ] `P7-11` Record media public ID, thumbnail public ID, delivery URLs, duration, and licence entry.
-- [ ] `P7-12` Verify anonymous HTTPS access to every seeded asset.
+- [x] `P7-08` Create/select the project Cloudinary product environment.
+- [x] `P7-09` Configure Cloudinary credentials only in trusted upload tooling.
+- [x] `P7-10` Upload assets under stable project-owned public IDs.
+- [ ] `P7-11` Record media public ID, thumbnail public ID, delivery URLs, duration, and licence entry. (Technical metadata is complete; licence provenance remains.)
+- [x] `P7-12` Verify anonymous HTTPS access to every seeded asset.
 - [ ] `P7-13` Verify seeking/range behavior and playback on the target Android player.
 - [ ] `P7-14` Confirm no Cloudinary API secret exists in Git, Railway runtime configuration, or the APK.
 
@@ -519,7 +519,7 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 - Railway URL/health result: TBD
 - Supabase migration version: TBD
-- Cloudinary asset verification: TBD
+- Cloudinary asset verification: 9/9 videos and generated posters returned HTTPS 200 on 2026-10-16; MP4 byte-range delivery confirmed.
 - APK path/version: TBD
 
 ## Phase 8 - Final verification and submission

@@ -38,9 +38,9 @@ The service exposes:
 
 ## Development commands
 
-Run `.\scripts\dev.ps1 <action>` from this directory. Supported actions are `format`, `lint`, `test`, `test-integration`, `generate`, `migrate-up`, `migrate-status`, `seed`, and `run`. The seed is idempotent and writes stable metadata for two masterclasses with four videos each.
+Run `.\scripts\dev.ps1 <action>` from this directory. Supported actions are `format`, `lint`, `test`, `test-integration`, `generate`, `migrate-up`, `migrate-status`, `seed`, and `run`. The seed is idempotent and writes stable metadata for two masterclasses containing four and five videos.
 
-Integration tests require `TEST_DATABASE_URL`. Query generation uses the pinned sqlc version declared in the script and CI.
+Integration tests require `TEST_DATABASE_URL`. Query generation uses the pinned sqlc version declared in the script and CI. The content seed writes two masterclasses containing four and five real Cloudinary videos, using generated video frames for thumbnails.
 
 The convenience script loads the ignored root `.env` file when it exists. Run `.\scripts\init-local-env.ps1` once to replace authentication placeholders with cryptographically random local secrets; existing real secrets are preserved and their values are never printed.
 
@@ -67,5 +67,7 @@ Authentication configuration is required at startup. Use independent, high-entro
 ## Railway
 
 Configure the Railway service root as `/backend`. Railway will build the checked-in `Dockerfile`; the runtime image is non-root and contains the API binary, migration binary, and migration files. Configure `/app/sitaara-migrate up` as the controlled pre-deploy migration command rather than migrating during API startup.
+
+Use the TLS-enabled Supabase **Session pooler** URL on port `5432` for `DATABASE_URL`. Supabase direct database hostnames are IPv6-only unless the IPv4 add-on is enabled, while Railway outbound IPv6 is opt-in. The session pooler works over IPv4 and supports the long-lived connections and prepared statements used by this API.
 
 Never place Cloudinary upload credentials, JWT signing material, invite/refresh secrets, Android signing material, or a real database URL in this directory.

@@ -43,7 +43,7 @@ Secrets must be distinct high-entropy values. Production startup fails closed wh
 ## Supabase setup
 
 1. Create a project in a nearby region.
-2. Record the database pooler connection appropriate for the Railway network and require TLS.
+2. Copy the Supabase Session pooler connection string on port `5432`, replace its password placeholder, and require TLS. Do not use the IPv6-only direct hostname unless Railway outbound IPv6 has explicitly been enabled.
 3. Do not enable or depend on Supabase Storage for this project.
 4. Do not expose Supabase database or service-role credentials to Flutter.
 5. Apply migrations through controlled backend tooling, not manual table editing.

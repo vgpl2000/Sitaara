@@ -155,12 +155,12 @@ Returns ordered cards:
   "data": [
     {
       "id": "uuid",
-      "slug": "big-feelings",
-      "title": "Understanding Big Feelings",
+      "slug": "understanding-child-behaviour",
+      "title": "Understanding Child Behaviour",
       "description": "...",
       "thumbnailUrl": "https://...",
       "videoCount": 4,
-      "totalDurationSeconds": 480,
+      "totalDurationSeconds": 1090,
       "me": {
         "percent": 32,
         "completedVideos": 1,
