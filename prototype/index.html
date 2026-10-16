@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#462E91" />
+    <meta
+      name="description"
+      content="Interactive mobile design prototype for Sitaara partner linking and shared progress."
+    />
+    <link rel="icon" type="image/webp" href="assets/app-icon.webp" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Sitaara Mobile Prototype</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#app">Skip to app</a>
+
+    <main class="prototype-stage">
+      <aside class="prototype-brief" aria-label="Prototype information">
+        <div class="brief-brand">
+          <img src="assets/sitaara-logo.png" alt="Sitaara — Simplifying Parenthood" />
+        </div>
+        <p class="eyebrow">Interactive mobile prototype</p>
+        <h1>Parenting feels lighter when you learn together.</h1>
+        <p class="brief-copy">
+          Explore account linking, shared learning progress, video activity, and the complete two-parent journey.
+        </p>
+
+        <div class="brief-steps" aria-label="Suggested walkthrough">
+          <div><span>1</span><p>Enter the demo as Mom</p></div>
+          <div><span>2</span><p>Open a masterclass and play a lesson</p></div>
+          <div><span>3</span><p>Switch to Dad and see the activity</p></div>
+        </div>
+
+        <div class="brief-note">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9 9 9 0 0 0-9-9Zm0 13.5a1 1 0 1 1 1-1 1 1 0 0 1-1 1Zm1-3.5h-2V7h2Z"/></svg>
+          <p>Mock data only. This prototype validates mobile UX and does not connect to production services.</p>
+        </div>
+      </aside>
+
+      <section class="device-area" aria-label="Sitaara mobile app prototype">
+        <div class="device-shell">
+          <div class="device-status" aria-hidden="true">
+            <span id="status-time">9:41</span>
+            <span class="status-icons">
+              <svg viewBox="0 0 24 24"><path d="M3 18h2v3H3zm4-4h2v7H7zm4-4h2v11h-2zm4-4h2v15h-2zm4-3h2v18h-2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 18.5 5.6 12a9 9 0 0 1 12.8 0Zm0-5.1a4.2 4.2 0 0 0-3 1.2l3 3 3-3a4.2 4.2 0 0 0-3-1.2ZM3 9.4a12.8 12.8 0 0 1 18 0l-1.5 1.5a10.6 10.6 0 0 0-15 0Z"/></svg>
+              <svg viewBox="0 0 28 14"><rect x="1" y="1" width="23" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M26 5v4" stroke="currentColor" stroke-width="2"/><rect x="3.5" y="3.5" width="17" height="7" rx="1.5"/></svg>
+            </span>
+          </div>
+          <div id="app" class="app" tabindex="-1" aria-live="polite"></div>
+          <div class="home-indicator" aria-hidden="true"></div>
+        </div>
+
+        <button class="prototype-trigger" id="prototype-trigger" type="button" aria-expanded="false" aria-controls="prototype-panel">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19.4 13a7.7 7.7 0 0 0 .1-1 7.7 7.7 0 0 0-.1-1l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-1.8-1L15 3.5h-4L10.6 6a7.4 7.4 0 0 0-1.8 1L6.4 6l-2 3.4 2 1.6a7.7 7.7 0 0 0-.1 1 7.7 7.7 0 0 0 .1 1l-2 1.6 2 3.4 2.4-1a7.4 7.4 0 0 0 1.8 1l.4 2.5h4l.4-2.5a7.4 7.4 0 0 0 1.8-1l2.4 1 2-3.4ZM13 15.5a3.5 3.5 0 1 1 3.5-3.5 3.5 3.5 0 0 1-3.5 3.5Z"/></svg>
+          <span>Prototype controls</span>
+        </button>
+
+        <div class="prototype-panel" id="prototype-panel" hidden>
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Demo controls</p>
+              <h2>Explore every state</h2>
+            </div>
+            <button class="icon-button" id="prototype-close" type="button" aria-label="Close prototype controls">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6.4 5 12.7 12.7-1.4 1.4L5 6.4Zm11.3 0 1.4 1.4L6.4 19.1 5 17.7Z"/></svg>
+            </button>
+          </div>
+
+          <div class="panel-section">
+            <p class="panel-label">Perspective</p>
+            <div class="segmented segmented-compact" id="persona-controls">
+              <button type="button" data-persona="mom">Mom</button>
+              <button type="button" data-persona="dad">Dad</button>
+              <button type="button" data-persona="unlinked">Unlinked</button>
+            </div>
+          </div>
+
+          <div class="panel-section">
+            <p class="panel-label">Jump to screen</p>
+            <div class="screen-grid" id="screen-controls"></div>
+          </div>
+
+          <div class="panel-section">
+            <p class="panel-label">Preview state</p>
+            <div class="screen-grid screen-grid-small">
+              <button type="button" data-preview="loading">Loading</button>
+              <button type="button" data-preview="offline">Offline</button>
+              <button type="button" data-preview="server">Server error</button>
+              <button type="button" data-preview="reset">Reset demo</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+    <noscript>
+      <div class="noscript">This interactive prototype requires JavaScript.</div>
+    </noscript>
+
+    <script src="app.js"></script>
+  </body>
+</html>
