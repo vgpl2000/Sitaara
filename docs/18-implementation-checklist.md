@@ -2,11 +2,11 @@
 
 **Status:** Active  
 **Last updated:** 2026-10-16  
-**Current phase:** Backend Phases 1-4 implemented locally; hosted race/CI pending
+**Current phase:** Phase 6 library and video experience in progress
 
-**Next phase:** Phase 5 - Flutter foundation and onboarding
+**Next phase:** Phase 7 - Media, seed, and hosted release verification
 
-**Next milestone:** Confirm the backend in hosted CI, then build Flutter against the verified API contract
+**Next milestone:** Finish the player polish and verify onboarding/content on Android after the Windows loopback restart
 
 ## Purpose
 
@@ -34,14 +34,14 @@ Do not treat a checked documentation task as proof that the corresponding code e
 | 2. Schema and authentication | Implemented locally; hosted race/CI pending | Registration, login, refresh, logout, and `/v1/me` work safely |
 | 3. Family, child, and partner linking | Implemented locally; hosted race/CI pending | Linking invariants survive invalid and concurrent requests |
 | 4. Content and shared activity | Implemented locally; hosted race/CI pending | API supports the complete assignment story without Flutter |
-| 5. Flutter foundation and onboarding | Not started | Two app sessions can register, create, invite, and join |
-| 6. Library and video experience | Not started | Full mobile experience works against the local API |
-| 7. Media, seed, and hosted environment | Not started | Clean release APK works with Railway, Supabase, and Cloudinary |
+| 5. Flutter foundation and onboarding | Foundation implemented; device/two-session verification pending | Two app sessions can register, create, invite, and join |
+| 6. Library and video experience | In progress; core screens and activity mutations implemented | Full mobile experience works against the local API |
+| 7. Media, seed, and hosted environment | Pulled-forward hosting/media tasks partially complete | Clean release APK works with Railway, Supabase, and Cloudinary |
 | 8. Final verification and submission | Not started | Reviewer can install and demonstrate the project unaided |
 
 ## Phase 0 - Contracts and repository readiness
 
-**Status:** In progress  
+**Status:** Ready for implementation; final approval sweep pending  
 **Depends on:** None  
 **Canonical references:** `README.md`, `01-assignment-analysis.md` through `17-ai-usage-and-verification.md`, and `decisions/`
 
@@ -349,49 +349,49 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ## Phase 5 - Flutter foundation and onboarding
 
-**Status:** Not started  
+**Status:** Foundation implemented; verification pending  
 **Depends on:** Phase 4 API contract and approved prototype baseline  
 **Canonical references:** `05-mobile-screen-specification.md`, `design.md`, `09-api-contract.md`
 
 ### Mobile scaffold
 
-- [ ] `P5-01` Create `mobile/` using the pinned Flutter stable toolchain.
-- [ ] `P5-02` Set application ID, minimum Android SDK, versioning, and internet permission.
-- [ ] `P5-03` Add Riverpod, `go_router`, Dio, model generation, secure storage, and test dependencies.
-- [ ] `P5-04` Create the agreed feature-oriented package structure.
-- [ ] `P5-05` Add local and production API-base configuration without secrets.
-- [ ] `P5-06` Recreate design tokens, typography, spacing, shapes, and semantic colors in Flutter.
-- [ ] `P5-07` Import optimized logo/app-icon assets with correct sizing.
+- [x] `P5-01` Create `mobile/` using the pinned Flutter stable toolchain.
+- [x] `P5-02` Set application ID, minimum Android SDK, versioning, and internet permission.
+- [x] `P5-03` Add Riverpod, `go_router`, Dio, model generation, secure storage, and test dependencies.
+- [x] `P5-04` Create the agreed feature-oriented package structure.
+- [x] `P5-05` Add local and production API-base configuration without secrets.
+- [x] `P5-06` Recreate design tokens, typography, spacing, shapes, and semantic colors in Flutter.
+- [x] `P5-07` Import optimized logo/app-icon assets with correct sizing.
 - [ ] `P5-08` Build shared buttons, fields, cards, feedback, loaders, and error components.
 
 ### Networking and session lifecycle
 
-- [ ] `P5-09` Implement typed API models and the common response/error envelope.
+- [x] `P5-09` Implement typed API models and the common response/error envelope.
 - [ ] `P5-10` Configure Dio timeouts, safe retry behavior, and request cancellation.
-- [ ] `P5-11` Store access/refresh tokens in secure storage only.
-- [ ] `P5-12` Restore sessions on app launch.
-- [ ] `P5-13` Coordinate refresh so concurrent 401 responses cause one refresh operation.
-- [ ] `P5-14` Clear session state and route safely after terminal refresh failure.
-- [ ] `P5-15` Ensure logs/crash messages do not expose tokens or passwords.
+- [x] `P5-11` Store access/refresh tokens in secure storage only.
+- [x] `P5-12` Restore sessions on app launch.
+- [x] `P5-13` Coordinate refresh so concurrent 401 responses cause one refresh operation.
+- [x] `P5-14` Clear session state and route safely after terminal refresh failure.
+- [x] `P5-15` Ensure logs/crash messages do not expose tokens or passwords.
 
 ### Screens and flows
 
-- [ ] `P5-16` Implement Welcome.
-- [ ] `P5-17` Implement Sign Up with validation and API errors.
-- [ ] `P5-18` Implement Login with validation and invalid-session recovery.
-- [ ] `P5-19` Implement onboarding path choice.
-- [ ] `P5-20` Implement Create Child and role selection.
-- [ ] `P5-21` Implement Join Family and invite-error states.
-- [ ] `P5-22` Implement invite display, copy, native share, expiry, and regeneration.
-- [ ] `P5-23` Implement account summary and logout.
-- [ ] `P5-24` Implement router redirects for loading, signed-out, needs-family, and onboarded states.
+- [x] `P5-16` Implement Welcome.
+- [x] `P5-17` Implement Sign Up with validation and API errors.
+- [x] `P5-18` Implement Login with validation and invalid-session recovery.
+- [x] `P5-19` Implement onboarding path choice.
+- [x] `P5-20` Implement Create Child and role selection.
+- [x] `P5-21` Implement Join Family and invite-error states.
+- [x] `P5-22` Implement invite display, copy, native share, expiry, and regeneration.
+- [x] `P5-23` Implement account summary and logout.
+- [x] `P5-24` Implement router redirects for loading, signed-out, needs-family, and onboarded states.
 
 ### Verification
 
 - [ ] `P5-25` Unit-test repositories, session restoration, and coordinated refresh.
 - [ ] `P5-26` Widget-test forms, loading, validation, and API-error states.
 - [ ] `P5-27` Widget-test routing for every onboarding state.
-- [ ] `P5-28` Run formatter, analyzer, and Flutter tests.
+- [x] `P5-28` Run formatter, analyzer, and Flutter tests.
 - [ ] `P5-29` Complete the two-session create/invite/join flow against the local API.
 
 ### Exit gate
@@ -402,34 +402,35 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ### Evidence
 
-- Commit/PR: TBD
-- Flutter test/analyze result: TBD
-- Two-session flow: TBD
+- Commit/PR: local working tree; not committed or pushed yet.
+- Flutter test/analyze result: `flutter analyze --no-pub` reports no issues; `flutter test --no-pub` passes the welcome/auth-path and coordinated-refresh tests on 2026-10-16.
+- Android toolchain: Flutter uses Microsoft OpenJDK 21 and Android launcher variants are generated from the supplied Sitaara icon. Winsock was reset successfully; `ping 127.0.0.1` is healthy, but Java/Gradle still requires a Windows restart before its loopback selector can start and the APK can be assembled.
+- Two-session flow: pending against the hosted Railway API.
 
 ## Phase 6 - Library and video experience
 
-**Status:** Not started  
+**Status:** In progress  
 **Depends on:** Phase 5  
 **Canonical references:** `05-mobile-screen-specification.md`, `design.md`, `12-testing-strategy.md`
 
 ### Content experience
 
-- [ ] `P6-01` Implement the masterclass library with own and partner summaries.
-- [ ] `P6-02` Implement masterclass detail with ordered video rows.
-- [ ] `P6-03` Display not-started, in-progress, completed, liked, and current-watching states clearly.
-- [ ] `P6-04` Handle an unlinked partner state without broken placeholders.
-- [ ] `P6-05` Implement pull-to-refresh and refresh-on-entry behavior.
-- [ ] `P6-06` Implement loading, empty, offline, server-error, and retry states.
+- [x] `P6-01` Implement the masterclass library with own and partner summaries.
+- [x] `P6-02` Implement masterclass detail with ordered video rows.
+- [x] `P6-03` Display not-started, in-progress, completed, liked, and current-watching states clearly.
+- [x] `P6-04` Handle an unlinked partner state without broken placeholders.
+- [x] `P6-05` Implement pull-to-refresh and refresh-on-entry behavior.
+- [x] `P6-06` Implement loading, empty, offline, server-error, and retry states.
 
 ### Reusable video player
 
 - [ ] `P6-07` Build a reusable `video_player`-based component.
 - [ ] `P6-08` Handle initialization, buffering, seeking, play/pause, completion, and playback failure.
-- [ ] `P6-09` Send integer progress at a bounded interval.
-- [ ] `P6-10` Flush progress on pause, route exit, app lifecycle change, and completion where possible.
-- [ ] `P6-11` Dispose controllers and cancel work safely.
-- [ ] `P6-12` Keep likes and partner activity usable when video initialization fails.
-- [ ] `P6-13` Implement like/unlike with optimistic UI and rollback/reconciliation.
+- [x] `P6-09` Send integer progress at a bounded interval.
+- [x] `P6-10` Flush progress on pause, route exit, app lifecycle change, and completion where possible.
+- [x] `P6-11` Dispose controllers and cancel work safely.
+- [x] `P6-12` Keep likes and partner activity usable when video initialization fails.
+- [x] `P6-13` Implement like/unlike with optimistic UI and rollback/reconciliation.
 
 ### Responsive and accessible quality
 
@@ -455,13 +456,15 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ### Evidence
 
-- Commit/PR: TBD
-- Device/emulator: TBD
+- Commit/PR: local working tree; not committed or pushed yet.
+- Automated checks: formatter and analyzer pass; four Flutter tests pass, including content-model parsing and coordinated token refresh.
+- Implemented flow: hosted masterclass list/detail reads, Cloudinary playback, bounded progress reporting, lifecycle flush, and optimistic likes are wired to the protected API.
+- Device/emulator: pending; the repaired Windows loopback stack needs one restart before Gradle can assemble and install the APK.
 - Accessibility/responsive review: TBD
 
 ## Phase 7 - Media, demo seed, and hosted environment
 
-**Status:** Not started  
+**Status:** Pulled-forward tasks partially complete  
 **Depends on:** Phase 4 content schema and Phase 6 player  
 **Canonical references:** `13-deployment-runbook.md`, `14-demo-data-and-content.md`, ADR-002, ADR-007
 
@@ -490,16 +493,16 @@ Do not treat a checked documentation task as proof that the corresponding code e
 - [ ] `P7-15` Create/select the Supabase project and nearby region.
 - [ ] `P7-16` Configure the appropriate TLS pooler connection for Railway.
 - [ ] `P7-17` Verify effective connection limits and select a conservative Go pool size.
-- [ ] `P7-18` Create the Railway project/service from the repository.
-- [ ] `P7-19` Configure required Railway secrets and non-secret settings.
-- [ ] `P7-20` Configure health/readiness checks and public HTTPS domain.
+- [x] `P7-18` Create the Railway project/service from the repository.
+- [x] `P7-19` Configure required Railway secrets and non-secret settings.
+- [x] `P7-20` Configure health/readiness checks and public HTTPS domain.
 - [ ] `P7-21` Apply migrations once through the controlled release procedure.
 - [ ] `P7-22` Run the idempotent content and demo-account seed.
 - [ ] `P7-23` Confirm startup/runtime logs expose no secrets.
 
 ### Release APK and hosted smoke test
 
-- [ ] `P7-24` Configure the production API base URL using the release flavor/definition.
+- [x] `P7-24` Configure the production API base URL using the release flavor/definition.
 - [ ] `P7-25` Create/control Android release-signing material outside Git.
 - [ ] `P7-26` Build a signed or clearly marked release APK.
 - [ ] `P7-27` Record app ID, version, build number, Git commit, and environment.
@@ -517,7 +520,7 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ### Evidence
 
-- Railway URL/health result: TBD
+- Railway URL/health result: `https://sitaara-production.up.railway.app`; `/healthz` returned HTTP 200 `ok` and `/readyz` returned HTTP 200 `ready` on 2026-10-16.
 - Supabase migration version: TBD
 - Cloudinary asset verification: 9/9 videos and generated posters returned HTTPS 200 on 2026-10-16; MP4 byte-range delivery confirmed.
 - APK path/version: TBD
