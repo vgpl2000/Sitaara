@@ -1,56 +1,100 @@
 # Sitaara Partner Linking and Shared Progress
 
-An assignment prototype for a Flutter Android application backed by a Go API and PostgreSQL. Two parents link around one child and can view one another's likes and video progress.
+Sitaara is a Flutter Android application backed by a Go API and PostgreSQL. Two parents create separate accounts, link around one child, and share learning progress and likes across two masterclasses containing nine Cloudinary-hosted videos.
 
-## Current status
+## Project status
 
-- Product, architecture, security, API, and delivery plans are documented in [`docs/`](docs/README.md).
-- The approved HTML/CSS/JavaScript design reference lives in [`prototype/`](prototype/README.md).
-- The implementation tracker is [`docs/18-implementation-checklist.md`](docs/18-implementation-checklist.md).
-- Backend Phases 1–4 are implemented locally: foundation, authentication, family linking, content, likes, progress, and partner activity. Hosted CI and deployment remain pending.
-- Flutter implementation begins in Phase 5 after the API domain phases are complete.
+- The Go API is live at `https://sitaara-production.up.railway.app`.
+- The Flutter app uses the hosted HTTPS API by default.
+- The approved HTML/CSS/JavaScript reference remains separate in `prototype/`.
+- The current debug APK builds successfully; final release signing and full device playback QA remain manual release gates.
+- Media licence/provenance fields in `docs/14-demo-data-and-content.md` must be completed before public/reviewer distribution.
 
-## Planned repository layout
+The detailed tracker is [`docs/18-implementation-checklist.md`](docs/18-implementation-checklist.md).
+
+## Repository layout
 
 ```text
 Sitaara/
-├── assets/       # supplied source brand assets
-├── backend/      # Go API; Railway service root
-├── docs/         # canonical requirements and implementation tracker
-├── mobile/       # Flutter Android application (created in Phase 5)
-└── prototype/    # approved standalone design prototype
+├── assets/       # original supplied brand assets
+├── backend/      # Go API and Railway service root
+├── docs/         # requirements, architecture, runbooks, and checklist
+├── mobile/       # Flutter Android application
+└── prototype/    # approved standalone design reference
 ```
-
-## Verified development toolchain
-
-| Tool | Version/configuration |
-|---|---|
-| Go | 1.27.0, Windows amd64 |
-| PostgreSQL | 17.11, local automatic Windows service |
-| Flutter | 3.47.7 stable |
-| Dart | 3.13.5 |
-| Java | Microsoft OpenJDK 17.0.20.1 LTS |
-| Android SDK | Platform 36 and build-tools 36.0.0 |
-| Android minimum | API 24, matching Flutter 3.47's supported floor |
-
-The generated local PostgreSQL password is stored outside the repository in the user-scoped `SITAARA_LOCAL_POSTGRES_PASSWORD` environment variable. Open a new terminal after setup changes so it receives the updated `PATH`, `JAVA_HOME`, and Android SDK variables.
 
 ## Architecture
 
-- Flutter Android application communicates only with the Go JSON API.
-- Go owns authentication, authorization, partner linking, likes, and progress.
-- Supabase provides hosted PostgreSQL for the deployed environment.
-- Cloudinary delivers licensed, non-sensitive demo media.
-- Railway builds and hosts the Go service from `/backend`.
+- Flutter communicates with the Go service for all application JSON operations.
+- Go owns authentication, authorization, family linking, invites, likes, and monotonic progress.
+- PostgreSQL stores users, families, sessions, catalog metadata, likes, and progress.
+- Cloudinary publicly delivers non-sensitive demo videos and posters; no Cloudinary write credential is shipped in the API or APK.
+- Railway builds and hosts only the `backend/` service.
 
-## Local configuration
+## Prerequisites
 
-Use [`backend/.env.example`](backend/.env.example) as the Phase 1 variable reference and supply values through the environment. Construct `DATABASE_URL` using the locally stored PostgreSQL credential. Never put production or provider credentials in the repository or APK.
+The verified Windows setup uses Go 1.27, PostgreSQL 17, Flutter 3.47.7 stable, Dart 3.13.5, Microsoft OpenJDK 21, Android SDK 36, and Android minimum SDK 24.
 
-Backend setup and runnable commands are documented in [`backend/README.md`](backend/README.md). Mobile commands will be added with the Phase 5 Flutter scaffold.
+Never commit `.env`, database URLs, JWT/invite/refresh secrets, Cloudinary upload secrets, or Android signing material. Variable names and descriptions are in [`backend/.env.example`](backend/.env.example).
 
-## Railway
+## Run the backend locally
 
-Create the Railway backend service from this GitHub repository and configure its root directory as `/backend`. Railway will build the checked-in backend `Dockerfile`. Health checks use `/healthz`; readiness uses `/readyz` where supported.
+Create a root `.env` with the backend values documented in [`backend/README.md`](backend/README.md), then from PowerShell:
 
-See [`backend/README.md`](backend/README.md) and [`docs/13-deployment-runbook.md`](docs/13-deployment-runbook.md) for the planned deployment boundary.
+```powershell
+backend\scripts\dev.ps1 migrate-up
+backend\scripts\dev.ps1 seed
+backend\scripts\dev.ps1 test
+backend\scripts\dev.ps1 run
+```
+
+Health endpoints are `/healthz` and `/readyz`. The API defaults to port 8080 locally when configured accordingly.
+
+## Run the Flutter app
+
+Open `mobile/` in Android Studio, select the connected Android device, and run `lib/main.dart`. No mobile credential is required: the default configuration calls the Railway HTTPS API.
+
+For a local backend, use Android's emulator host mapping and explicitly opt into the local environment:
+
+```powershell
+flutter run --dart-define=APP_ENV=local --dart-define=API_BASE_URL=http://10.0.2.2:8080
+```
+
+Production configuration rejects cleartext or non-local HTTP URLs.
+
+## Verification commands
+
+Backend:
+
+```powershell
+backend\scripts\dev.ps1 format
+backend\scripts\dev.ps1 lint
+backend\scripts\dev.ps1 test
+```
+
+Flutter, from `mobile/`:
+
+```powershell
+dart format lib test
+flutter analyze --no-pub
+flutter test --no-pub
+flutter build apk --debug --no-pub
+```
+
+On this `F:` drive checkout, `mobile/android/gradle.properties` disables Kotlin incremental compilation to avoid cross-drive cache errors. If the desktop sandbox gives Java an overlong temporary path, set `TEMP` and `TMP` to a short workspace-local directory for the build process.
+
+The debug APK is generated at `mobile/build/app/outputs/flutter-apk/app-debug.apk`. It is not the final signed submission artifact.
+
+## Demo flow
+
+1. Register the first parent and create a child profile with a Mom or Dad role.
+2. Generate and share the one-time invitation code.
+3. Register the second parent independently and join with the opposite role.
+4. Open either masterclass, play or seek a lesson, and like it.
+5. Refresh the partner account and confirm the shared activity appears.
+
+No public seeded Mom/Dad credentials exist yet. Use fresh fictional reviewer accounts until safe assignment-only demo credentials are deliberately created and documented.
+
+## Deployment and rollback
+
+Railway must use `/backend` as the service root and `/app/sitaara-migrate up` as the pre-deploy command. Hosted setup, smoke checks, secret boundaries, rollback procedures, and Cloudinary version handling are documented in [`docs/13-deployment-runbook.md`](docs/13-deployment-runbook.md).

@@ -48,6 +48,7 @@ Desktop.ini
 *.temp
 tmp/
 temp/
+.tmp/
 
 # Railway local link state
 .railway/

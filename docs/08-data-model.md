@@ -1,6 +1,6 @@
 # Data Model
 
-**Status:** Draft for review  
+**Status:** Approved and implementation-aligned
 **Last updated:** 2026-10-16  
 
 ## Modeling principles

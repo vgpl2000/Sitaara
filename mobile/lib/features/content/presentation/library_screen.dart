@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../core/widgets/sitaara_logo.dart';
 import '../../auth/application/session_controller.dart';
 import '../application/content_providers.dart';
 import '../data/content_models.dart';
@@ -17,12 +18,17 @@ class LibraryScreen extends ConsumerWidget {
     final library = ref.watch(masterclassesProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sitaara'),
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        title: const SitaaraLogo(onDark: true, width: 132),
         actions: [
           IconButton(
             tooltip: 'Account',
             onPressed: () => context.push('/account'),
-            icon: const Icon(Icons.account_circle_outlined),
+            icon: const Icon(
+              Icons.account_circle_outlined,
+              color: Colors.white,
+            ),
           ),
         ],
       ),

@@ -24,6 +24,43 @@ class ApiClient {
 
   Stream<void> get sessionExpired => _sessionExpired.stream;
 
+  /// Performs an idempotent read with one bounded retry for transient failures.
+  /// Mutating requests deliberately do not use this helper.
+  Future<Response<T>> get<T>(
+    String path, {
+    CancelToken? cancelToken,
+    Options? options,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    for (var attempt = 0; ; attempt++) {
+      try {
+        return await dio.get<T>(
+          path,
+          cancelToken: cancelToken,
+          options: options,
+          queryParameters: queryParameters,
+        );
+      } on DioException catch (error) {
+        if (attempt > 0 || !_isTransientReadFailure(error)) rethrow;
+        await Future<void>.delayed(const Duration(milliseconds: 250));
+        if (cancelToken?.isCancelled ?? false) {
+          throw DioException.requestCancelled(
+            requestOptions: error.requestOptions,
+            reason: cancelToken?.cancelError,
+          );
+        }
+      }
+    }
+  }
+
+  static bool _isTransientReadFailure(DioException error) {
+    final status = error.response?.statusCode;
+    return error.type == DioExceptionType.connectionError ||
+        error.type == DioExceptionType.connectionTimeout ||
+        error.type == DioExceptionType.receiveTimeout ||
+        (status != null && status >= 500 && status <= 599);
+  }
+
   static BaseOptions _options(String? baseUrl) => BaseOptions(
     baseUrl: baseUrl ?? AppConfig.apiUri.toString(),
     connectTimeout: const Duration(seconds: 10),

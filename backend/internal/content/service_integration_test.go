@@ -76,20 +76,27 @@ func TestContentActivityAndPartnerIsolation(t *testing.T) {
 		t.Fatalf("outsider like = %v, %v", liked, err)
 	}
 
-	progress, err := service.UpdateProgress(context.Background(), mom, firstSeedVideoID, 53)
-	if err != nil || progress.Completed || progress.FurthestSeconds != 53 {
+	var duration int32
+	if err := pool.QueryRow(context.Background(), "select duration_seconds from videos where id = $1", firstSeedVideoID).Scan(&duration); err != nil {
+		t.Fatalf("read seeded video duration: %v", err)
+	}
+	completionThreshold := (duration*9 + 9) / 10
+	beforeThreshold := completionThreshold - 1
+
+	progress, err := service.UpdateProgress(context.Background(), mom, firstSeedVideoID, beforeThreshold)
+	if err != nil || progress.Completed || progress.FurthestSeconds != beforeThreshold {
 		t.Fatalf("progress before threshold = %#v, %v", progress, err)
 	}
-	progress, err = service.UpdateProgress(context.Background(), mom, firstSeedVideoID, 54)
+	progress, err = service.UpdateProgress(context.Background(), mom, firstSeedVideoID, completionThreshold)
 	if err != nil || !progress.Completed || progress.Percent != 90 {
 		t.Fatalf("progress at threshold = %#v, %v", progress, err)
 	}
 	progress, err = service.UpdateProgress(context.Background(), mom, firstSeedVideoID, 20)
-	if err != nil || !progress.Completed || progress.FurthestSeconds != 54 {
+	if err != nil || !progress.Completed || progress.FurthestSeconds != completionThreshold {
 		t.Fatalf("lower progress changed completion = %#v, %v", progress, err)
 	}
-	progress, err = service.UpdateProgress(context.Background(), mom, firstSeedVideoID, 999)
-	if err != nil || progress.FurthestSeconds != 60 || progress.Percent != 100 || !progress.Completed {
+	progress, err = service.UpdateProgress(context.Background(), mom, firstSeedVideoID, duration+999)
+	if err != nil || progress.FurthestSeconds != duration || progress.Percent != 100 || !progress.Completed {
 		t.Fatalf("clamped progress = %#v, %v", progress, err)
 	}
 
@@ -97,7 +104,7 @@ func TestContentActivityAndPartnerIsolation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("dad GetVideo: %v", err)
 	}
-	if dadVideo.Partner == nil || dadVideo.Partner.Role != "mom" || !dadVideo.Partner.Liked || dadVideo.Partner.FurthestSeconds != 60 || dadVideo.Partner.IsCurrentlyWatching {
+	if dadVideo.Partner == nil || dadVideo.Partner.Role != "mom" || !dadVideo.Partner.Liked || dadVideo.Partner.FurthestSeconds != duration || dadVideo.Partner.IsCurrentlyWatching {
 		t.Fatalf("dad partner activity = %#v", dadVideo.Partner)
 	}
 	outsiderVideo, err := service.GetVideo(context.Background(), outsider, firstSeedVideoID)

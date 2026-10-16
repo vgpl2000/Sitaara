@@ -38,7 +38,7 @@ class AuthRepository {
 
   Future<MeModel> me() async {
     try {
-      final response = await _client.dio.get<Map<String, dynamic>>('/v1/me');
+      final response = await _client.get<Map<String, dynamic>>('/v1/me');
       return MeModel.fromJson(ApiClient.unwrap(response));
     } catch (error) {
       throw ApiClient.mapError(error);

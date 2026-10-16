@@ -1,6 +1,6 @@
 # Sitaara Partner Linking and Shared Progress - Documentation
 
-**Status:** Draft for review  
+**Status:** Approved documentation index
 **Last updated:** 2026-10-16  
 **Owners:** Project author and Codex  
 

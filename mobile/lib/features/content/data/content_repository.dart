@@ -12,7 +12,7 @@ class ContentRepository {
     CancelToken? cancelToken,
   }) async {
     try {
-      final response = await _client.dio.get<Map<String, dynamic>>(
+      final response = await _client.get<Map<String, dynamic>>(
         '/v1/masterclasses',
         cancelToken: cancelToken,
       );
@@ -27,10 +27,14 @@ class ContentRepository {
     }
   }
 
-  Future<MasterclassDetailModel> getMasterclass(String id) async {
+  Future<MasterclassDetailModel> getMasterclass(
+    String id, {
+    CancelToken? cancelToken,
+  }) async {
     try {
-      final response = await _client.dio.get<Map<String, dynamic>>(
+      final response = await _client.get<Map<String, dynamic>>(
         '/v1/masterclasses/$id',
+        cancelToken: cancelToken,
       );
       return MasterclassDetailModel.fromJson(ApiClient.unwrap(response));
     } catch (error) {
@@ -38,10 +42,11 @@ class ContentRepository {
     }
   }
 
-  Future<VideoModel> getVideo(String id) async {
+  Future<VideoModel> getVideo(String id, {CancelToken? cancelToken}) async {
     try {
-      final response = await _client.dio.get<Map<String, dynamic>>(
+      final response = await _client.get<Map<String, dynamic>>(
         '/v1/videos/$id',
+        cancelToken: cancelToken,
       );
       return VideoModel.fromJson(ApiClient.unwrap(response));
     } catch (error) {

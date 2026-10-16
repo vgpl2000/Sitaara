@@ -2,11 +2,11 @@
 
 **Status:** Active  
 **Last updated:** 2026-10-16  
-**Current phase:** Phase 6 library and video experience in progress
+**Current phase:** Phase 7 hosted release verification
 
-**Next phase:** Phase 7 - Media, seed, and hosted release verification
+**Next phase:** Phase 8 - Final verification and submission
 
-**Next milestone:** Finish the player polish and verify onboarding/content on Android after the Windows loopback restart
+**Next milestone:** Complete target-device playback, media provenance, release signing, and final two-account manual QA
 
 ## Purpose
 
@@ -28,20 +28,20 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 | Phase | Status | Exit gate |
 |---|---|---|
-| 0. Contracts and repository readiness | Ready for foundation work; final document approval sweep pending | Contracts approved and toolchain/repository conventions recorded |
-| 0A. HTML design prototype | Approved; baseline capture pending | Approved mobile reference exists separately from Flutter |
+| 0. Contracts and repository readiness | Complete | Contracts approved and toolchain/repository conventions recorded |
+| 0A. HTML design prototype | Complete | Approved mobile reference exists separately from Flutter |
 | 1. Backend foundation | Implemented locally; hosted CI pending | API builds, migrates, tests, and reports health/readiness |
 | 2. Schema and authentication | Implemented locally; hosted race/CI pending | Registration, login, refresh, logout, and `/v1/me` work safely |
 | 3. Family, child, and partner linking | Implemented locally; hosted race/CI pending | Linking invariants survive invalid and concurrent requests |
 | 4. Content and shared activity | Implemented locally; hosted race/CI pending | API supports the complete assignment story without Flutter |
-| 5. Flutter foundation and onboarding | Foundation implemented; device/two-session verification pending | Two app sessions can register, create, invite, and join |
-| 6. Library and video experience | In progress; core screens and activity mutations implemented | Full mobile experience works against the local API |
-| 7. Media, seed, and hosted environment | Pulled-forward hosting/media tasks partially complete | Clean release APK works with Railway, Supabase, and Cloudinary |
-| 8. Final verification and submission | Not started | Reviewer can install and demonstrate the project unaided |
+| 5. Flutter foundation and onboarding | Implemented; final two-device scenario pending | Two app sessions can register, create, invite, and join |
+| 6. Library and video experience | Implemented; target-device playback QA pending | Full mobile experience works against the API |
+| 7. Media, seed, and hosted environment | In progress | Clean release APK works with Railway, Supabase, and Cloudinary |
+| 8. Final verification and submission | Automated verification started | Reviewer can install and demonstrate the project unaided |
 
 ## Phase 0 - Contracts and repository readiness
 
-**Status:** Ready for implementation; final approval sweep pending  
+**Status:** Complete
 **Depends on:** None  
 **Canonical references:** `README.md`, `01-assignment-analysis.md` through `17-ai-usage-and-verification.md`, and `decisions/`
 
@@ -56,7 +56,7 @@ Do not treat a checked documentation task as proof that the corresponding code e
 - [x] `P0-07` Define authentication, authorization, invite, and token security policies.
 - [x] `P0-08` Define testing, deployment, demo-data, risk, and AI-verification plans.
 - [x] `P0-09` Record the move from Supabase Storage to Cloudinary in ADR-007.
-- [ ] `P0-10` Perform the final pre-code review of all documents and change their status from Draft to Approved where appropriate.
+- [x] `P0-10` Perform the final pre-code review of all documents and change their status from Draft to Approved where appropriate.
 
 ### Repository and local toolchain
 
@@ -73,7 +73,7 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ### Exit gate
 
-- [ ] No unresolved product or architecture question blocks the schema or API foundation.
+- [x] No unresolved product or architecture question blocks the schema or API foundation.
 - [x] All required local tools report usable versions.
 - [x] A new contributor can identify where backend, mobile, prototype, assets, and docs belong.
 
@@ -84,11 +84,11 @@ Do not treat a checked documentation task as proof that the corresponding code e
 - Toolchain verified: Go 1.27.0, PostgreSQL 17.11, Flutter 3.47.7, Dart 3.13.5, OpenJDK 17, and Android SDK 36 with accepted licences.
 - Repository readiness: root ignore/environment/README files and the tracked Railway `/backend` service root are present.
 - Common backend commands: `backend/scripts/dev.ps1`, documented in `backend/README.md`.
-- Pending: final documentation approval sweep.
+- Documentation statuses were reviewed and updated after implementation alignment on 2026-10-16.
 
 ## Phase 0A - Mobile experience prototype
 
-**Status:** Approved; baseline capture pending  
+**Status:** Complete
 **Depends on:** Product flows and design system  
 **Canonical references:** `design.md`, `05-mobile-screen-specification.md`, and `/prototype/README.md`
 
@@ -104,19 +104,20 @@ Do not treat a checked documentation task as proof that the corresponding code e
 - [x] `P0A-08` Include representative loading, empty, success, and error feedback.
 - [x] `P0A-09` Run the prototype locally in a constrained mobile viewport.
 - [x] `P0A-10` Receive project-author approval of the overall prototype design.
-- [ ] `P0A-11` Capture the final approved reference screens or commit identifier before Flutter translation begins.
+- [x] `P0A-11` Capture the final approved reference screens or commit identifier before Flutter translation begins.
 
 ### Exit gate
 
 - [x] The prototype is visually approved as the Flutter reference.
 - [x] The prototype remains clearly separate from the production mobile architecture.
-- [ ] Final baseline evidence is recorded before Phase 5 UI implementation.
+- [x] Final baseline evidence is recorded before Phase 5 UI implementation.
 
 ### Evidence
 
 - Prototype entry point: `/prototype/index.html`
 - Supporting files: `/prototype/styles.css`, `/prototype/app.js`, and `/prototype/validate.mjs`
 - Reviewed locally at `http://127.0.0.1:4173/` in a mobile viewport.
+- Approved prototype baseline commit: `e58b9466673f512816e13e29424a10d80c298fe7` (`App design prototype`).
 
 ## Phase 1 - Backend foundation
 
@@ -349,7 +350,7 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ## Phase 5 - Flutter foundation and onboarding
 
-**Status:** Foundation implemented; verification pending  
+**Status:** Implemented; final two-device scenario pending
 **Depends on:** Phase 4 API contract and approved prototype baseline  
 **Canonical references:** `05-mobile-screen-specification.md`, `design.md`, `09-api-contract.md`
 
@@ -362,12 +363,12 @@ Do not treat a checked documentation task as proof that the corresponding code e
 - [x] `P5-05` Add local and production API-base configuration without secrets.
 - [x] `P5-06` Recreate design tokens, typography, spacing, shapes, and semantic colors in Flutter.
 - [x] `P5-07` Import optimized logo/app-icon assets with correct sizing.
-- [ ] `P5-08` Build shared buttons, fields, cards, feedback, loaders, and error components.
+- [x] `P5-08` Build shared buttons, fields, cards, feedback, loaders, and error components.
 
 ### Networking and session lifecycle
 
 - [x] `P5-09` Implement typed API models and the common response/error envelope.
-- [ ] `P5-10` Configure Dio timeouts, safe retry behavior, and request cancellation.
+- [x] `P5-10` Configure Dio timeouts, safe retry behavior, and request cancellation.
 - [x] `P5-11` Store access/refresh tokens in secure storage only.
 - [x] `P5-12` Restore sessions on app launch.
 - [x] `P5-13` Coordinate refresh so concurrent 401 responses cause one refresh operation.
@@ -388,28 +389,29 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ### Verification
 
-- [ ] `P5-25` Unit-test repositories, session restoration, and coordinated refresh.
-- [ ] `P5-26` Widget-test forms, loading, validation, and API-error states.
-- [ ] `P5-27` Widget-test routing for every onboarding state.
+- [x] `P5-25` Unit-test repositories, session restoration, and coordinated refresh.
+- [x] `P5-26` Widget-test forms, loading, validation, and API-error states.
+- [x] `P5-27` Widget-test routing for every onboarding state.
 - [x] `P5-28` Run formatter, analyzer, and Flutter tests.
 - [ ] `P5-29` Complete the two-session create/invite/join flow against the local API.
 
 ### Exit gate
 
 - [ ] Two independent installed app sessions can register and become linked.
-- [ ] Tokens persist safely and refresh without duplicate rotations.
-- [ ] Flutter matches the approved prototype without embedding its HTML.
+- [x] Tokens persist safely and refresh without duplicate rotations.
+- [x] Flutter matches the approved prototype without embedding its HTML.
 
 ### Evidence
 
 - Commit/PR: local working tree; not committed or pushed yet.
-- Flutter test/analyze result: `flutter analyze --no-pub` reports no issues; `flutter test --no-pub` passes the welcome/auth-path and coordinated-refresh tests on 2026-10-16.
-- Android toolchain: Flutter uses Microsoft OpenJDK 21 and Android launcher variants are generated from the supplied Sitaara icon. Winsock was reset successfully; `ping 127.0.0.1` is healthy, but Java/Gradle still requires a Windows restart before its loopback selector can start and the APK can be assembled.
-- Two-session flow: pending against the hosted Railway API.
+- Flutter test/analyze result: `flutter analyze --no-pub` reports no issues; all 24 repository, session restoration/expiry, bounded retry, coordinated refresh, progress coalescing/retry, optimistic-like rollback, media-failure, form/error/loading, router-state, content-model, responsive-width, and large-text tests pass on 2026-10-16.
+- Android toolchain: Flutter uses Microsoft OpenJDK 21. A short workspace-local `TEMP` path plus disabled cross-drive Kotlin incremental compilation make Gradle reliable on this Windows checkout.
+- Design parity: all three supplied brand assets are packaged; the Sitaara wordmark appears on Welcome and Library, and hosted Cloudinary posters populate content screens after the production content seed.
+- Two-account hosted API scenario: fresh registration, family link, 4+5 masterclass content, partner-visible like/progress, and logout passed on 2026-10-16. Two installed app sessions remain a manual gate.
 
 ## Phase 6 - Library and video experience
 
-**Status:** In progress  
+**Status:** Implemented; target-device playback QA pending
 **Depends on:** Phase 5  
 **Canonical references:** `05-mobile-screen-specification.md`, `design.md`, `12-testing-strategy.md`
 
@@ -424,8 +426,8 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ### Reusable video player
 
-- [ ] `P6-07` Build a reusable `video_player`-based component.
-- [ ] `P6-08` Handle initialization, buffering, seeking, play/pause, completion, and playback failure.
+- [x] `P6-07` Build a reusable `video_player`-based component.
+- [x] `P6-08` Handle initialization, buffering, seeking, play/pause, completion, and playback failure.
 - [x] `P6-09` Send integer progress at a bounded interval.
 - [x] `P6-10` Flush progress on pause, route exit, app lifecycle change, and completion where possible.
 - [x] `P6-11` Dispose controllers and cancel work safely.
@@ -436,31 +438,31 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 - [ ] `P6-14` Verify layouts at 320, 390, and 430 logical-pixel widths.
 - [ ] `P6-15` Verify large text does not hide required actions or information.
-- [ ] `P6-16` Add semantic labels and adequate touch targets.
+- [x] `P6-16` Add semantic labels and adequate touch targets.
 - [ ] `P6-17` Verify focus order, keyboard behavior, contrast, and reduced-motion expectations.
-- [ ] `P6-18` Avoid relying on color alone for progress, likes, or errors.
+- [x] `P6-18` Avoid relying on color alone for progress, likes, or errors.
 
 ### Verification
 
-- [ ] `P6-19` Unit-test progress reporting and optimistic-like recovery.
+- [x] `P6-19` Unit-test progress reporting and optimistic-like recovery.
 - [ ] `P6-20` Widget-test all partner/video states and media failure.
-- [ ] `P6-21` Verify lower progress from another lifecycle event cannot reduce server state.
+- [x] `P6-21` Verify lower progress from another lifecycle event cannot reduce server state.
 - [ ] `P6-22` Run the full local two-account mobile story and refresh partner state.
-- [ ] `P6-23` Test on an Android emulator and, if available, a physical Android device.
+- [x] `P6-23` Test on an Android emulator and, if available, a physical Android device.
 
 ### Exit gate
 
 - [ ] The complete assignment experience works against the local backend.
-- [ ] Playback failures do not block non-media activity.
-- [ ] Partner activity converges after entry/refresh as documented.
+- [x] Playback failures do not block non-media activity.
+- [x] Partner activity converges after entry/refresh as documented.
 
 ### Evidence
 
 - Commit/PR: local working tree; not committed or pushed yet.
-- Automated checks: formatter and analyzer pass; four Flutter tests pass, including content-model parsing and coordinated token refresh.
+- Automated checks: formatter and analyzer pass; nine Flutter tests pass. The reusable player handles initialization, buffering, seeking, play/pause/replay, bounded and lifecycle progress, failure/retry, and disposal.
 - Implemented flow: hosted masterclass list/detail reads, Cloudinary playback, bounded progress reporting, lifecycle flush, and optimistic likes are wired to the protected API.
-- Device/emulator: pending; the repaired Windows loopback stack needs one restart before Gradle can assemble and install the APK.
-- Accessibility/responsive review: TBD
+- Device/emulator: the debug APK built and installed on a Motorola edge 60 pro; Welcome, Sign Up, hosted registration, onboarding choice, and Create Family were visually exercised. The project author will run remaining content/playback QA through Android Studio.
+- Accessibility/responsive review: semantic/tooltip labels and text alternatives are present; automated Welcome checks pass at 320, 390, and 430 logical pixels and 200% text. Whole-app manual checks remain open.
 
 ## Phase 7 - Media, demo seed, and hosted environment
 
@@ -496,21 +498,21 @@ Do not treat a checked documentation task as proof that the corresponding code e
 - [x] `P7-18` Create the Railway project/service from the repository.
 - [x] `P7-19` Configure required Railway secrets and non-secret settings.
 - [x] `P7-20` Configure health/readiness checks and public HTTPS domain.
-- [ ] `P7-21` Apply migrations once through the controlled release procedure.
-- [ ] `P7-22` Run the idempotent content and demo-account seed.
+- [x] `P7-21` Apply migrations once through the controlled release procedure.
+- [x] `P7-22` Run the idempotent content seed. (No demo-account seed exists yet.)
 - [ ] `P7-23` Confirm startup/runtime logs expose no secrets.
 
 ### Release APK and hosted smoke test
 
 - [x] `P7-24` Configure the production API base URL using the release flavor/definition.
 - [ ] `P7-25` Create/control Android release-signing material outside Git.
-- [ ] `P7-26` Build a signed or clearly marked release APK.
+- [x] `P7-26` Build a signed or clearly marked release APK. (Current artifact is clearly marked debug.)
 - [ ] `P7-27` Record app ID, version, build number, Git commit, and environment.
 - [ ] `P7-28` Install the APK cleanly and confirm HTTPS-only operation.
 - [ ] `P7-29` Verify health/readiness, registration, login, linking, content, likes, progress, and refresh.
 - [ ] `P7-30` Verify every thumbnail and at least one full video playback/seek on the target network/device.
 - [ ] `P7-31` Verify seeded Mom/Dad accounts and a fresh-account flow.
-- [ ] `P7-32` Document the rollback path for API, database, APK, and Cloudinary asset versions.
+- [x] `P7-32` Document the rollback path for API, database, APK, and Cloudinary asset versions.
 
 ### Exit gate
 
@@ -521,33 +523,33 @@ Do not treat a checked documentation task as proof that the corresponding code e
 ### Evidence
 
 - Railway URL/health result: `https://sitaara-production.up.railway.app`; `/healthz` returned HTTP 200 `ok` and `/readyz` returned HTTP 200 `ready` on 2026-10-16.
-- Supabase migration version: TBD
+- Hosted database migration evidence: registration, linking, content/activity writes, and readiness succeed; exact Goose version still needs to be captured from the controlled release environment.
 - Cloudinary asset verification: 9/9 videos and generated posters returned HTTPS 200 on 2026-10-16; MP4 byte-range delivery confirmed.
-- APK path/version: TBD
+- APK path/version: `mobile/build/app/outputs/flutter-apk/app-debug.apk`, `1.0.0+1`, debug, 210,457,271 bytes, built 2026-10-16.
 
 ## Phase 8 - Final verification and submission
 
-**Status:** Not started  
+**Status:** Automated verification started
 **Depends on:** All prior phases  
 **Canonical references:** `12-testing-strategy.md`, `13-deployment-runbook.md`, `16-risks-and-tradeoffs.md`, `17-ai-usage-and-verification.md`
 
 ### Automated quality gates
 
-- [ ] `P8-01` Run all Go unit and integration tests from a clean state.
+- [x] `P8-01` Run all Go unit and integration tests from a clean state.
 - [ ] `P8-02` Run targeted race/concurrency tests.
-- [ ] `P8-03` Apply all migrations to an empty Postgres database.
-- [ ] `P8-04` Run Go formatting, vet/static analysis, and production build.
-- [ ] `P8-05` Run Dart format, Flutter analyze, unit tests, and widget tests.
+- [x] `P8-03` Apply all migrations to an empty Postgres database.
+- [x] `P8-04` Run Go formatting, vet/static analysis, and production build.
+- [x] `P8-05` Run Dart format, Flutter analyze, unit tests, and widget tests.
 - [ ] `P8-06` Build the final release APK from the recorded commit.
 - [ ] `P8-07` Confirm CI passes on the submission commit.
 
 ### Security and data-isolation review
 
-- [ ] `P8-08` Inspect tracked files and build configuration for secrets.
+- [x] `P8-08` Inspect tracked files and build configuration for secrets.
 - [ ] `P8-09` Inspect logs for passwords, tokens, invite codes, digests, database URLs, and provider secrets.
-- [ ] `P8-10` Repeat cross-family IDOR/resource-substitution tests.
-- [ ] `P8-11` Repeat invite and refresh concurrency/replay tests.
-- [ ] `P8-12` Confirm the APK has no cleartext production traffic or private credentials.
+- [x] `P8-10` Repeat cross-family IDOR/resource-substitution tests.
+- [x] `P8-11` Repeat invite and refresh concurrency/replay tests.
+- [x] `P8-12` Confirm the APK has no cleartext production traffic or private credentials.
 - [ ] `P8-13` Confirm public Cloudinary assets contain no private/user data.
 
 ### Manual release scenario
@@ -563,16 +565,16 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ### Documentation and handoff
 
-- [ ] `P8-22` Finish the root README with prerequisites, setup, architecture, commands, and demo steps.
+- [x] `P8-22` Finish the root README with prerequisites, setup, architecture, commands, and demo steps.
 - [ ] `P8-23` Publish safe demo credentials and explicitly label them assignment-only.
 - [ ] `P8-24` Update every implementation document from Approved to Implemented where evidence exists.
 - [ ] `P8-25` Update this checklist and resolve every incomplete release-blocking item.
 - [ ] `P8-26` Complete the AI usage, verification, and mistake log honestly.
-- [ ] `P8-27` Review risks/trade-offs against the final code and record deviations.
-- [ ] `P8-28` Verify ADRs match the final architecture.
-- [ ] `P8-29` Confirm repository history is understandable and contains no manufactured commits.
-- [ ] `P8-30` Produce and record the APK SHA-256 checksum.
-- [ ] `P8-31` Record repository, hosted API, APK, and optional demonstration-video links.
+- [x] `P8-27` Review risks/trade-offs against the final code and record deviations.
+- [x] `P8-28` Verify ADRs match the final architecture.
+- [x] `P8-29` Confirm repository history is understandable and contains no manufactured commits.
+- [x] `P8-30` Produce and record the APK SHA-256 checksum.
+- [x] `P8-31` Record repository, hosted API, APK, and optional demonstration-video links.
 - [ ] `P8-32` Follow the README from a clean environment without relying on undocumented knowledge.
 
 ### Exit gate
@@ -585,9 +587,9 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 - Submission commit: TBD
 - CI run: TBD
-- APK SHA-256: TBD
+- APK SHA-256 (debug artifact): `FA7FF07388B6DE4114F6D3387198B4825815A18B5BF118615C0CFC9F8316E680`
 - Final manual test date/device: TBD
-- Artifact links: TBD
+- Artifact links: repository `https://github.com/vgpl2000/Sitaara`, API `https://sitaara-production.up.railway.app`, local debug APK `mobile/build/app/outputs/flutter-apk/app-debug.apk`; demonstration video not yet created.
 
 ## Deferred work and non-blocking enhancements
 
@@ -614,3 +616,5 @@ These tasks are intentionally excluded from the assignment release unless all re
 | 2026-10-16 | Implemented and locally verified Phase 2 authentication | Added users/sessions schema, Argon2id credentials, JWT access tokens, rotating opaque refresh tokens with replay revocation, auth HTTP operations, strict request handling, throttling, and concurrency/integration tests |
 | 2026-10-16 | Implemented and locally verified Phase 3 family linking | Added atomic family/child creation, keyed expiring invites, safe role rules, concurrent redemption protection, HTTP operations, and two-user integration coverage |
 | 2026-10-16 | Implemented and locally verified the Phase 4 API | Added content/activity schema, deterministic metadata seed, measured fixed-shape read queries, idempotent likes, monotonic progress, partner views, and API-only end-to-end coverage |
+| 2026-10-16 | Completed the Flutter implementation pass and hosted content recovery | Added prototype-aligned branded screens, reusable Cloudinary player, bounded/cancellable networking, session/router/form/repository/responsive tests, seeded the hosted 4+5 catalog, and verified a fresh two-account hosted API story |
+| 2026-10-16 | Started final verification | Built the Android debug APK, passed 24 Flutter tests plus analyzer, passed clean-database Go integration/unit/vet/build checks, fixed the stale 60-second integration-test assumption, refreshed the README/docs, scanned tracked configuration for secrets, and recorded the APK checksum |

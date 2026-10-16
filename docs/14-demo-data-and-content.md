@@ -1,6 +1,6 @@
 # Demo Data and Content Plan
 
-**Status:** Draft for review  
+**Status:** Implemented technically; licence provenance pending
 **Last updated:** 2026-10-16  
 
 ## Goals

@@ -1,6 +1,6 @@
 # Risks and Trade-offs
 
-**Status:** Draft for review  
+**Status:** Approved and implementation-aligned
 **Last updated:** 2026-10-16  
 
 ## Risk register
@@ -79,3 +79,7 @@ If time becomes constrained, preserve in this order:
 8. Optional recording or enhancements.
 
 Never trade away family isolation or linking integrity for animation, real-time updates, or extra screens.
+
+## Implementation review (2026-10-16)
+
+The implemented architecture still matches the accepted ADRs. Supabase Storage was superseded by Cloudinary, Flutter remains Android-only, and all business JSON traffic still goes through Go. The current residual release risks are concrete rather than architectural: media licence provenance is incomplete, final Android signing material has not been created, no public seeded Mom/Dad credentials exist, whole-app large-text/accessibility review is incomplete, and full Cloudinary playback/seek still needs to be confirmed by the project author on the connected target device. The checked-in debug artifact is therefore verification evidence, not a submission release.

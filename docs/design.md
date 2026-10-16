@@ -1,6 +1,6 @@
 # Sitaara Mobile Design System
 
-**Status:** Draft for prototype validation
+**Status:** Approved Flutter design reference
 
 **Last updated:** 2026-10-16
 

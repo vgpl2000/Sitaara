@@ -59,11 +59,13 @@ abstract final class AppTheme {
           fontSize: 16,
           height: 1.5,
           fontWeight: FontWeight.w600,
+          color: AppColors.textPrimary,
         ),
         labelMedium: const TextStyle(
           fontSize: 13,
           height: 1.38,
           fontWeight: FontWeight.w600,
+          color: AppColors.textPrimary,
         ),
       ),
       appBarTheme: const AppBarTheme(

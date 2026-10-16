@@ -6,6 +6,43 @@ import 'package:sitaara/core/network/api_client.dart';
 import 'package:sitaara/core/storage/token_store.dart';
 
 void main() {
+  test('safe reads retry one transient server failure', () async {
+    var calls = 0;
+    final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+    addTearDown(server.close);
+
+    server.listen((request) async {
+      calls++;
+      request.response.headers.contentType = ContentType.json;
+      if (calls == 1) {
+        request.response.statusCode = HttpStatus.serviceUnavailable;
+        request.response.write(
+          jsonEncode({
+            'error': {'code': 'UNAVAILABLE', 'message': 'Try again.'},
+            'meta': {'requestId': 'first'},
+          }),
+        );
+      } else {
+        request.response.write(
+          jsonEncode({
+            'data': {'ok': true},
+            'meta': {'requestId': 'second'},
+          }),
+        );
+      }
+      await request.response.close();
+    });
+
+    final client = ApiClient(
+      tokenStore: _MemoryTokenStore(null),
+      baseUrl: 'http://${server.address.host}:${server.port}',
+    );
+    final response = await client.get<Map<String, dynamic>>('/read');
+
+    expect(ApiClient.unwrap(response)['ok'], isTrue);
+    expect(calls, 2);
+  });
+
   test('concurrent unauthorized requests share one refresh rotation', () async {
     var refreshCalls = 0;
     final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);

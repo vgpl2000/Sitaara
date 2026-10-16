@@ -1,6 +1,6 @@
 # Deployment Runbook
 
-**Status:** Draft for review  
+**Status:** Approved; hosted runbook in use
 **Last updated:** 2026-10-16  
 
 ## Target topology

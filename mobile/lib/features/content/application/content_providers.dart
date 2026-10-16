@@ -15,12 +15,20 @@ final masterclassesProvider =
 
 final masterclassProvider = FutureProvider.autoDispose
     .family<MasterclassDetailModel, String>((ref, id) {
-      return ref.read(contentRepositoryProvider).getMasterclass(id);
+      final cancellation = CancelToken();
+      ref.onDispose(() => cancellation.cancel('Masterclass left'));
+      return ref
+          .read(contentRepositoryProvider)
+          .getMasterclass(id, cancelToken: cancellation);
     });
 
 final videoProvider = FutureProvider.autoDispose.family<VideoModel, String>((
   ref,
   id,
 ) {
-  return ref.read(contentRepositoryProvider).getVideo(id);
+  final cancellation = CancelToken();
+  ref.onDispose(() => cancellation.cancel('Lesson left'));
+  return ref
+      .read(contentRepositoryProvider)
+      .getVideo(id, cancelToken: cancellation);
 });

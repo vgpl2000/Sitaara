@@ -42,6 +42,10 @@ Human decisions already confirmed:
 | 2026-10-16 | Documentation | Drafted product, UX, architecture, schema, API, security, test, and delivery documents | Will review/approve before implementation | Cross-document consistency scan and later implementation traceability |
 | 2026-10-16 | Brand and prototype planning | Reconciled the website-derived design notes with confirmed mobile branding and proposed a prototype contract | Confirmed Flutter mobile only, separate HTML/CSS/JavaScript prototype, supplied logos, `#462E91` purple, and `#8AC340` green | Inspected all local assets and audited every Markdown document for conflicting platform or brand guidance |
 | 2026-10-16 | Media architecture | Assessed the impact of replacing Supabase Storage with Cloudinary across schema, security, deployment, testing, and content operations | Selected Cloudinary for licensed public demo media while retaining Supabase for Postgres only | Checked official Cloudinary upload, delivery, security, and video guidance; ran a cross-document reference audit |
+| 2026-10-16 | Go backend | Drafted migrations, SQL queries, services, HTTP handlers, concurrency tests, Railway container files, and safe configuration | Accepted Go-owned auth, transaction boundaries, and the narrow assignment scope | Ran unit/integration scenarios, vet/build checks, hosted health/readiness, and a fresh two-account hosted API flow |
+| 2026-10-16 | Flutter Android app | Drafted the feature structure, session lifecycle, prototype-aligned screens, reusable player, and tests | Confirmed Android-only delivery, real-device testing through Android Studio, and the approved visual direction | Flutter formatter/analyzer pass, nine tests pass, debug APK builds, and initial screens were exercised on a Motorola edge 60 pro |
+| 2026-10-16 | Hosted content | Mapped nine existing Cloudinary clips into two masterclasses and generated poster metadata | Confirmed the required 4+5 distribution and use of existing Cloudinary media | Idempotent seed reports two masterclasses/nine videos; all media/poster URLs returned HTTPS 200 and byte-range delivery worked |
+| 2026-10-16 | Final audit | Compared implementation, README, ADRs, and living checklist; scanned tracked files and APK configuration for secrets | Deferred release signing, media provenance, and remaining device playback rather than marking them complete | Re-ran Go unit tests/vet/build, Flutter analyze/tests/APK build, and recorded a debug APK checksum |
 
 ## Verification methods
 
@@ -87,6 +91,16 @@ Human decisions already confirmed:
 ## Mistake log template
 
 Record non-trivial issues rather than presenting AI use as flawless.
+
+### Recorded mistakes and corrections
+
+| Area | Wrong or incomplete result | Detection | Correction/control |
+|---|---|---|---|
+| Railway pre-deploy | The first command/path assumption did not match the built container layout. | Railway pre-deploy failed before application start. | Kept the migration binary in the runtime image and documented `/app/sitaara-migrate up` as the controlled command. |
+| Hosted content | The deployed database initially returned zero masterclasses even though the API was healthy. | Fresh hosted two-account smoke test returned an empty catalog. | Ran the idempotent production content seed and repeated the complete hosted API scenario, confirming 4+5 videos. |
+| Windows Android build | Initial diagnosis focused on loopback/Winsock, while Java's selector failed because the desktop sandbox temporary path was too long; Kotlin then failed on cross-drive incremental caches. | Minimal Java selector probe and Gradle stack traces isolated both causes. | Use a short workspace-local `TEMP`/`TMP` for builds and disable Kotlin incremental compilation for the F:-to-C: cache layout. |
+| Flutter design parity | The first library implementation used a text app-bar title and the hosted environment had no seeded posters, making supplied/approved visuals appear missing. | Compared the Flutter screen and packaged assets directly with the approved prototype. | Added the supplied wordmark to Library, retained supplied branding on Welcome/launcher, seeded Cloudinary posters, and documented the asset boundary. |
+| Create Family contrast | The role label inherited a light color on the light form surface. | Real-device visual review exposed the low-contrast label. | Set explicit primary text colors for label styles and retained contrast as a manual QA item. |
 
 ```text
 Date:
