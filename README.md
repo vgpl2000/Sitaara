@@ -7,7 +7,7 @@ An assignment prototype for a Flutter Android application backed by a Go API and
 - Product, architecture, security, API, and delivery plans are documented in [`docs/`](docs/README.md).
 - The approved HTML/CSS/JavaScript design reference lives in [`prototype/`](prototype/README.md).
 - The implementation tracker is [`docs/18-implementation-checklist.md`](docs/18-implementation-checklist.md).
-- Phase 1 of the production Go backend is implemented locally and awaiting its first hosted CI run.
+- Backend Phases 1–4 are implemented locally: foundation, authentication, family linking, content, likes, progress, and partner activity. Hosted CI and deployment remain pending.
 - Flutter implementation begins in Phase 5 after the API domain phases are complete.
 
 ## Planned repository layout

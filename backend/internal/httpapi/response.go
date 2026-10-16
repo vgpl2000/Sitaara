@@ -29,11 +29,15 @@ func writeData(w http.ResponseWriter, r *http.Request, status int, data any) {
 }
 
 func writeError(w http.ResponseWriter, r *http.Request, status int, code, message string) {
+	writeFieldError(w, r, status, code, message, map[string]any{})
+}
+
+func writeFieldError(w http.ResponseWriter, r *http.Request, status int, code, message string, fields map[string]any) {
 	writeJSON(w, status, responseEnvelope{
 		Error: &responseError{
 			Code:    code,
 			Message: message,
-			Fields:  map[string]any{},
+			Fields:  fields,
 		},
 		Meta: responseMetadata{RequestID: requestIDFromContext(r.Context())},
 	})

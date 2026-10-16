@@ -3,3 +3,145 @@
 //   sqlc v1.31.1
 
 package postgresgen
+
+import (
+	"database/sql/driver"
+	"fmt"
+
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
+)
+
+type ParentRole string
+
+const (
+	ParentRoleMom ParentRole = "mom"
+	ParentRoleDad ParentRole = "dad"
+)
+
+func (e *ParentRole) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = ParentRole(s)
+	case string:
+		*e = ParentRole(s)
+	default:
+		return fmt.Errorf("unsupported scan type for ParentRole: %T", src)
+	}
+	return nil
+}
+
+type NullParentRole struct {
+	ParentRole ParentRole `json:"parent_role"`
+	Valid      bool       `json:"valid"` // Valid is true if ParentRole is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullParentRole) Scan(value interface{}) error {
+	if value == nil {
+		ns.ParentRole, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.ParentRole.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullParentRole) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.ParentRole), nil
+}
+
+type Child struct {
+	ID          uuid.UUID          `json:"id"`
+	FamilyID    uuid.UUID          `json:"family_id"`
+	Name        string             `json:"name"`
+	DateOfBirth pgtype.Date        `json:"date_of_birth"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+}
+
+type Family struct {
+	ID        uuid.UUID          `json:"id"`
+	CreatedBy uuid.UUID          `json:"created_by"`
+	CreatedAt pgtype.Timestamptz `json:"created_at"`
+}
+
+type FamilyMember struct {
+	FamilyID uuid.UUID          `json:"family_id"`
+	UserID   uuid.UUID          `json:"user_id"`
+	Role     ParentRole         `json:"role"`
+	JoinedAt pgtype.Timestamptz `json:"joined_at"`
+}
+
+type Masterclass struct {
+	ID                uuid.UUID `json:"id"`
+	Slug              string    `json:"slug"`
+	Title             string    `json:"title"`
+	Description       string    `json:"description"`
+	ThumbnailPublicID string    `json:"thumbnail_public_id"`
+	ThumbnailUrl      string    `json:"thumbnail_url"`
+	SortOrder         int32     `json:"sort_order"`
+	Published         bool      `json:"published"`
+}
+
+type PartnerInvite struct {
+	ID            uuid.UUID          `json:"id"`
+	FamilyID      uuid.UUID          `json:"family_id"`
+	InviterUserID uuid.UUID          `json:"inviter_user_id"`
+	CodeDigest    string             `json:"code_digest"`
+	ExpiresAt     pgtype.Timestamptz `json:"expires_at"`
+	RedeemedBy    pgtype.UUID        `json:"redeemed_by"`
+	RedeemedAt    pgtype.Timestamptz `json:"redeemed_at"`
+	RevokedAt     pgtype.Timestamptz `json:"revoked_at"`
+	CreatedAt     pgtype.Timestamptz `json:"created_at"`
+}
+
+type RefreshSession struct {
+	ID              uuid.UUID          `json:"id"`
+	UserID          uuid.UUID          `json:"user_id"`
+	TokenDigest     string             `json:"token_digest"`
+	FamilyID        uuid.UUID          `json:"family_id"`
+	ParentSessionID pgtype.UUID        `json:"parent_session_id"`
+	ExpiresAt       pgtype.Timestamptz `json:"expires_at"`
+	UsedAt          pgtype.Timestamptz `json:"used_at"`
+	RevokedAt       pgtype.Timestamptz `json:"revoked_at"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+}
+
+type User struct {
+	ID           uuid.UUID          `json:"id"`
+	Email        string             `json:"email"`
+	PasswordHash string             `json:"password_hash"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
+}
+
+type Video struct {
+	ID                uuid.UUID `json:"id"`
+	MasterclassID     uuid.UUID `json:"masterclass_id"`
+	Title             string    `json:"title"`
+	Description       string    `json:"description"`
+	MediaPublicID     string    `json:"media_public_id"`
+	MediaUrl          string    `json:"media_url"`
+	ThumbnailPublicID string    `json:"thumbnail_public_id"`
+	ThumbnailUrl      string    `json:"thumbnail_url"`
+	DurationSeconds   int32     `json:"duration_seconds"`
+	SortOrder         int32     `json:"sort_order"`
+}
+
+type VideoLike struct {
+	UserID    uuid.UUID          `json:"user_id"`
+	VideoID   uuid.UUID          `json:"video_id"`
+	CreatedAt pgtype.Timestamptz `json:"created_at"`
+}
+
+type VideoProgress struct {
+	UserID          uuid.UUID          `json:"user_id"`
+	VideoID         uuid.UUID          `json:"video_id"`
+	FurthestSeconds int32              `json:"furthest_seconds"`
+	LastWatchedAt   pgtype.Timestamptz `json:"last_watched_at"`
+	CompletedAt     pgtype.Timestamptz `json:"completed_at"`
+	UpdatedAt       pgtype.Timestamptz `json:"updated_at"`
+}

@@ -2,11 +2,11 @@
 
 **Status:** Active  
 **Last updated:** 2026-10-16  
-**Current phase:** Phase 1 - Backend foundation (local verification complete; hosted CI pending)
+**Current phase:** Backend Phases 1-4 implemented locally; hosted race/CI pending
 
-**Next phase:** Phase 2 - Schema and authentication
+**Next phase:** Phase 5 - Flutter foundation and onboarding
 
-**Next milestone:** Confirm the backend foundation in hosted CI, then implement schema and authentication
+**Next milestone:** Confirm the backend in hosted CI, then build Flutter against the verified API contract
 
 ## Purpose
 
@@ -31,9 +31,9 @@ Do not treat a checked documentation task as proof that the corresponding code e
 | 0. Contracts and repository readiness | Ready for foundation work; final document approval sweep pending | Contracts approved and toolchain/repository conventions recorded |
 | 0A. HTML design prototype | Approved; baseline capture pending | Approved mobile reference exists separately from Flutter |
 | 1. Backend foundation | Implemented locally; hosted CI pending | API builds, migrates, tests, and reports health/readiness |
-| 2. Schema and authentication | Not started | Registration, login, refresh, logout, and `/v1/me` work safely |
-| 3. Family, child, and partner linking | Not started | Linking invariants survive invalid and concurrent requests |
-| 4. Content and shared activity | Not started | API supports the complete assignment story without Flutter |
+| 2. Schema and authentication | Implemented locally; hosted race/CI pending | Registration, login, refresh, logout, and `/v1/me` work safely |
+| 3. Family, child, and partner linking | Implemented locally; hosted race/CI pending | Linking invariants survive invalid and concurrent requests |
+| 4. Content and shared activity | Implemented locally; hosted race/CI pending | API supports the complete assignment story without Flutter |
 | 5. Flutter foundation and onboarding | Not started | Two app sessions can register, create, invite, and join |
 | 6. Library and video experience | Not started | Full mobile experience works against the local API |
 | 7. Media, seed, and hosted environment | Not started | Clean release APK works with Railway, Supabase, and Cloudinary |
@@ -180,172 +180,172 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ## Phase 2 - Schema and authentication
 
-**Status:** Not started  
+**Status:** Implemented locally; hosted race/CI pending
 **Depends on:** Phase 1  
 **Canonical references:** `08-data-model.md`, `09-api-contract.md`, `10-authentication-and-security.md`
 
 ### Database schema
 
-- [ ] `P2-01` Add required Postgres extensions, including case-insensitive email support.
-- [ ] `P2-02` Create `users` with UUIDs, normalized unique email, password hash, and timestamps.
-- [ ] `P2-03` Create `refresh_sessions` with digests, rotation-family fields, expiry, use, and revocation timestamps.
-- [ ] `P2-04` Add foreign keys, uniqueness constraints, and session lookup indexes.
-- [ ] `P2-05` Generate and review typed `sqlc` queries.
-- [ ] `P2-06` Prove the schema migrates both an empty database and the previous migration version.
+- [x] `P2-01` Add required Postgres extensions, including case-insensitive email support.
+- [x] `P2-02` Create `users` with UUIDs, normalized unique email, password hash, and timestamps.
+- [x] `P2-03` Create `refresh_sessions` with digests, rotation-family fields, expiry, use, and revocation timestamps.
+- [x] `P2-04` Add foreign keys, uniqueness constraints, and session lookup indexes.
+- [x] `P2-05` Generate and review typed `sqlc` queries.
+- [x] `P2-06` Prove the schema migrates both an empty database and the previous migration version.
 
 ### Password and session primitives
 
-- [ ] `P2-07` Implement Argon2id hashing with explicit parameters and per-password salt.
-- [ ] `P2-08` Implement constant-time password verification and transparent parameter inspection.
-- [ ] `P2-09` Enforce password length before hashing and apply request-size limits.
-- [ ] `P2-10` Implement signed JWT access tokens with issuer, audience, subject, issued-at, and expiry validation.
-- [ ] `P2-11` Implement high-entropy opaque refresh tokens.
-- [ ] `P2-12` Store only keyed/digested refresh-token material.
-- [ ] `P2-13` Implement transactional refresh rotation.
-- [ ] `P2-14` Revoke a rotation family when a consumed token is reused.
+- [x] `P2-07` Implement Argon2id hashing with explicit parameters and per-password salt.
+- [x] `P2-08` Implement constant-time password verification and transparent parameter inspection.
+- [x] `P2-09` Enforce password length before hashing and apply request-size limits.
+- [x] `P2-10` Implement signed JWT access tokens with issuer, audience, subject, issued-at, and expiry validation.
+- [x] `P2-11` Implement high-entropy opaque refresh tokens.
+- [x] `P2-12` Store only keyed/digested refresh-token material.
+- [x] `P2-13` Implement transactional refresh rotation.
+- [x] `P2-14` Revoke a rotation family when a consumed token is reused.
 
 ### HTTP operations
 
-- [ ] `P2-15` Implement `POST /v1/auth/register`.
-- [ ] `P2-16` Implement `POST /v1/auth/login` with non-enumerating invalid-credential errors.
-- [ ] `P2-17` Implement `POST /v1/auth/refresh`.
-- [ ] `P2-18` Implement idempotent `POST /v1/auth/logout`.
-- [ ] `P2-19` Implement bearer-token authentication middleware.
-- [ ] `P2-20` Implement `GET /v1/me` with onboarding state.
-- [ ] `P2-21` Add stricter rate limits for register, login, and refresh operations.
-- [ ] `P2-22` Reject unknown JSON fields and malformed/oversized bodies consistently.
+- [x] `P2-15` Implement `POST /v1/auth/register`.
+- [x] `P2-16` Implement `POST /v1/auth/login` with non-enumerating invalid-credential errors.
+- [x] `P2-17` Implement `POST /v1/auth/refresh`.
+- [x] `P2-18` Implement idempotent `POST /v1/auth/logout`.
+- [x] `P2-19` Implement bearer-token authentication middleware.
+- [x] `P2-20` Implement `GET /v1/me` with onboarding state.
+- [x] `P2-21` Add stricter rate limits for register, login, and refresh operations.
+- [x] `P2-22` Reject unknown JSON fields and malformed/oversized bodies consistently.
 
 ### Verification
 
-- [ ] `P2-23` Unit-test password, token, expiry, issuer, and audience behavior.
-- [ ] `P2-24` Integration-test registration, duplicate normalized email, login, logout, and `/v1/me`.
-- [ ] `P2-25` Test concurrent refresh so only an allowed rotation outcome succeeds.
-- [ ] `P2-26` Test consumed-token reuse and rotation-family revocation.
-- [ ] `P2-27` Verify errors and logs contain no password, JWT, refresh token, or digest.
+- [x] `P2-23` Unit-test password, token, expiry, issuer, and audience behavior.
+- [x] `P2-24` Integration-test registration, duplicate normalized email, login, logout, and `/v1/me`.
+- [x] `P2-25` Test concurrent refresh so only an allowed rotation outcome succeeds.
+- [x] `P2-26` Test consumed-token reuse and rotation-family revocation.
+- [x] `P2-27` Verify errors and logs contain no password, JWT, refresh token, or digest.
 - [ ] `P2-28` Run targeted Go race tests.
 
 ### Exit gate
 
-- [ ] Auth sessions work through the published HTTP contract.
-- [ ] Database contents do not reveal raw passwords or refresh tokens.
-- [ ] Concurrent refresh and replay behavior is executable and documented.
+- [x] Auth sessions work through the published HTTP contract.
+- [x] Database contents do not reveal raw passwords or refresh tokens.
+- [x] Concurrent refresh and replay behavior is executable and documented.
 
 ### Evidence
 
-- Commit/PR: TBD
-- Migration version: TBD
-- Tests: TBD
+- Commit/PR: local working tree; not committed or pushed yet.
+- Migration version: `00002_users_and_refresh_sessions.sql`; verified both from version 1 and from an empty disposable database.
+- Tests: unit and PostgreSQL integration suites pass, including HTTP auth lifecycle and concurrent refresh/reuse revocation. Local live API smoke test passed register, `/v1/me`, refresh, and logout. Race execution is configured in CI and remains pending there because the Windows toolchain has CGO disabled.
 
 ## Phase 3 - Family, child, and partner linking
 
-**Status:** Not started  
+**Status:** Implemented locally; hosted race/CI pending
 **Depends on:** Phase 2  
 **Canonical references:** `04-user-stories-and-acceptance.md`, `08-data-model.md`, `11-domain-rules-and-edge-cases.md`
 
 ### Schema and domain policies
 
-- [ ] `P3-01` Create families, family members, children, and partner-invite tables.
-- [ ] `P3-02` Enforce one family per account.
-- [ ] `P3-03` Enforce one child per family.
-- [ ] `P3-04` Enforce at most one Mom and one Dad per family.
-- [ ] `P3-05` Validate child name and date of birth using the service clock.
-- [ ] `P3-06` Implement unambiguous six-character invite generation.
-- [ ] `P3-07` Store only HMAC/keyed invite-code digests.
-- [ ] `P3-08` Enforce 24-hour expiry, single use, revocation, and active-invite replacement.
+- [x] `P3-01` Create families, family members, children, and partner-invite tables.
+- [x] `P3-02` Enforce one family per account.
+- [x] `P3-03` Enforce one child per family.
+- [x] `P3-04` Enforce at most one Mom and one Dad per family.
+- [x] `P3-05` Validate child name and date of birth using the service clock.
+- [x] `P3-06` Implement unambiguous six-character invite generation.
+- [x] `P3-07` Store only HMAC/keyed invite-code digests.
+- [x] `P3-08` Enforce 24-hour expiry, single use, revocation, and active-invite replacement.
 
 ### Use cases and endpoints
 
-- [ ] `P3-09` Implement atomic family/member/child creation.
-- [ ] `P3-10` Implement `POST /v1/families`.
-- [ ] `P3-11` Implement `GET /v1/family` without accepting a client family ID.
-- [ ] `P3-12` Implement invite creation and return the raw code once.
-- [ ] `P3-13` Implement transactional invite redemption with row locking.
-- [ ] `P3-14` Derive the joining role safely and reject an occupied/same role.
-- [ ] `P3-15` Prevent self-linking and cross-family reassignment.
-- [ ] `P3-16` Map invalid, expired, used, role-taken, and family-full outcomes to the API contract.
-- [ ] `P3-17` Return the updated onboarding/family state from `/v1/me`.
-- [ ] `P3-18` Apply rate limiting to invite redemption.
+- [x] `P3-09` Implement atomic family/member/child creation.
+- [x] `P3-10` Implement `POST /v1/families`.
+- [x] `P3-11` Implement `GET /v1/family` without accepting a client family ID.
+- [x] `P3-12` Implement invite creation and return the raw code once.
+- [x] `P3-13` Implement transactional invite redemption with row locking.
+- [x] `P3-14` Derive the joining role safely and reject an occupied/same role.
+- [x] `P3-15` Prevent self-linking and cross-family reassignment.
+- [x] `P3-16` Map invalid, expired, used, role-taken, and family-full outcomes to the API contract.
+- [x] `P3-17` Return the updated onboarding/family state from `/v1/me`.
+- [x] `P3-18` Apply rate limiting to invite redemption.
 
 ### Verification
 
-- [ ] `P3-19` Test successful creator and partner flows.
-- [ ] `P3-20` Test invalid/malformed, expired, revoked, and already-used codes.
-- [ ] `P3-21` Test self-link, wrong role, existing family, and full-family rejection.
-- [ ] `P3-22` Race two accounts against one invite and prove exactly one wins.
-- [ ] `P3-23` Race duplicate family creation for one account.
-- [ ] `P3-24` Test unrelated-family access and ID substitution attempts.
-- [ ] `P3-25` Verify invite codes and child/family identifiers do not leak in logs or unsafe errors.
+- [x] `P3-19` Test successful creator and partner flows.
+- [x] `P3-20` Test invalid/malformed, expired, revoked, and already-used codes.
+- [x] `P3-21` Test self-link, wrong role, existing family, and full-family rejection.
+- [x] `P3-22` Race two accounts against one invite and prove exactly one wins.
+- [x] `P3-23` Race duplicate family creation for one account.
+- [x] `P3-24` Test unrelated-family access and ID substitution attempts.
+- [x] `P3-25` Verify invite codes and child/family identifiers do not leak in logs or unsafe errors.
 
 ### Exit gate
 
-- [ ] Exactly one concurrent invite redemption succeeds.
-- [ ] Database constraints remain decisive when application checks race.
-- [ ] No endpoint lets a caller select or inspect another family.
+- [x] Exactly one concurrent invite redemption succeeds.
+- [x] Database constraints remain decisive when application checks race.
+- [x] No endpoint lets a caller select or inspect another family.
 
 ### Evidence
 
-- Commit/PR: TBD
-- Concurrency test: TBD
-- Authorization test: TBD
+- Commit/PR: local working tree; not committed or pushed yet.
+- Concurrency test: synchronized two-user invite redemption and duplicate family creation pass against PostgreSQL.
+- Authorization test: family identity is always derived from the authenticated user; unrelated-family partner activity remains absent.
 
 ## Phase 4 - Content and shared activity
 
-**Status:** Not started  
+**Status:** Implemented locally; hosted race/CI pending
 **Depends on:** Phase 3 and prepared seed metadata  
 **Canonical references:** `08-data-model.md`, `09-api-contract.md`, `11-domain-rules-and-edge-cases.md`, `14-demo-data-and-content.md`
 
 ### Content schema and seed
 
-- [ ] `P4-01` Create masterclass and video tables with ordering and publication constraints.
-- [ ] `P4-02` Store Cloudinary public IDs and HTTPS delivery URLs for media/thumbnails.
-- [ ] `P4-03` Create likes with a composite uniqueness constraint.
-- [ ] `P4-04` Create progress with furthest position, recency, completion, and supporting indexes.
-- [ ] `P4-05` Implement an idempotent content seed using stable IDs/slugs.
-- [ ] `P4-06` Validate two masterclasses with four ordered videos each and positive canonical durations.
+- [x] `P4-01` Create masterclass and video tables with ordering and publication constraints.
+- [x] `P4-02` Store Cloudinary public IDs and HTTPS delivery URLs for media/thumbnails.
+- [x] `P4-03` Create likes with a composite uniqueness constraint.
+- [x] `P4-04` Create progress with furthest position, recency, completion, and supporting indexes.
+- [x] `P4-05` Implement an idempotent content seed using stable IDs/slugs.
+- [x] `P4-06` Validate two masterclasses with four ordered videos each and positive canonical durations.
 
 ### Read models
 
-- [ ] `P4-07` Implement ordered `GET /v1/masterclasses`.
-- [ ] `P4-08` Implement `GET /v1/masterclasses/{id}`.
-- [ ] `P4-09` Implement `GET /v1/videos/{id}`.
-- [ ] `P4-10` Return own likes, progress, completion, and aggregates.
-- [ ] `P4-11` Resolve the partner exclusively through authenticated family membership.
-- [ ] `P4-12` Return partner status without partner email or internal identifiers.
-- [ ] `P4-13` Calculate duration-weighted masterclass progress.
-- [ ] `P4-14` Calculate current-watching state using the agreed 10-minute window.
-- [ ] `P4-15` Avoid per-video N+1 queries.
+- [x] `P4-07` Implement ordered `GET /v1/masterclasses`.
+- [x] `P4-08` Implement `GET /v1/masterclasses/{id}`.
+- [x] `P4-09` Implement `GET /v1/videos/{id}`.
+- [x] `P4-10` Return own likes, progress, completion, and aggregates.
+- [x] `P4-11` Resolve the partner exclusively through authenticated family membership.
+- [x] `P4-12` Return partner status without partner email or internal identifiers.
+- [x] `P4-13` Calculate duration-weighted masterclass progress.
+- [x] `P4-14` Calculate current-watching state using the agreed 10-minute window.
+- [x] `P4-15` Avoid per-video N+1 queries.
 
 ### Mutations
 
-- [ ] `P4-16` Implement idempotent like using desired-state `PUT`.
-- [ ] `P4-17` Implement idempotent unlike using desired-state `DELETE`.
-- [ ] `P4-18` Implement atomic monotonic progress upsert using `greatest`.
-- [ ] `P4-19` Clamp progress to canonical duration.
-- [ ] `P4-20` Set completion once at the 90% threshold and never clear it.
-- [ ] `P4-21` Update valid recency even when furthest progress does not increase.
+- [x] `P4-16` Implement idempotent like using desired-state `PUT`.
+- [x] `P4-17` Implement idempotent unlike using desired-state `DELETE`.
+- [x] `P4-18` Implement atomic monotonic progress upsert using `greatest`.
+- [x] `P4-19` Clamp progress to canonical duration.
+- [x] `P4-20` Set completion once at the 90% threshold and never clear it.
+- [x] `P4-21` Update valid recency even when furthest progress does not increase.
 
 ### Verification
 
-- [ ] `P4-22` Test duplicate/concurrent likes and unlike retries.
-- [ ] `P4-23` Test out-of-order and concurrent progress writes.
-- [ ] `P4-24` Test exact 90% boundary and excessive-position clamping.
-- [ ] `P4-25` Test weighted aggregation with unequal video durations.
-- [ ] `P4-26` Test current-watching boundary and completed-video exclusion.
-- [ ] `P4-27` Test unlinked, linked, and unrelated-family read models.
-- [ ] `P4-28` Measure/query-test the fixed read-query shape.
-- [ ] `P4-29` Complete an API-only end-to-end scenario for two accounts.
+- [x] `P4-22` Test duplicate/concurrent likes and unlike retries.
+- [x] `P4-23` Test out-of-order and concurrent progress writes.
+- [x] `P4-24` Test exact 90% boundary and excessive-position clamping.
+- [x] `P4-25` Test weighted aggregation with unequal video durations.
+- [x] `P4-26` Test current-watching boundary and completed-video exclusion.
+- [x] `P4-27` Test unlinked, linked, and unrelated-family read models.
+- [x] `P4-28` Measure/query-test the fixed read-query shape.
+- [x] `P4-29` Complete an API-only end-to-end scenario for two accounts.
 
 ### Exit gate
 
-- [ ] The API alone supports registration, linking, content, likes, progress, and partner visibility.
-- [ ] Concurrency cannot decrease progress or create duplicate likes.
-- [ ] Cross-family activity remains inaccessible.
+- [x] The API alone supports registration, linking, content, likes, progress, and partner visibility.
+- [x] Concurrency cannot decrease progress or create duplicate likes.
+- [x] Cross-family activity remains inaccessible.
 
 ### Evidence
 
-- Commit/PR: TBD
-- API scenario: TBD
-- Aggregate/concurrency tests: TBD
+- Commit/PR: local working tree; not committed or pushed yet.
+- API scenario: in-process HTTP scenario passes registration, family creation, invite linking, likes, progress, and partner visibility.
+- Aggregate/concurrency tests: PostgreSQL tests pass duplicate/concurrent likes, out-of-order/concurrent progress, threshold/clamping, weighted aggregates, and cross-family isolation.
 
 ## Phase 5 - Flutter foundation and onboarding
 
@@ -608,3 +608,6 @@ These tasks are intentionally excluded from the assignment release unless all re
 | 2026-10-16 | Created the living checklist from the approved prototype and current planning documents | Phase 0 is partially complete, Phase 0A is substantially complete, and Phase 1 is the next implementation focus |
 | 2026-10-16 | Completed local toolchain and repository preflight | Installed Go/PostgreSQL, repaired and upgraded Flutter/Android, added safe root files, and created the Railway backend service root |
 | 2026-10-16 | Implemented and verified the Phase 1 backend foundation | Added the Go API scaffold, typed configuration, safe logging/middleware, PostgreSQL pool, Goose/sqlc tooling, tests, Railway Dockerfile, and CI workflow; hosted CI remains pending |
+| 2026-10-16 | Implemented and locally verified Phase 2 authentication | Added users/sessions schema, Argon2id credentials, JWT access tokens, rotating opaque refresh tokens with replay revocation, auth HTTP operations, strict request handling, throttling, and concurrency/integration tests |
+| 2026-10-16 | Implemented and locally verified Phase 3 family linking | Added atomic family/child creation, keyed expiring invites, safe role rules, concurrent redemption protection, HTTP operations, and two-user integration coverage |
+| 2026-10-16 | Implemented and locally verified the Phase 4 API | Added content/activity schema, deterministic metadata seed, measured fixed-shape read queries, idempotent likes, monotonic progress, partner views, and API-only end-to-end coverage |

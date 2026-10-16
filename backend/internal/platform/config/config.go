@@ -31,6 +31,13 @@ type Config struct {
 	HTTPWriteTimeout      time.Duration
 	HTTPIdleTimeout       time.Duration
 	MaxRequestBodyBytes   int64
+	JWTSecret             []byte
+	JWTIssuer             string
+	JWTAudience           string
+	InviteHMACSecret      []byte
+	RefreshHMACSecret     []byte
+	AccessTokenTTL        time.Duration
+	RefreshTokenTTL       time.Duration
 }
 
 type LookupFunc func(string) (string, bool)
@@ -54,6 +61,10 @@ func LoadFrom(lookup LookupFunc) (Config, error) {
 		HTTPWriteTimeout:      30 * time.Second,
 		HTTPIdleTimeout:       60 * time.Second,
 		MaxRequestBodyBytes:   1 << 20,
+		JWTIssuer:             strings.TrimSpace(value(lookup, "JWT_ISSUER")),
+		JWTAudience:           strings.TrimSpace(value(lookup, "JWT_AUDIENCE")),
+		AccessTokenTTL:        15 * time.Minute,
+		RefreshTokenTTL:       30 * 24 * time.Hour,
 	}
 
 	var errs []error
@@ -97,11 +108,49 @@ func LoadFrom(lookup LookupFunc) (Config, error) {
 		}
 	}
 
+	cfg.JWTSecret = parseSecret(lookup, "JWT_SECRET", &errs)
+	cfg.InviteHMACSecret = parseSecret(lookup, "INVITE_HMAC_SECRET", &errs)
+	cfg.RefreshHMACSecret = parseSecret(lookup, "REFRESH_HMAC_SECRET", &errs)
+
+	if cfg.JWTIssuer == "" {
+		errs = append(errs, fmt.Errorf("JWT_ISSUER is required"))
+	}
+	if cfg.JWTAudience == "" {
+		errs = append(errs, fmt.Errorf("JWT_AUDIENCE is required"))
+	}
+
+	if raw := strings.TrimSpace(value(lookup, "ACCESS_TOKEN_TTL")); raw != "" {
+		duration, err := time.ParseDuration(raw)
+		if err != nil || duration < time.Minute || duration > time.Hour {
+			errs = append(errs, fmt.Errorf("ACCESS_TOKEN_TTL must be between 1m and 1h"))
+		} else {
+			cfg.AccessTokenTTL = duration
+		}
+	}
+
+	if raw := strings.TrimSpace(value(lookup, "REFRESH_TOKEN_TTL")); raw != "" {
+		duration, err := time.ParseDuration(raw)
+		if err != nil || duration < time.Hour || duration > 90*24*time.Hour {
+			errs = append(errs, fmt.Errorf("REFRESH_TOKEN_TTL must be between 1h and 2160h"))
+		} else {
+			cfg.RefreshTokenTTL = duration
+		}
+	}
+
 	if err := errors.Join(errs...); err != nil {
 		return Config{}, err
 	}
 
 	return cfg, nil
+}
+
+func parseSecret(lookup LookupFunc, name string, errs *[]error) []byte {
+	raw := value(lookup, name)
+	if len(raw) < 32 {
+		*errs = append(*errs, fmt.Errorf("%s must contain at least 32 characters", name))
+		return nil
+	}
+	return []byte(raw)
 }
 
 func (c Config) Address() string {

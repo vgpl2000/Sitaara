@@ -74,7 +74,12 @@ func TestReadyReturnsSafeFailure(t *testing.T) {
 func TestRequestLogDoesNotContainSensitiveRequestData(t *testing.T) {
 	var logs bytes.Buffer
 	logger := slog.New(slog.NewJSONHandler(&logs, nil))
-	handler := NewHandler(logger, &fakeReadyChecker{}, 100*time.Millisecond, 1024)
+	handler := NewHandler(HandlerOptions{
+		Logger:              logger,
+		ReadyChecker:        &fakeReadyChecker{},
+		ReadyTimeout:        100 * time.Millisecond,
+		MaxRequestBodyBytes: 1024,
+	})
 
 	request := httptest.NewRequest(
 		http.MethodPost,
@@ -97,7 +102,12 @@ func TestRequestLogDoesNotContainSensitiveRequestData(t *testing.T) {
 
 func testHandler(checker ReadyChecker) http.Handler {
 	logger := slog.New(slog.NewTextHandler(io.Discard, nil))
-	return NewHandler(logger, checker, 100*time.Millisecond, 1024)
+	return NewHandler(HandlerOptions{
+		Logger:              logger,
+		ReadyChecker:        checker,
+		ReadyTimeout:        100 * time.Millisecond,
+		MaxRequestBodyBytes: 1024,
+	})
 }
 
 func assertRequestID(t *testing.T, response *httptest.ResponseRecorder) {

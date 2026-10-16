@@ -3,11 +3,16 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log/slog"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
+	"github.com/vgpl2000/Sitaara/backend/internal/auth"
+	"github.com/vgpl2000/Sitaara/backend/internal/content"
+	"github.com/vgpl2000/Sitaara/backend/internal/family"
 	"github.com/vgpl2000/Sitaara/backend/internal/httpapi"
 	"github.com/vgpl2000/Sitaara/backend/internal/platform/app"
 	"github.com/vgpl2000/Sitaara/backend/internal/platform/config"
@@ -43,6 +48,30 @@ func run() int {
 		return 1
 	}
 
+	passwordHasher := auth.NewPasswordHasher(auth.DefaultPasswordParams(), 2)
+	accessTokens := auth.NewAccessTokenManager(
+		cfg.JWTSecret,
+		cfg.JWTIssuer,
+		cfg.JWTAudience,
+		cfg.AccessTokenTTL,
+		time.Now,
+	)
+	authService, err := auth.NewService(ctx, auth.ServiceOptions{
+		Pool:          pool,
+		Hasher:        passwordHasher,
+		AccessTokens:  accessTokens,
+		RefreshSecret: cfg.RefreshHMACSecret,
+		RefreshTTL:    cfg.RefreshTokenTTL,
+		Now:           time.Now,
+	})
+	if err != nil {
+		pool.Close()
+		logger.Error("authentication service initialization failed", "error_type", fmt.Sprintf("%T", err))
+		return 1
+	}
+	familyService := family.NewService(pool, cfg.InviteHMACSecret, time.Now)
+	contentService := content.NewService(pool)
+
 	server := httpapi.NewServer(httpapi.ServerOptions{
 		Address:             cfg.Address(),
 		Logger:              logger,
@@ -53,6 +82,10 @@ func run() int {
 		WriteTimeout:        cfg.HTTPWriteTimeout,
 		IdleTimeout:         cfg.HTTPIdleTimeout,
 		MaxRequestBodyBytes: cfg.MaxRequestBodyBytes,
+		AuthService:         authService,
+		AccessTokens:        accessTokens,
+		FamilyService:       familyService,
+		ContentService:      contentService,
 	})
 
 	logger.Info("api starting", "address", cfg.Address())

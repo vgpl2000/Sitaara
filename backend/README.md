@@ -1,6 +1,6 @@
 # Sitaara Go API
 
-This directory is the deployable Railway service root. Phase 1 provides a production-shaped Go API foundation with typed configuration, structured logs, PostgreSQL pooling, controlled migrations, generated queries, health checks, tests, and graceful shutdown.
+This directory is the deployable Railway service root. The implemented foundation and authentication phases provide typed configuration, structured logs, PostgreSQL pooling, controlled migrations, generated queries, health checks, secure account sessions, tests, and graceful shutdown.
 
 ## Prerequisites
 
@@ -33,12 +33,16 @@ The service exposes:
 
 - `GET /healthz` — process liveness; does not call PostgreSQL.
 - `GET /readyz` — readiness; performs a bounded PostgreSQL ping.
+- `POST /v1/auth/register`, `/login`, `/refresh`, and `/logout` — account and rotating session operations.
+- `GET /v1/me` — authenticated account and onboarding state.
 
 ## Development commands
 
-Run `.\scripts\dev.ps1 <action>` from this directory. Supported actions are `format`, `lint`, `test`, `test-integration`, `generate`, `migrate-up`, `migrate-status`, and `run`. The `seed` action is intentionally reserved until the Phase 4 content model exists.
+Run `.\scripts\dev.ps1 <action>` from this directory. Supported actions are `format`, `lint`, `test`, `test-integration`, `generate`, `migrate-up`, `migrate-status`, `seed`, and `run`. The seed is idempotent and writes stable metadata for two masterclasses with four videos each.
 
 Integration tests require `TEST_DATABASE_URL`. Query generation uses the pinned sqlc version declared in the script and CI.
+
+The convenience script loads the ignored root `.env` file when it exists. Run `.\scripts\init-local-env.ps1` once to replace authentication placeholders with cryptographically random local secrets; existing real secrets are preserved and their values are never printed.
 
 ## Configuration
 
@@ -49,8 +53,16 @@ Integration tests require `TEST_DATABASE_URL`. Query generation uses the pinned 
 | `DATABASE_URL` | Yes | Yes | PostgreSQL connection URL. Production rejects non-TLS URLs. |
 | `LOG_LEVEL` | No | No | `debug`, `info`, `warn`, or `error`. |
 | `DB_MAX_CONNECTIONS` | No | No | Conservative pool limit; defaults to `5`. |
+| `JWT_SECRET` | Yes | Yes | Signs short-lived access tokens. |
+| `JWT_ISSUER` | No | Yes | Expected JWT issuer. |
+| `JWT_AUDIENCE` | No | Yes | Expected JWT audience. |
+| `INVITE_HMAC_SECRET` | Yes | Yes | Keys stored partner-invite digests. |
+| `REFRESH_HMAC_SECRET` | Yes | Yes | Keys stored refresh-token digests. |
+| `ACCESS_TOKEN_TTL` | No | No | Access lifetime; defaults to `15m`. |
+| `REFRESH_TOKEN_TTL` | No | No | Refresh lifetime; defaults to `720h`. |
+| `CLOUDINARY_CLOUD_NAME` | No | Seed only | Builds stable public delivery URLs in the content seed. |
 
-Authentication secrets are deliberately not consumed yet. Phase 2 will add and validate them when authentication is implemented.
+Authentication configuration is required at startup. Use independent, high-entropy values for `JWT_SECRET`, `INVITE_HMAC_SECRET`, and `REFRESH_HMAC_SECRET`; the local initializer replaces placeholders without printing the generated values.
 
 ## Railway
 

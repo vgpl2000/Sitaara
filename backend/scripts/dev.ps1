@@ -6,6 +6,39 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $BackendRoot = Split-Path -Parent $PSScriptRoot
+$RepositoryRoot = Split-Path -Parent $BackendRoot
+$RootEnvPath = Join-Path $RepositoryRoot '.env'
+
+function Import-DotEnv([string]$Path) {
+    if (-not (Test-Path -LiteralPath $Path)) {
+        return
+    }
+
+    foreach ($line in [System.IO.File]::ReadAllLines($Path)) {
+        $trimmed = $line.Trim()
+        if (-not $trimmed -or $trimmed.StartsWith('#')) {
+            continue
+        }
+
+        $separator = $trimmed.IndexOf('=')
+        if ($separator -lt 1) {
+            continue
+        }
+
+        $name = $trimmed.Substring(0, $separator).Trim()
+        $value = $trimmed.Substring($separator + 1).Trim()
+        if (($value.StartsWith('"') -and $value.EndsWith('"')) -or
+            ($value.StartsWith("'") -and $value.EndsWith("'"))) {
+            $value = $value.Substring(1, $value.Length - 2)
+        }
+
+        if ([Environment]::GetEnvironmentVariable($name, 'Process') -eq $null) {
+            [Environment]::SetEnvironmentVariable($name, $value, 'Process')
+        }
+    }
+}
+
+Import-DotEnv $RootEnvPath
 Push-Location $BackendRoot
 
 function Assert-NativeSuccess {
@@ -60,7 +93,14 @@ try {
             Assert-NativeSuccess
         }
         'seed' {
-            throw 'Content seeding starts in Phase 4; no Phase 1 seed is defined.'
+            if (-not $env:DATABASE_URL) {
+                throw 'DATABASE_URL is required for content seeding.'
+            }
+            if (-not $env:CLOUDINARY_CLOUD_NAME) {
+                throw 'CLOUDINARY_CLOUD_NAME is required for content seeding.'
+            }
+            go run ./cmd/seed
+            Assert-NativeSuccess
         }
     }
 }

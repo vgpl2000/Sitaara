@@ -6,10 +6,47 @@ package postgresgen
 
 import (
 	"context"
+
+	"github.com/google/uuid"
 )
 
 type Querier interface {
+	CountActiveRefreshSessionsInFamily(ctx context.Context, familyID uuid.UUID) (int64, error)
+	CountFamilyMembers(ctx context.Context, familyID uuid.UUID) (int64, error)
+	CountSeedMasterclasses(ctx context.Context, dollar_1 []uuid.UUID) (int64, error)
+	CountSeedVideos(ctx context.Context, dollar_1 []uuid.UUID) (int64, error)
+	CountVideoLikesByUser(ctx context.Context, arg CountVideoLikesByUserParams) (int64, error)
+	CreateChild(ctx context.Context, arg CreateChildParams) (Child, error)
+	CreateFamily(ctx context.Context, arg CreateFamilyParams) (Family, error)
+	CreateFamilyMember(ctx context.Context, arg CreateFamilyMemberParams) (FamilyMember, error)
+	CreatePartnerInvite(ctx context.Context, arg CreatePartnerInviteParams) (PartnerInvite, error)
+	CreateRefreshSession(ctx context.Context, arg CreateRefreshSessionParams) (RefreshSession, error)
+	CreateUser(ctx context.Context, arg CreateUserParams) (CreateUserRow, error)
+	GetFamilySummaryByUser(ctx context.Context, userID uuid.UUID) (GetFamilySummaryByUserRow, error)
+	GetMasterclassMetadata(ctx context.Context, id uuid.UUID) (GetMasterclassMetadataRow, error)
+	GetMembershipByUser(ctx context.Context, userID uuid.UUID) (FamilyMember, error)
+	GetPartnerInviteForUpdate(ctx context.Context, codeDigest string) (PartnerInvite, error)
+	GetPublishedVideo(ctx context.Context, id uuid.UUID) (GetPublishedVideoRow, error)
+	GetRefreshSessionForUpdate(ctx context.Context, tokenDigest string) (RefreshSession, error)
+	GetUserByEmail(ctx context.Context, email string) (GetUserByEmailRow, error)
+	GetUserByID(ctx context.Context, id uuid.UUID) (GetUserByIDRow, error)
+	LikeVideo(ctx context.Context, arg LikeVideoParams) error
+	ListMasterclassCards(ctx context.Context, userID uuid.UUID) ([]ListMasterclassCardsRow, error)
+	ListMasterclassVideos(ctx context.Context, arg ListMasterclassVideosParams) ([]ListMasterclassVideosRow, error)
+	LockFamily(ctx context.Context, id uuid.UUID) (uuid.UUID, error)
+	LockUserForOnboarding(ctx context.Context, id uuid.UUID) (uuid.UUID, error)
+	MarkRefreshSessionUsed(ctx context.Context, arg MarkRefreshSessionUsedParams) (int64, error)
 	Ping(ctx context.Context) (int32, error)
+	RedeemPartnerInvite(ctx context.Context, arg RedeemPartnerInviteParams) (int64, error)
+	RevokeActiveInvitesByUser(ctx context.Context, inviterUserID uuid.UUID) error
+	RevokeRefreshFamily(ctx context.Context, arg RevokeRefreshFamilyParams) (int64, error)
+	RevokeRefreshFamilyForUser(ctx context.Context, arg RevokeRefreshFamilyForUserParams) (int64, error)
+	RoleExistsInFamily(ctx context.Context, arg RoleExistsInFamilyParams) (bool, error)
+	UnlikeVideo(ctx context.Context, arg UnlikeVideoParams) error
+	UpsertMasterclass(ctx context.Context, arg UpsertMasterclassParams) error
+	UpsertVideo(ctx context.Context, arg UpsertVideoParams) error
+	UpsertVideoProgress(ctx context.Context, arg UpsertVideoProgressParams) (UpsertVideoProgressRow, error)
+	UserHasFamily(ctx context.Context, userID uuid.UUID) (bool, error)
 }
 
 var _ Querier = (*Queries)(nil)
