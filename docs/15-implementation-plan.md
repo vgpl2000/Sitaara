@@ -7,6 +7,8 @@
 
 Approve the mobile experience through a standalone high-fidelity prototype, then build vertically around the risky backend invariants. Each phase ends with runnable code, tests, and documentation updates. Git commits should be small enough to explain and review.
 
+Day-to-day task status, phase gates, and verification evidence are tracked in `18-implementation-checklist.md`. This document defines the implementation order; the checklist records execution progress.
+
 ## Phase 0 - Approve contracts
 
 - Review and approve this documentation.

@@ -30,7 +30,8 @@ If implementation and documentation disagree, either the implementation must be 
 16. [Implementation plan](15-implementation-plan.md)
 17. [Risks and trade-offs](16-risks-and-tradeoffs.md)
 18. [AI usage and verification](17-ai-usage-and-verification.md)
-19. [Architecture decision records](decisions/README.md)
+19. [Living implementation checklist](18-implementation-checklist.md)
+20. [Architecture decision records](decisions/README.md)
 
 ## Canonical ownership
 
@@ -49,6 +50,7 @@ If implementation and documentation disagree, either the implementation must be 
 | Linking, likes, and progress invariants | `11-domain-rules-and-edge-cases.md` |
 | Verification | `12-testing-strategy.md` |
 | Hosted environment | `13-deployment-runbook.md` |
+| Implementation progress and evidence | `18-implementation-checklist.md` |
 
 ## Status meanings
 
