@@ -95,7 +95,8 @@ Definition of done: full mobile story works against local backend.
 
 - Acquire, document, process, and upload licensed media.
 - Finalize seed metadata and demo accounts.
-- Create Supabase project/bucket and Railway service.
+- Create the Supabase Postgres project, Cloudinary media environment, and Railway service.
+- Upload media through trusted tooling, record public IDs/delivery URLs, and verify Android playback.
 - Apply migrations and seed.
 - Configure production APK URL and build release artifact.
 

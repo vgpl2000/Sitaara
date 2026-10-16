@@ -9,7 +9,7 @@
 |---|---|---|---|---|
 | Railway trial credit/service unavailable | Medium | High | Verify early; retain Render deployment configuration as fallback | Provider dependency remains |
 | Supabase connection exhaustion | Medium | High | Use appropriate pooler, small Go pool, bounded timeouts, monitor | Free-tier limits remain |
-| Public sample video removed or incompatible | Medium | High | Download licensed clips, process, host in own Supabase bucket | Storage quota/provider dependency |
+| Cloudinary media unavailable, limited, or incompatible | Medium | High | Own licensed source files, process predictable MP4s, retain public IDs, test URLs/device playback, keep replacement path documented | CDN/account/provider dependency remains |
 | Android codec/network playback variance | Medium | Medium | H.264/AAC 720p, HTTPS, real-device test, retry UI | Cannot test every device |
 | Concurrent invite corruption | Low after controls | High | Transaction locks plus unique constraints and race tests | Multi-region latency not explored |
 | Cross-family data leak | Low after controls | Critical | Derive partner server-side, deny by default, authorization suite | Application-level security still requires review |
@@ -53,9 +53,9 @@ Benefits: avoids credits/end screens preventing completion and matches common me
 
 Benefits: easy to read and type. Costs: low offline entropy. Mitigations: HMAC storage, expiry, single use, authenticated redemption, throttling, and ambiguous-character exclusion.
 
-### Public Supabase media bucket
+### Public Cloudinary media delivery
 
-Benefits: simple reliable video delivery without proxying large files through Go. Costs: anyone with a URL can access demo clips. Only licensed non-sensitive assets are stored there.
+Benefits: purpose-built image/video delivery, thumbnail generation, and no large-file proxying through Go. Costs: anyone with a public URL can access demo clips, and the project depends on Cloudinary account limits and delivery behavior. Only licensed non-sensitive assets are stored there; original processed files and licence records remain recoverable outside the provider.
 
 ### SQL and `sqlc` instead of ORM
 

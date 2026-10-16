@@ -70,6 +70,7 @@ erDiagram
       text slug UK
       text title
       text description
+      text thumbnail_public_id UK
       text thumbnail_url
       int sort_order UK
       bool published
@@ -79,7 +80,9 @@ erDiagram
       uuid masterclass_id FK
       text title
       text description
+      text media_public_id UK
       text media_url
+      text thumbnail_public_id UK
       text thumbnail_url
       int duration_seconds
       int sort_order
@@ -154,7 +157,9 @@ erDiagram
 
 - `sort_order` is non-negative and unique within its parent scope.
 - Video duration must be positive.
-- Media and thumbnail URLs must be HTTPS in the seeded hosted environment.
+- Cloudinary public IDs are retained alongside delivery URLs so assets can be audited, replaced, or transformed without identifying them by a derived URL alone.
+- Public IDs are unique within their resource type and use a project-owned folder/prefix.
+- Media and thumbnail delivery URLs must be HTTPS in the seeded hosted environment. The API returns these URLs as opaque strings to Flutter.
 - Published content is readable; content mutation is migration/seed controlled.
 
 ### `video_likes`

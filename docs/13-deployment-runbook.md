@@ -7,7 +7,7 @@
 
 - Go API: Railway public service.
 - Database: Supabase Postgres.
-- Media: Supabase Storage public bucket containing licensed demo assets only.
+- Media: Cloudinary public delivery containing licensed demo assets only.
 - Client: signed or clearly marked release Android APK distributed directly.
 - Repository/CI: GitHub.
 
@@ -15,6 +15,7 @@
 
 - GitHub repository owner access.
 - Supabase project owner access.
+- Cloudinary account access with a project-specific product environment/folder.
 - Railway project owner access connected to GitHub.
 - Android release signing key under the author's control.
 
@@ -36,7 +37,6 @@ Do not share provider passwords or tokens in chat, source code, screenshots, or 
 | `REFRESH_TOKEN_TTL` | Proposed `720h` | No |
 | `LOG_LEVEL` | Structured log level | No |
 | `DB_MAX_CONNECTIONS` | Bounded application pool | No |
-| `STORAGE_PUBLIC_BASE_URL` | Public media base | No |
 
 Secrets must be distinct high-entropy values. Production startup fails closed when required configuration is missing or unsafe.
 
@@ -44,14 +44,24 @@ Secrets must be distinct high-entropy values. Production startup fails closed wh
 
 1. Create a project in a nearby region.
 2. Record the database pooler connection appropriate for the Railway network and require TLS.
-3. Create a public bucket dedicated to non-private demo media.
-4. Upload optimized MP4s and thumbnails using stable object names.
-5. Verify anonymous GET access only to the intended bucket.
-6. Do not expose Supabase service-role credentials to Flutter.
-7. Apply migrations through controlled backend tooling, not manual table editing.
-8. Run idempotent content/demo seed.
+3. Do not enable or depend on Supabase Storage for this project.
+4. Do not expose Supabase database or service-role credentials to Flutter.
+5. Apply migrations through controlled backend tooling, not manual table editing.
+6. Run the idempotent content/demo seed after Cloudinary asset metadata is ready.
 
 Use conservative Go pool settings. Validate the effective Supabase connection limit before increasing them.
+
+## Cloudinary setup
+
+1. Create or select a Cloudinary product environment dedicated to the assignment.
+2. Keep `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` in the trusted upload environment only. The API secret never enters Git, Flutter, or the runtime Railway service.
+3. Upload the processed H.264/AAC MP4 files and thumbnails under stable project-owned public IDs, for example `sitaara/masterclasses/<masterclass>/<video>`.
+4. Use public delivery only because the assets are licensed and non-sensitive. User-generated or family-private media is not uploaded.
+5. Record each media public ID, thumbnail public ID, HTTPS delivery URL, duration, and licence-manifest entry.
+6. Verify every delivery URL anonymously from a clean browser/device and confirm Android playback before seeding the database.
+7. Centralize any delivery transformation in seed/deployment configuration. Flutter treats URLs as opaque and does not generate arbitrary transformation paths.
+
+The runtime Go API does not require a Cloudinary SDK or write credential for this release. Uploading is an explicit content-operations step, not a mobile or public API feature.
 
 ## Railway setup
 
@@ -96,7 +106,7 @@ Prefer backward-compatible expand/deploy/contract changes even though the assign
 7. Complete the release checklist in `12-testing-strategy.md`.
 8. Publish APK checksum with the submission if practical.
 
-No database credentials, JWT signing keys, invite digest keys, or Supabase service keys belong in Dart defines.
+No database credentials, JWT signing keys, invite digest keys, Supabase service keys, or Cloudinary API credentials belong in Dart defines.
 
 ## Smoke tests after deploy
 
@@ -107,17 +117,19 @@ No database credentials, JWT signing keys, invite digest keys, or Supabase servi
 5. Seeded accounts log in and show partner activity.
 6. Create/join a temporary family and verify shared activity.
 7. Check Railway error logs and database connection usage.
+8. Open every seeded Cloudinary thumbnail and play at least one video on the target Android device/network.
 
 ## Rollback
 
 - Application: redeploy the last known-good Railway build.
 - Database: prefer a forward corrective migration. Use down migration only when verified safe and no newer data depends on it.
 - APK: retain the prior artifact and version; server contract remains backward compatible during handoff.
-- Media: use versioned/stable object names so rollback does not point at overwritten incompatible files.
+- Media: use stable public IDs plus versioned delivery URLs; keep the previous Cloudinary asset/version available until the rollback window closes.
 
 ## Operational notes
 
 - Railway trial/free credits and service policy can change; verify project availability before submission.
+- Cloudinary plan limits and delivery behavior can change; verify the active account limits and all seeded assets before submission.
 - Add a simple warm-up check before the live demonstration.
 - Monitor unexpected 5xx responses, readiness failures, connection exhaustion, and repeated authentication/invite failures.
 - The demo contains no real child or parent information.

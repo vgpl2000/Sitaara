@@ -24,7 +24,7 @@ Human decisions already confirmed:
 - Use primary purple `#462E91`, preserve the supplied green `#8AC340` logo treatment, and use local supplied assets.
 - Use Go-owned authentication.
 - Use Railway for the first hosting attempt.
-- Use Supabase for Postgres and media storage, not authentication.
+- Use Supabase for Postgres only and Cloudinary for public demo media delivery; neither provider owns authentication.
 - Creator makes the child; partner joins that child.
 - Enforce one Mom and one Dad.
 - Use 24-hour single-use invites.
@@ -41,6 +41,7 @@ Human decisions already confirmed:
 | 2026-10-16 | Hosting research | Compared Vercel, Railway, Render, and Supabase connection models | Selected Railway first, Render fallback | Checked current official provider documentation |
 | 2026-10-16 | Documentation | Drafted product, UX, architecture, schema, API, security, test, and delivery documents | Will review/approve before implementation | Cross-document consistency scan and later implementation traceability |
 | 2026-10-16 | Brand and prototype planning | Reconciled the website-derived design notes with confirmed mobile branding and proposed a prototype contract | Confirmed Flutter mobile only, separate HTML/CSS/JavaScript prototype, supplied logos, `#462E91` purple, and `#8AC340` green | Inspected all local assets and audited every Markdown document for conflicting platform or brand guidance |
+| 2026-10-16 | Media architecture | Assessed the impact of replacing Supabase Storage with Cloudinary across schema, security, deployment, testing, and content operations | Selected Cloudinary for licensed public demo media while retaining Supabase for Postgres only | Checked official Cloudinary upload, delivery, security, and video guidance; ran a cross-document reference audit |
 
 ## Verification methods
 

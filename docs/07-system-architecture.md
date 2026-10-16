@@ -9,7 +9,7 @@
 flowchart LR
     Reviewer[Android user] -->|HTTPS JSON + JWT| API[Go API on Railway]
     API -->|TLS Postgres protocol| DB[(Supabase Postgres)]
-    Reviewer -->|HTTPS media GET| Storage[Supabase Storage]
+    Reviewer -->|HTTPS media GET| Storage[Cloudinary media delivery]
     API -->|content metadata URLs| Reviewer
     CI[GitHub CI/CD] --> API
     CI -->|controlled migration| DB
@@ -124,13 +124,13 @@ Queries use joins/CTEs or a small fixed number of batched queries. They must not
 - A successful mutation is visible to later reads after commit.
 - No application cache is required for the assignment.
 - Pull-to-refresh provides cross-device convergence.
-- Video objects are independent of API availability once the player has the URL.
+- Cloudinary media is independent of API availability once the player has the delivery URL.
 - Railway liveness checks verify the process; readiness checks include a bounded database ping.
 
 ## Environment separation
 
 - **Local:** local Postgres or an isolated development database; local media URLs may differ.
 - **CI:** ephemeral Postgres service; never uses production.
-- **Production/demo:** Railway API, Supabase database/storage, release APK.
+- **Production/demo:** Railway API, Supabase Postgres, Cloudinary media delivery, release APK.
 
 Demo and production are the same environment for this assignment. Seed operations must therefore be idempotent and narrowly scoped.

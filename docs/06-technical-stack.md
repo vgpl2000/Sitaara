@@ -97,10 +97,10 @@ Each feature separates data sources, repositories, application state, and presen
 |---|---|
 | Railway | Persistent Go API process and public HTTPS URL |
 | Supabase Postgres | Primary relational database |
-| Supabase Storage | Public, read-only demo video and thumbnail objects |
+| Cloudinary | Public, read-only delivery of licensed demo videos and thumbnails |
 | GitHub | Repository and CI |
 
-Supabase Auth, PostgREST, Edge Functions, and Realtime are not used by the mobile app. All application reads and writes go through Go.
+Supabase Auth, Storage, PostgREST, Edge Functions, and Realtime are not used by the mobile app. All application JSON reads and writes go through Go. Cloudinary is used only for public media delivery; trusted seed/deployment tooling performs uploads, and neither Flutter nor the runtime Go API receives Cloudinary write credentials.
 
 ## Developer tooling
 
@@ -118,6 +118,7 @@ Supabase Auth, PostgREST, Edge Functions, and Realtime are not used by the mobil
 - **Supabase Auth:** faster, but would move an explicitly chosen learning and assessment area out of Go.
 - **GORM:** productive CRUD, but less transparent for this transaction-heavy slice.
 - **WebSockets/Supabase Realtime:** unnecessary because refresh consistency is accepted.
+- **Supabase Storage:** replaced by Cloudinary because the project's media-delivery needs and expected storage limits fit Cloudinary better. Supabase remains the Postgres provider.
 - **BLoC:** valid, but Riverpod offers less ceremony for the project size.
 
 ## Version policy

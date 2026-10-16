@@ -37,7 +37,7 @@ Ordered by expected review importance:
 | Mutual shared activity | Only linked members of the same family can see one another's activity. | Authorization tests from multiple families |
 | Partner video status | Display liked state plus not started, percentage, or completed. | Video list/detail acceptance tests |
 | Partner masterclass status | Display weighted watch percentage, completed count, and current-watching indicator. | Aggregate query tests |
-| Hosted end to end | Go runs on Railway; Postgres and video storage use Supabase. | Deployment runbook and live health endpoint |
+| Hosted end to end | Go runs on Railway; Postgres uses Supabase and demo media uses Cloudinary. | Deployment runbook, media smoke test, and live health endpoint |
 | Two-account test path | Provide a seeded linked couple and allow fresh registration/linking. | Demo guide |
 
 ## Explicit design decisions
@@ -47,7 +47,8 @@ Ordered by expected review importance:
 - The prototype uses local mock state to validate interaction and usability; production security and integrity remain Go/Postgres responsibilities.
 - The mobile visual system uses primary purple `#462E91` and logo/accent green `#8AC340`, with the supplied `/assets` logo files.
 - Supabase authentication is not used. Authentication belongs to the Go backend.
-- Supabase provides hosted Postgres and object storage only.
+- Supabase provides hosted Postgres only.
+- Cloudinary stores and delivers the licensed, non-sensitive demo videos and thumbnails.
 - Railway is the first-choice Go host.
 - The creator creates the child; the invited partner inherits access after linking.
 - A family allows exactly one Mom and one Dad.

@@ -82,6 +82,8 @@ This is required because refresh tokens are single-use.
 - The APK contains the public API base URL but no database or service secrets.
 - Public media contains no user data.
 - Railway and Supabase secrets live in their environment/secret stores.
+- Cloudinary API credentials exist only in trusted upload/seed tooling; they are never embedded in Flutter or exposed by the Go API.
+- Public Cloudinary delivery URLs are acceptable only for licensed, non-sensitive demo assets. Private family or user media is out of scope.
 - `.env.example` contains names and safe descriptions only.
 - Release signing material remains outside Git.
 

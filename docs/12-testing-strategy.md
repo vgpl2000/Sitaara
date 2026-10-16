@@ -127,7 +127,10 @@ Progress concurrency similarly launches multiple upserts and verifies the maximu
 
 ## Media/player tests
 
-- Initialize a known HTTPS sample video.
+- Verify each seeded Cloudinary public ID and HTTPS delivery URL is present and unique where required.
+- Initialize a known Cloudinary-hosted MP4 on the target Android player.
+- Verify the selected delivery URL supports seeking/range behavior and the expected H.264/AAC playback profile.
+- Load every seeded poster/thumbnail URL anonymously.
 - Handle buffering and playback error.
 - Report progress at interval and lifecycle boundaries.
 - Do not send negative/invalid positions.
@@ -161,6 +164,7 @@ No deployment occurs if required gates fail.
 - Clean database migration tested.
 - Seed is rerunnable without duplicates.
 - Hosted `/healthz` and `/readyz` pass.
+- Every seeded Cloudinary asset is anonymously readable, and at least one full video playback/seek test passes on the target Android device.
 - Seeded Mom and Dad can both log in.
 - Fresh two-account linking passes.
 - Cross-account activity appears after refresh.

@@ -9,7 +9,7 @@
 - Allow reviewers to create a fresh pair without destroying seeded state.
 - Use non-personal, fictional data.
 - Use reliable, appropriately licensed media with real duration.
-- Keep total media size practical for mobile playback and free-tier storage.
+- Keep total media size practical for mobile playback and the active Cloudinary plan.
 
 ## Seeded content
 
@@ -47,13 +47,15 @@ Titles and descriptions are fictional demo editorial content, not claims of prof
 - Consistent landscape aspect ratio unless the design deliberately supports portrait.
 - Extract a representative thumbnail from each processed clip.
 - Verify duration using tooling after processing; store the verified integer duration in seed data.
-- Target a modest combined size suitable for Supabase's available quota.
+- Target a modest combined size suitable for the active Cloudinary account limits; verify current limits rather than documenting a fixed quota.
+- Upload from trusted content tooling only. There is no client or public API upload flow.
+- Preserve predictable Android compatibility with an explicitly verified MP4/H.264/AAC delivery URL; generate optimized poster thumbnails separately.
 
 ## Licence manifest template
 
-| Video slug | Source page | Creator | Licence/terms | Downloaded | Attribution needed | Processed duration | Storage object |
-|---|---|---|---|---|---|---|---|
-| `naming-feelings` | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| Video slug | Source page | Creator | Licence/terms | Downloaded | Attribution needed | Processed duration | Cloudinary public ID | Delivery URL |
+|---|---|---|---|---|---|---|---|---|
+| `naming-feelings` | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
 
 No clip enters the production seed until its row is complete.
 
@@ -107,4 +109,4 @@ No reset endpoint is provided. Reviewers can use unique email aliases for repeat
 - Upsert content by stable slug and video order.
 - Create demo users only when explicitly enabling demo seed.
 - Create likes/progress with database constraints and the same domain assumptions as the application.
-- Seed validation verifies two masterclasses, four videos each, positive durations, HTTPS media URLs, and complete licence records.
+- Seed validation verifies two masterclasses, four videos each, positive durations, unique Cloudinary public IDs, HTTPS delivery URLs, and complete licence records.

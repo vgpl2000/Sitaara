@@ -183,6 +183,8 @@ Returns ordered cards:
 
 Returns masterclass metadata, own/partner aggregate, and ordered videos. Each video contains canonical duration, media/thumbnail URLs, own like/progress, and optional partner activity.
 
+Hosted media and thumbnail fields contain public Cloudinary HTTPS delivery URLs. Clients treat them as opaque URLs: Flutter does not construct transformation paths, hold Cloudinary credentials, or upload assets.
+
 ### `GET /v1/videos/{videoId}`
 
 Returns one video read model suitable for direct player entry. Unknown content returns `404 CONTENT_NOT_FOUND`.

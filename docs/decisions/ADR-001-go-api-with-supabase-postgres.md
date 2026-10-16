@@ -1,6 +1,6 @@
 # ADR-001: Go API with Supabase Postgres and Storage
 
-**Status:** Accepted  
+**Status:** Accepted; media-storage portion superseded by [ADR-007](ADR-007-cloudinary-media-delivery.md)
 **Date:** 2026-10-16  
 
 ## Context
@@ -10,6 +10,8 @@ The assignment requires Go, Flutter, a real hosted database, and a backend whose
 ## Decision
 
 Flutter calls only the Go API for application JSON operations. Go owns authentication, authorization, partner linking, likes, progress, and partner read models. Supabase supplies hosted Postgres and a public bucket for licensed non-sensitive sample media.
+
+The original media-storage choice above is retained as decision history. ADR-007 replaces only that portion: Supabase remains the Postgres provider, while Cloudinary becomes the media provider.
 
 ## Consequences
 
