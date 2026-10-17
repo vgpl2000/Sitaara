@@ -16,9 +16,9 @@ void main() {
       MaterialApp.router(theme: AppTheme.light, routerConfig: router),
     );
 
-    expect(find.text('Create account'), findsOneWidget);
-    expect(find.text('Log in'), findsOneWidget);
-    expect(find.textContaining('Parenting feels lighter'), findsOneWidget);
+    expect(find.text('Start your family journey'), findsOneWidget);
+    expect(find.text('I already have an account'), findsOneWidget);
+    expect(find.textContaining('without the overwhelm'), findsOneWidget);
   });
 
   for (final width in [320.0, 390.0, 430.0]) {
@@ -32,8 +32,8 @@ void main() {
 
       await tester.pumpWidget(_welcomeApp());
       expect(tester.takeException(), isNull);
-      expect(find.text('Create account'), findsOneWidget);
-      expect(find.text('Log in'), findsOneWidget);
+      expect(find.text('Start your family journey'), findsOneWidget);
+      expect(find.text('I already have an account'), findsOneWidget);
     });
   }
 
@@ -49,9 +49,9 @@ void main() {
       _welcomeApp(textScaler: const TextScaler.linear(2)),
     );
     expect(tester.takeException(), isNull);
-    await tester.ensureVisible(find.text('Log in'));
-    expect(find.text('Create account'), findsOneWidget);
-    expect(find.text('Log in'), findsOneWidget);
+    await tester.ensureVisible(find.text('I already have an account'));
+    expect(find.text('Start your family journey'), findsOneWidget);
+    expect(find.text('I already have an account'), findsOneWidget);
   });
 }
 

@@ -1,6 +1,6 @@
 # Sitaara Mobile Design System
 
-**Status:** Approved Flutter design reference
+**Status:** Implemented Flutter design reference
 
 **Last updated:** 2026-10-16
 
@@ -64,12 +64,14 @@ The confirmed brand relationship is purple-led with green used for the logo and 
 | `status.warningSoft` | `#FFF4D6` | Warning container background |
 | `status.success` | `#237A44` | Confirmed-success text/icon; not a substitute for brand green |
 | `status.successSoft` | `#E8F5EC` | Success container background |
+| `brand.yellow` | `#FFD21F` | Warm editorial accent borrowed from the current public site |
+| `brand.yellowSoft` | `#FFF6C9` | Soft invitation, step, and empty-state surfaces |
 
 Color rules:
 
 - Purple `#462E91` is the primary interaction color.
 - Green `#8AC340` belongs primarily to the logo and small branded accents. It is not used for body text or large button fills.
-- Yellow from the public marketing site is not a primary mobile-app color in this assignment.
+- Yellow from the public marketing site is a supporting warmth accent, never the main interaction color.
 - Use white text on purple. Do not place green text directly on white unless the measured contrast passes WCAG AA at its actual size.
 - Status components always include an icon and text, never color alone.
 - Dark mode is outside the assignment scope.
@@ -105,7 +107,7 @@ Use a 4-point base scale: `4`, `8`, `12`, `16`, `20`, `24`, `32`, `40`, and `48`
 
 ## Shape, borders, and elevation
 
-- Buttons and fields: `14px` corner radius.
+- Buttons and fields: full pill radius, including form actions and compact actions.
 - Standard cards: `20px` corner radius.
 - Hero and high-emphasis cards: `24px` corner radius.
 - Chips and segmented controls: full pill radius.
@@ -167,7 +169,7 @@ Use a 4-point base scale: `4`, `8`, `12`, `16`, `20`, `24`, `32`, `40`, and `48`
 
 The canonical screen inventory remains in `05-mobile-screen-specification.md`.
 
-- **Welcome/auth:** purple brand field or hero, full logo lockup, light form surface, one dominant action.
+- **Welcome/auth:** purple brand field or soft gradient, full logo lockup, custom vector illustration, and one dominant action.
 - **Onboarding:** short step framing, visible progress, one decision per screen.
 - **Library:** warm greeting and child context, partner card, then masterclass cards.
 - **Masterclass:** strong cover/title, compact dual-progress summary, scannable video list.

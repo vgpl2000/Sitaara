@@ -290,6 +290,13 @@ func (s *Service) createSession(
 	familyID uuid.UUID,
 	parentID uuid.UUID,
 ) (Session, error) {
+	onboardingState := "needs_family"
+	if _, err := queries.GetMembershipByUser(ctx, user.ID); err == nil {
+		onboardingState = "onboarded"
+	} else if !errors.Is(err, pgx.ErrNoRows) {
+		return Session{}, fmt.Errorf("lookup session membership: %w", err)
+	}
+
 	rawRefreshToken, err := newOpaqueToken()
 	if err != nil {
 		return Session{}, err
@@ -319,7 +326,7 @@ func (s *Service) createSession(
 	}
 	return Session{
 		User:                  user,
-		OnboardingState:       "needs_family",
+		OnboardingState:       onboardingState,
 		AccessToken:           accessToken,
 		RefreshToken:          rawRefreshToken,
 		AccessTokenExpiresAt:  accessExpiresAt,

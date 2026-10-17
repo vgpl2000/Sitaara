@@ -5,6 +5,7 @@ import 'package:sitaara/core/models/api_models.dart';
 import 'package:sitaara/core/theme/app_theme.dart';
 import 'package:sitaara/features/auth/application/session_controller.dart';
 import 'package:sitaara/features/auth/presentation/auth_form_screen.dart';
+import 'package:sitaara/core/widgets/skeleton.dart';
 
 void main() {
   testWidgets('signup form exposes required validation messages', (
@@ -55,7 +56,8 @@ void main() {
       ),
     );
 
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byType(SitaaraSkeleton), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 }
 

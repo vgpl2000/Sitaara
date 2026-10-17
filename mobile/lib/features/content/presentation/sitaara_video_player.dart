@@ -30,8 +30,10 @@ class _SitaaraVideoPlayerState extends State<SitaaraVideoPlayer>
     with WidgetsBindingObserver {
   VideoPlayerController? _controller;
   Timer? _reportTimer;
+  Timer? _controlsTimer;
   Object? _error;
   bool _completionReported = false;
+  bool _controlsVisible = true;
 
   @override
   void initState() {
@@ -88,6 +90,7 @@ class _SitaaraVideoPlayerState extends State<SitaaraVideoPlayer>
         value.position >= value.duration - const Duration(seconds: 1);
     if (ended && !_completionReported) {
       _completionReported = true;
+      _showControls(autoHide: false);
       unawaited(_report());
     }
   }
@@ -109,9 +112,47 @@ class _SitaaraVideoPlayerState extends State<SitaaraVideoPlayer>
     if (controller.value.isPlaying) {
       await controller.pause();
       await _report();
+      _showControls(autoHide: false);
     } else {
       await controller.play();
+      _showControls();
     }
+    if (mounted) setState(() {});
+  }
+
+  void _showControls({bool autoHide = true}) {
+    _controlsTimer?.cancel();
+    if (mounted && !_controlsVisible) setState(() => _controlsVisible = true);
+    if (autoHide && (_controller?.value.isPlaying ?? false)) {
+      _controlsTimer = Timer(const Duration(seconds: 3), () {
+        if (mounted && (_controller?.value.isPlaying ?? false)) {
+          setState(() => _controlsVisible = false);
+        }
+      });
+    }
+  }
+
+  void _toggleControls() {
+    if (_controlsVisible) {
+      _controlsTimer?.cancel();
+      setState(() => _controlsVisible = false);
+    } else {
+      _showControls();
+    }
+  }
+
+  Future<void> _showFullscreen() async {
+    final controller = _controller;
+    if (controller == null || !mounted) return;
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (context) => _FullscreenPlayer(
+          controller: controller,
+          onTogglePlayback: _togglePlayback,
+        ),
+      ),
+    );
     if (mounted) setState(() {});
   }
 
@@ -128,6 +169,7 @@ class _SitaaraVideoPlayerState extends State<SitaaraVideoPlayer>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _reportTimer?.cancel();
+    _controlsTimer?.cancel();
     final controller = _controller;
     if (controller != null) {
       controller.removeListener(_listen);
@@ -168,10 +210,10 @@ class _SitaaraVideoPlayerState extends State<SitaaraVideoPlayer>
               errorBuilder: (_, _, _) => const SizedBox.shrink(),
             ),
             const ColoredBox(color: Color(0x88000000)),
-            const Center(
-              child: CircularProgressIndicator(
-                color: Colors.white,
-                semanticsLabel: 'Loading video',
+            Center(
+              child: Semantics(
+                label: 'Loading video',
+                child: const CircularProgressIndicator(color: Colors.white),
               ),
             ),
           ],
@@ -179,51 +221,80 @@ class _SitaaraVideoPlayerState extends State<SitaaraVideoPlayer>
       );
     }
 
-    return AspectRatio(
+    return _VideoViewport(
       aspectRatio: controller.value.aspectRatio == 0
           ? 16 / 9
           : controller.value.aspectRatio,
-      child: ColoredBox(
-        color: AppColors.textPrimary,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: _toggleControls,
         child: Stack(
           alignment: Alignment.center,
           children: [
             VideoPlayer(controller),
-            ValueListenableBuilder<VideoPlayerValue>(
-              valueListenable: controller,
-              builder: (context, value, child) => Stack(
-                alignment: Alignment.center,
-                children: [
-                  if (value.isBuffering)
-                    const CircularProgressIndicator(
-                      color: Colors.white,
-                      semanticsLabel: 'Buffering video',
+            Positioned.fill(
+              child: ValueListenableBuilder<VideoPlayerValue>(
+                valueListenable: controller,
+                builder: (context, value, child) => Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    if (value.isBuffering)
+                      const CircularProgressIndicator(color: Colors.white),
+                    Positioned.fill(
+                      child: AnimatedOpacity(
+                        opacity: _controlsVisible ? 1 : 0,
+                        duration: const Duration(milliseconds: 220),
+                        child: IgnorePointer(
+                          ignoring: !_controlsVisible,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              IconButton.filled(
+                                tooltip: value.isPlaying
+                                    ? 'Pause video'
+                                    : 'Play video',
+                                iconSize: 34,
+                                onPressed: _togglePlayback,
+                                icon: Icon(
+                                  value.isPlaying
+                                      ? Icons.pause
+                                      : Icons.play_arrow,
+                                ),
+                              ),
+                              Positioned(
+                                left: 8,
+                                right: 8,
+                                bottom: 2,
+                                child: Semantics(
+                                  label: 'Video progress. Drag to seek.',
+                                  child: VideoProgressIndicator(
+                                    controller,
+                                    allowScrubbing: true,
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 10,
+                                    ),
+                                    colors: const VideoProgressColors(
+                                      playedColor: AppColors.green,
+                                      bufferedColor: Color(0x99FFFFFF),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 8,
+                                right: 8,
+                                child: IconButton.filledTonal(
+                                  tooltip: 'View video full screen',
+                                  onPressed: _showFullscreen,
+                                  icon: const Icon(Icons.fullscreen),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                  IconButton.filled(
-                    tooltip: value.isPlaying ? 'Pause video' : 'Play video',
-                    iconSize: 34,
-                    onPressed: _togglePlayback,
-                    icon: Icon(
-                      value.isPlaying ? Icons.pause : Icons.play_arrow,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              left: 8,
-              right: 8,
-              bottom: 2,
-              child: Semantics(
-                label: 'Video progress. Drag to seek.',
-                child: VideoProgressIndicator(
-                  controller,
-                  allowScrubbing: true,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  colors: const VideoProgressColors(
-                    playedColor: AppColors.green,
-                    bufferedColor: Color(0x99FFFFFF),
-                  ),
+                  ],
                 ),
               ),
             ),
@@ -240,8 +311,215 @@ class _PlayerFrame extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => AspectRatio(
-    aspectRatio: 16 / 9,
-    child: ColoredBox(color: AppColors.textPrimary, child: child),
+  Widget build(BuildContext context) =>
+      _VideoViewport(aspectRatio: 16 / 9, child: child);
+}
+
+class _VideoViewport extends StatelessWidget {
+  const _VideoViewport({required this.aspectRatio, required this.child});
+
+  final double aspectRatio;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      const maxHeight = 460.0;
+      final naturalHeight = constraints.maxWidth / aspectRatio;
+      final height = naturalHeight.clamp(190.0, maxHeight);
+      final width = (height * aspectRatio).clamp(0.0, constraints.maxWidth);
+      return Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: SizedBox(
+            width: width,
+            height: height,
+            child: ColoredBox(color: AppColors.textPrimary, child: child),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+class _FullscreenPlayer extends StatefulWidget {
+  const _FullscreenPlayer({
+    required this.controller,
+    required this.onTogglePlayback,
+  });
+
+  final VideoPlayerController controller;
+  final Future<void> Function() onTogglePlayback;
+
+  @override
+  State<_FullscreenPlayer> createState() => _FullscreenPlayerState();
+}
+
+class _FullscreenPlayerState extends State<_FullscreenPlayer> {
+  Timer? _controlsTimer;
+  bool _controlsVisible = true;
+  bool _closingAtEnd = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_listen);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showControls());
+  }
+
+  void _listen() {
+    final value = widget.controller.value;
+    final ended =
+        value.duration > Duration.zero &&
+        value.position >= value.duration - const Duration(seconds: 1);
+    if (!ended || _closingAtEnd || !mounted) return;
+    _closingAtEnd = true;
+    _controlsTimer?.cancel();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) Navigator.of(context).maybePop();
+    });
+  }
+
+  void _showControls({bool autoHide = true}) {
+    _controlsTimer?.cancel();
+    if (mounted && !_controlsVisible) setState(() => _controlsVisible = true);
+    if (autoHide && widget.controller.value.isPlaying) {
+      _controlsTimer = Timer(const Duration(seconds: 3), () {
+        if (mounted && widget.controller.value.isPlaying) {
+          setState(() => _controlsVisible = false);
+        }
+      });
+    }
+  }
+
+  void _toggleControls() {
+    if (_controlsVisible) {
+      _controlsTimer?.cancel();
+      setState(() => _controlsVisible = false);
+    } else {
+      _showControls();
+    }
+  }
+
+  Future<void> _togglePlayback() async {
+    await widget.onTogglePlayback();
+    if (!mounted) return;
+    _showControls(autoHide: widget.controller.value.isPlaying);
+  }
+
+  @override
+  void dispose() {
+    _controlsTimer?.cancel();
+    widget.controller.removeListener(_listen);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    backgroundColor: Colors.black,
+    body: SafeArea(
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: _toggleControls,
+        child: Stack(
+          children: [
+            Center(
+              child: AspectRatio(
+                aspectRatio: widget.controller.value.aspectRatio == 0
+                    ? 16 / 9
+                    : widget.controller.value.aspectRatio,
+                child: VideoPlayer(widget.controller),
+              ),
+            ),
+            Positioned.fill(
+              child: ValueListenableBuilder<VideoPlayerValue>(
+                valueListenable: widget.controller,
+                builder: (context, value, child) => Stack(
+                  children: [
+                    if (value.isBuffering)
+                      const Center(
+                        child: CircularProgressIndicator(color: Colors.white),
+                      ),
+                    Positioned.fill(
+                      child: AnimatedOpacity(
+                        opacity: _controlsVisible ? 1 : 0,
+                        duration: const Duration(milliseconds: 220),
+                        child: IgnorePointer(
+                          ignoring: !_controlsVisible,
+                          child: Stack(
+                            children: [
+                              Center(
+                                child: IconButton.filled(
+                                  tooltip: value.isPlaying
+                                      ? 'Pause video'
+                                      : 'Play video',
+                                  iconSize: 38,
+                                  onPressed: _togglePlayback,
+                                  icon: Icon(
+                                    value.isPlaying
+                                        ? Icons.pause
+                                        : Icons.play_arrow,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                left: 16,
+                                right: 16,
+                                bottom: 16,
+                                child: VideoProgressIndicator(
+                                  widget.controller,
+                                  allowScrubbing: true,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
+                                  colors: const VideoProgressColors(
+                                    playedColor: AppColors.green,
+                                    bufferedColor: Color(0x99FFFFFF),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 10,
+                                left: 10,
+                                child: Semantics(
+                                  button: true,
+                                  label: 'Close full screen video',
+                                  child: Material(
+                                    color: Colors.white,
+                                    shape: const StadiumBorder(),
+                                    elevation: 2,
+                                    child: InkWell(
+                                      customBorder: const StadiumBorder(),
+                                      onTap: () => Navigator.of(context).pop(),
+                                      child: const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 18,
+                                          vertical: 12,
+                                        ),
+                                        child: Text(
+                                          '← Close',
+                                          style: TextStyle(
+                                            color: AppColors.primary,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
   );
 }

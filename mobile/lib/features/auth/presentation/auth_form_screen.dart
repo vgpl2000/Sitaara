@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/api_models.dart';
 import '../../../core/widgets/feedback_banner.dart';
 import '../../../core/widgets/page_frame.dart';
+import '../../../core/widgets/sitaara_illustration.dart';
+import '../../../core/widgets/skeleton.dart';
 import '../application/session_controller.dart';
 
 enum AuthMode { signup, login }
@@ -54,23 +56,31 @@ class _AuthFormScreenState extends ConsumerState<AuthFormScreen> {
   Widget build(BuildContext context) {
     final busy = ref.watch(sessionControllerProvider).isSubmitting;
     return PageFrame(
-      appBar: AppBar(
-        title: Text(_isSignup ? 'Create account' : 'Welcome back'),
-      ),
+      appBar: AppBar(title: Text(_isSignup ? 'Create account' : 'Log in')),
       child: Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Center(
+              child: SitaaraIllustration(
+                'auth_calm',
+                height: _isSignup ? 130 : 150,
+                semanticLabel: 'A calm parent supported by Sitaara',
+              ),
+            ),
+            const SizedBox(height: 12),
             Text(
-              _isSignup ? 'Start learning together' : 'Log in to continue',
+              _isSignup
+                  ? 'A calmer journey starts here'
+                  : 'Good to see you again',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 8),
             Text(
               _isSignup
-                  ? 'You can create a family or join your partner after signing up.'
-                  : 'Your family and learning progress are waiting for you.',
+                  ? 'Create your private family space, then invite your parenting partner when you are ready.'
+                  : 'Pick up where your family left off.',
             ),
             const SizedBox(height: 24),
             if (_error != null) ...[
@@ -139,18 +149,27 @@ class _AuthFormScreenState extends ConsumerState<AuthFormScreen> {
                     value != _password.text ? 'Passwords do not match.' : null,
               ),
             ],
-            const SizedBox(height: 24),
+            const SizedBox(height: 28),
             FilledButton(
               onPressed: busy ? null : _submit,
               child: busy
-                  ? const SizedBox.square(
-                      dimension: 22,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
+                  ? const SitaaraSkeleton(
+                      semanticLabel: 'Submitting',
+                      child: SkeletonBlock(width: 110, height: 18, radius: 9),
                     )
-                  : Text(_isSignup ? 'Create account' : 'Log in'),
+                  : Text(
+                      _isSignup ? 'Create my account' : 'Continue to Sitaara',
+                    ),
+            ),
+            const SizedBox(height: 14),
+            Center(
+              child: Text(
+                _isSignup
+                    ? 'Already part of Sitaara? Use Log in from the previous screen.'
+                    : 'Your family space stays private to linked co-parents.',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
             ),
           ],
         ),

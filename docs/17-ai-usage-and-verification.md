@@ -1,6 +1,6 @@
 # AI Usage and Verification Log
 
-**Status:** Active; update throughout the project  
+**Status:** Complete for handover; update if the project changes
 **Last updated:** 2026-10-16  
 
 ## Purpose
@@ -45,7 +45,7 @@ Human decisions already confirmed:
 | 2026-10-16 | Go backend | Drafted migrations, SQL queries, services, HTTP handlers, concurrency tests, Railway container files, and safe configuration | Accepted Go-owned auth, transaction boundaries, and the narrow assignment scope | Ran unit/integration scenarios, vet/build checks, hosted health/readiness, and a fresh two-account hosted API flow |
 | 2026-10-16 | Flutter Android app | Drafted the feature structure, session lifecycle, prototype-aligned screens, reusable player, and tests | Confirmed Android-only delivery, real-device testing through Android Studio, and the approved visual direction | Flutter formatter/analyzer pass, nine tests pass, debug APK builds, and initial screens were exercised on a Motorola edge 60 pro |
 | 2026-10-16 | Hosted content | Mapped nine existing Cloudinary clips into two masterclasses and generated poster metadata | Confirmed the required 4+5 distribution and use of existing Cloudinary media | Idempotent seed reports two masterclasses/nine videos; all media/poster URLs returned HTTPS 200 and byte-range delivery worked |
-| 2026-10-16 | Final audit | Compared implementation, README, ADRs, and living checklist; scanned tracked files and APK configuration for secrets | Deferred release signing, media provenance, and remaining device playback rather than marking them complete | Re-ran Go unit tests/vet/build, Flutter analyze/tests/APK build, and recorded a debug APK checksum |
+| 2026-10-16 | Final audit and handover | Compared implementation, README, ADRs, and living checklist; repaired the Windows Flutter launcher; added demo-family seeding and release signing | Authorized real-device control and assignment-only demo credentials; retained media provenance as an explicit limitation | Passed Go and Flutter checks, built/verified a signed release APK, clean-installed it, and exercised Mom/Dad login, content, playback, seek, like, account, and logout on a Motorola edge 60 pro |
 
 ## Verification methods
 
@@ -101,6 +101,9 @@ Record non-trivial issues rather than presenting AI use as flawless.
 | Windows Android build | Initial diagnosis focused on loopback/Winsock, while Java's selector failed because the desktop sandbox temporary path was too long; Kotlin then failed on cross-drive incremental caches. | Minimal Java selector probe and Gradle stack traces isolated both causes. | Use a short workspace-local `TEMP`/`TMP` for builds and disable Kotlin incremental compilation for the F:-to-C: cache layout. |
 | Flutter design parity | The first library implementation used a text app-bar title and the hosted environment had no seeded posters, making supplied/approved visuals appear missing. | Compared the Flutter screen and packaged assets directly with the approved prototype. | Added the supplied wordmark to Library, retained supplied branding on Welcome/launcher, seeded Cloudinary posters, and documented the asset boundary. |
 | Create Family contrast | The role label inherited a light color on the light form surface. | Real-device visual review exposed the low-contrast label. | Set explicit primary text colors for label styles and retained contrast as a manual QA item. |
+| Existing-family login | Login/refresh responses always reported `needs_family`, so seeded linked parents could be routed back into onboarding. | The first seeded-account device flow landed on family setup. | Session creation now derives membership state, and Flutter always reconciles with `/v1/me`; integration and controller regression tests cover the behavior. |
+| Masterclass progress | PostgreSQL `LEAST(NULL, duration)` treated missing progress as the full duration in the library aggregate. | Device comparison showed 100% cards while masterclass detail correctly showed 40%. | Coalesced missing progress to zero in the aggregate query and added an unwatched-family regression assertion. |
+| Release build memory | Gradle reserved an 8 GB heap plus 4 GB metaspace and crashed on the 16 GB workstation. | JVM crash log reported native allocation failure during `assembleRelease`. | Capped Gradle at 3 GB heap, 1 GB metaspace, and two workers; the signed 52.9 MB release then built successfully. |
 
 ```text
 Date:

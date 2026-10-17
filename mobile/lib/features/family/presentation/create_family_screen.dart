@@ -7,6 +7,8 @@ import '../../../core/providers.dart';
 import '../../../core/widgets/feedback_banner.dart';
 import '../../../core/widgets/page_frame.dart';
 import '../../../core/widgets/role_selector.dart';
+import '../../../core/widgets/sitaara_illustration.dart';
+import '../../../core/widgets/skeleton.dart';
 import '../../auth/application/session_controller.dart';
 
 class CreateFamilyScreen extends ConsumerStatefulWidget {
@@ -81,13 +83,21 @@ class _CreateFamilyScreenState extends ConsumerState<CreateFamilyScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Center(
+            child: SitaaraIllustration(
+              'child_toddler',
+              height: 124,
+              semanticLabel: 'A cheerful young child',
+            ),
+          ),
+          const SizedBox(height: 10),
           Text(
-            'A shared start',
+            'Tell us who you’re learning for',
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: 8),
           const Text(
-            'Your partner will see the same child profile after joining. It cannot be edited in this demo.',
+            'This one shared profile keeps both parents in step with the same lessons and progress.',
           ),
           const SizedBox(height: 24),
           if (_error != null) ...[
@@ -131,14 +141,11 @@ class _CreateFamilyScreenState extends ConsumerState<CreateFamilyScreen> {
           FilledButton(
             onPressed: _busy ? null : _submit,
             child: _busy
-                ? const SizedBox.square(
-                    dimension: 22,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
+                ? const SitaaraSkeleton(
+                    semanticLabel: 'Creating family',
+                    child: SkeletonBlock(width: 110, height: 18, radius: 9),
                   )
-                : const Text('Create family'),
+                : const Text('Create our family space'),
           ),
         ],
       ),

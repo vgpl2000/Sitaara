@@ -20,6 +20,7 @@ coverage.out
 .pub-cache/
 .pub/
 build/
+artifacts/*.apk
 mobile/android/.gradle/
 mobile/android/local.properties
 mobile/ios/Flutter/ephemeral/

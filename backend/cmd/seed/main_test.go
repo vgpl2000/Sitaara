@@ -52,3 +52,21 @@ func TestCloudinaryDeliveryURLs(t *testing.T) {
 		t.Errorf("videoPosterURL() = %q, want %q", got, want)
 	}
 }
+
+func TestDemoParentsAreStableAndDistinct(t *testing.T) {
+	t.Parallel()
+
+	parents := demoParents()
+	if len(parents) != 2 {
+		t.Fatalf("demo parents = %d, want 2", len(parents))
+	}
+	if parents[0].id == parents[1].id || parents[0].email == parents[1].email {
+		t.Fatal("demo parents must have distinct IDs and emails")
+	}
+	if parents[0].role != "mom" || parents[1].role != "dad" {
+		t.Fatalf("demo roles = %q/%q, want mom/dad", parents[0].role, parents[1].role)
+	}
+	if len(demoPassword) < 12 {
+		t.Fatal("demo password must meet the API password policy")
+	}
+}

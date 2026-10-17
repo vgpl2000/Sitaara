@@ -72,11 +72,52 @@ void main() {
 
     expect(store.tokens, isNull);
   });
+
+  test('login reconciles onboarding state with current user', () async {
+    final store = _MemoryTokenStore(null);
+    final repository = _AuthRepositoryStub(
+      loginResult: _session,
+      meResult: const MeModel(
+        id: 'user-1',
+        email: 'parent@example.test',
+        onboardingState: 'onboarded',
+      ),
+    );
+    final container = ProviderContainer(
+      overrides: [
+        tokenStoreProvider.overrideWithValue(store),
+        authRepositoryProvider.overrideWithValue(repository),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    container.read(sessionControllerProvider);
+    await _waitFor(container, (state) => state.phase == SessionPhase.signedOut);
+    await container
+        .read(sessionControllerProvider.notifier)
+        .login(email: 'parent@example.test', password: 'password 123');
+
+    expect(
+      container.read(sessionControllerProvider).phase,
+      SessionPhase.onboarded,
+    );
+    expect(store.tokens?.accessToken, _tokens.accessToken);
+    expect(store.tokens?.refreshToken, _tokens.refreshToken);
+  });
 }
 
 const _tokens = StoredTokens(
   accessToken: 'saved-access',
   refreshToken: 'saved-refresh',
+);
+
+final _session = SessionModel(
+  user: UserModel(id: 'user-1', email: 'parent@example.test'),
+  onboardingState: 'needs_family',
+  accessToken: 'saved-access',
+  refreshToken: 'saved-refresh',
+  accessTokenExpiresAt: DateTime.utc(2030),
+  refreshTokenExpiresAt: DateTime.utc(2030, 2),
 );
 
 Future<void> _waitFor(
@@ -106,10 +147,11 @@ class _MemoryTokenStore implements TokenStore {
 }
 
 class _AuthRepositoryStub implements AuthRepository {
-  const _AuthRepositoryStub({this.meResult, this.meError});
+  const _AuthRepositoryStub({this.meResult, this.meError, this.loginResult});
 
   final MeModel? meResult;
   final ApiException? meError;
+  final SessionModel? loginResult;
 
   @override
   Future<MeModel> me() async {
@@ -121,7 +163,7 @@ class _AuthRepositoryStub implements AuthRepository {
   Future<SessionModel> login({
     required String email,
     required String password,
-  }) => throw UnimplementedError();
+  }) async => loginResult!;
 
   @override
   Future<void> logout(StoredTokens tokens) async {}

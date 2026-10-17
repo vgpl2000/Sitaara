@@ -41,8 +41,8 @@ class LaunchScreen extends ConsumerWidget {
                   ),
                 ] else ...[
                   const CircularProgressIndicator(),
-                  const SizedBox(height: 16),
-                  const Text('Getting things ready…'),
+                  const SizedBox(height: 18),
+                  const Text('Preparing your family space…'),
                 ],
               ],
             ),

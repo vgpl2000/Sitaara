@@ -1,6 +1,6 @@
 # Testing Strategy
 
-**Status:** Approved and implementation-aligned
+**Status:** Implemented; remaining manual gates tracked in `18-implementation-checklist.md`
 **Last updated:** 2026-10-16  
 
 ## Quality objective

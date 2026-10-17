@@ -149,6 +149,11 @@ func TestAuthHTTPFlow(t *testing.T) {
 		t.Fatalf("partner me status = %d, body = %s", partnerMe.Code, partnerMe.Body.String())
 	}
 
+	linkedLogin := performJSON(handler, http.MethodPost, "/v1/auth/login", fmt.Sprintf(`{"email":%q,"password":"password 123"}`, email), "")
+	if linkedLogin.Code != http.StatusOK || !bytes.Contains(linkedLogin.Body.Bytes(), []byte(`"onboardingState":"onboarded"`)) {
+		t.Fatalf("linked login status = %d, body = %s", linkedLogin.Code, linkedLogin.Body.String())
+	}
+
 	videoID := "11000000-0000-4000-8000-000000000001"
 	like := performJSON(handler, http.MethodPut, "/v1/videos/"+videoID+"/like", "", registered.AccessToken)
 	if like.Code != http.StatusOK {

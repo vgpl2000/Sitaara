@@ -4,9 +4,13 @@ abstract final class AppColors {
   static const primary = Color(0xFF462E91);
   static const primaryPressed = Color(0xFF382474);
   static const primarySoft = Color(0xFFEEEAF8);
+  static const lavender = Color(0xFFD9CFF5);
   static const green = Color(0xFF8AC340);
   static const greenSoft = Color(0xFFEFF7E5);
-  static const canvas = Color(0xFFF8F7FC);
+  static const yellow = Color(0xFFFFD21F);
+  static const yellowSoft = Color(0xFFFFF6C9);
+  static const peachSoft = Color(0xFFFFE8DA);
+  static const canvas = Color(0xFFFBF9FF);
   static const card = Colors.white;
   static const textPrimary = Color(0xFF201B2C);
   static const textSecondary = Color(0xFF6F687C);

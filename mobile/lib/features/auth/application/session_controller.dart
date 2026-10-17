@@ -120,7 +120,9 @@ class SessionController extends Notifier<SessionState> {
         onboardingState: session.onboardingState,
       ),
     );
-    if (session.onboardingState == 'onboarded') await _loadMe();
+    // The current-user endpoint is authoritative because family membership may
+    // have changed since an older API build created the login response.
+    await _loadMe();
   }
 
   Future<void> familyChanged() => _loadMe();

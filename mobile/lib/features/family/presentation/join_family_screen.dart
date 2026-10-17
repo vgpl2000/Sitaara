@@ -7,6 +7,8 @@ import '../../../core/providers.dart';
 import '../../../core/widgets/feedback_banner.dart';
 import '../../../core/widgets/page_frame.dart';
 import '../../../core/widgets/role_selector.dart';
+import '../../../core/widgets/sitaara_illustration.dart';
+import '../../../core/widgets/skeleton.dart';
 import '../../auth/application/session_controller.dart';
 
 class JoinFamilyScreen extends ConsumerStatefulWidget {
@@ -55,13 +57,21 @@ class _JoinFamilyScreenState extends ConsumerState<JoinFamilyScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Center(
+            child: SitaaraIllustration(
+              'family_path',
+              height: 126,
+              semanticLabel: 'Two parents connecting their family spaces',
+            ),
+          ),
+          const SizedBox(height: 10),
           Text(
-            'Enter the invite code',
+            'Join your parenting partner',
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: 8),
           const Text(
-            'Codes contain six letters or numbers and expire after 24 hours.',
+            'Enter the private six-character code they shared. It works once and expires after 24 hours.',
           ),
           const SizedBox(height: 24),
           if (_error != null) ...[
@@ -102,14 +112,11 @@ class _JoinFamilyScreenState extends ConsumerState<JoinFamilyScreen> {
           FilledButton(
             onPressed: _busy ? null : _submit,
             child: _busy
-                ? const SizedBox.square(
-                    dimension: 22,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
+                ? const SitaaraSkeleton(
+                    semanticLabel: 'Joining family',
+                    child: SkeletonBlock(width: 110, height: 18, radius: 9),
                   )
-                : const Text('Join family'),
+                : const Text('Join our family space'),
           ),
         ],
       ),

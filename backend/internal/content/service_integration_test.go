@@ -33,6 +33,10 @@ func TestContentActivityAndPartnerIsolation(t *testing.T) {
 	if len(cards) != 2 || cards[0].VideoCount != 4 {
 		t.Fatalf("masterclass cards = %#v", cards)
 	}
+	if cards[0].Me.Percent != 0 || cards[0].Me.CompletedVideos != 0 ||
+		cards[0].Partner == nil || cards[0].Partner.Percent != 0 {
+		t.Fatalf("unwatched masterclass activity = %#v", cards[0])
+	}
 
 	if liked, err := service.SetLiked(context.Background(), mom, firstSeedVideoID, true); err != nil || !liked {
 		t.Fatalf("first like = %v, %v", liked, err)

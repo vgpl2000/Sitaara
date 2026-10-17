@@ -40,7 +40,7 @@ The service exposes:
 
 Run `.\scripts\dev.ps1 <action>` from this directory. Supported actions are `format`, `lint`, `test`, `test-integration`, `generate`, `migrate-up`, `migrate-status`, `seed`, and `run`. The seed is idempotent and writes stable metadata for two masterclasses containing four and five videos.
 
-Integration tests require `TEST_DATABASE_URL`. Query generation uses the pinned sqlc version declared in the script and CI. The content seed writes two masterclasses containing four and five real Cloudinary videos, using generated video frames for thumbnails.
+Integration tests require `TEST_DATABASE_URL`. Query generation uses the pinned sqlc version declared in the script and CI. The idempotent seed writes two masterclasses containing four and five real Cloudinary videos, plus the assignment-only linked Mom/Dad accounts, fictional child Tara, and contrasting likes/progress. The published credentials are in the root README.
 
 The convenience script loads the ignored root `.env` file when it exists. Run `.\scripts\init-local-env.ps1` once to replace authentication placeholders with cryptographically random local secrets; existing real secrets are preserved and their values are never printed.
 

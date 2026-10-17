@@ -1,6 +1,6 @@
 # Mobile Screen Specification
 
-**Status:** Approved and implementation-aligned
+**Status:** Implemented and device-reviewed
 **Last updated:** 2026-10-16  
 
 ## Experience direction

@@ -10,13 +10,13 @@ void main() {
   testWidgets('loading state remains on the launch screen', (tester) async {
     await tester.pumpWidget(_app(const SessionState.loading()));
     await tester.pump();
-    expect(find.text('Getting things ready…'), findsOneWidget);
+    expect(find.text('Preparing your family space…'), findsOneWidget);
   });
 
   testWidgets('signed-out state routes launch to Welcome', (tester) async {
     await tester.pumpWidget(_app(const SessionState.signedOut()));
     await tester.pumpAndSettle();
-    expect(find.textContaining('Parenting feels lighter'), findsOneWidget);
+    expect(find.textContaining('without the overwhelm'), findsOneWidget);
   });
 
   testWidgets('needs-family state routes launch to onboarding', (tester) async {
@@ -24,7 +24,10 @@ void main() {
       _app(const SessionState(phase: SessionPhase.needsFamily)),
     );
     await tester.pumpAndSettle();
-    expect(find.text('How would you like to begin?'), findsOneWidget);
+    expect(
+      find.text('Let’s bring your parenting team together'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('onboarded state routes launch to the library', (tester) async {
@@ -42,7 +45,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('Your learning'), findsOneWidget);
-    expect(find.text('Masterclasses'), findsOneWidget);
+    expect(find.text('Made for this season'), findsOneWidget);
   });
 }
 

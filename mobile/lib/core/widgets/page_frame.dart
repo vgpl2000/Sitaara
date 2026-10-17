@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_spacing.dart';
+import '../theme/app_colors.dart';
 
 class PageFrame extends StatelessWidget {
   const PageFrame({
@@ -9,12 +10,14 @@ class PageFrame extends StatelessWidget {
     this.appBar,
     this.bottom,
     this.scrollable = true,
+    this.gradient = true,
   });
 
   final Widget child;
   final PreferredSizeWidget? appBar;
   final Widget? bottom;
   final bool scrollable;
+  final bool gradient;
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +36,31 @@ class PageFrame extends StatelessWidget {
         child: child,
       ),
     );
+    final body = scrollable
+        ? SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            child: content,
+          )
+        : content;
     return Scaffold(
       appBar: appBar,
-      body: scrollable
-          ? SingleChildScrollView(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              child: content,
+      body: gradient
+          ? DecoratedBox(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColors.canvas,
+                    AppColors.primarySoft,
+                    AppColors.greenSoft,
+                  ],
+                  stops: [0, .62, 1],
+                ),
+              ),
+              child: body,
             )
-          : content,
+          : body,
       bottomNavigationBar: bottom == null
           ? null
           : SafeArea(

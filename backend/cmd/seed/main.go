@@ -6,15 +6,25 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
+	"github.com/vgpl2000/Sitaara/backend/internal/auth"
 	postgresgen "github.com/vgpl2000/Sitaara/backend/internal/postgres/gen"
 )
 
 var cloudNamePattern = regexp.MustCompile(`^[a-zA-Z0-9_-]+$`)
+
+const demoPassword = "SitaaraDemo2026!"
+
+type demoParentSeed struct {
+	id    uuid.UUID
+	email string
+	role  string
+}
 
 type masterclassSeed struct {
 	id          uuid.UUID
@@ -106,11 +116,105 @@ func run(ctx context.Context) error {
 	if masterclassCount != 2 || videoCount != 9 {
 		return fmt.Errorf("seed validation failed: got %d masterclasses and %d videos", masterclassCount, videoCount)
 	}
+	if err := seedDemoFamily(ctx, tx); err != nil {
+		return err
+	}
 	if err := tx.Commit(ctx); err != nil {
 		return fmt.Errorf("commit content seed: %w", err)
 	}
-	_, _ = fmt.Fprintln(os.Stdout, "content seed ready: 2 masterclasses, 9 videos")
+	_, _ = fmt.Fprintln(os.Stdout, "seed ready: 2 masterclasses, 9 videos, 2 linked demo parents, 1 child")
 	return nil
+}
+
+func seedDemoFamily(ctx context.Context, tx pgx.Tx) error {
+	parents := demoParents()
+	hasher := auth.NewPasswordHasher(auth.DefaultPasswordParams(), 1)
+	for _, parent := range parents {
+		passwordHash, err := hasher.Hash(ctx, demoPassword)
+		if err != nil {
+			return fmt.Errorf("hash demo password: %w", err)
+		}
+		if _, err := tx.Exec(ctx, `
+			INSERT INTO users (id, email, password_hash)
+			VALUES ($1, $2, $3)
+			ON CONFLICT (id) DO UPDATE
+			SET email = EXCLUDED.email,
+			    password_hash = EXCLUDED.password_hash,
+			    updated_at = now()`, parent.id, parent.email, passwordHash); err != nil {
+			return fmt.Errorf("seed demo parent %s: %w", parent.role, err)
+		}
+	}
+
+	familyID := uuid.MustParse("30000000-0000-4000-8000-000000000001")
+	childID := uuid.MustParse("33000000-0000-4000-8000-000000000001")
+	if _, err := tx.Exec(ctx, `
+		INSERT INTO families (id, created_by)
+		VALUES ($1, $2)
+		ON CONFLICT (id) DO UPDATE SET created_by = EXCLUDED.created_by`, familyID, parents[0].id); err != nil {
+		return fmt.Errorf("seed demo family: %w", err)
+	}
+	for _, parent := range parents {
+		if _, err := tx.Exec(ctx, `
+			INSERT INTO family_members (family_id, user_id, role)
+			VALUES ($1, $2, $3::parent_role)
+			ON CONFLICT (user_id) DO UPDATE
+			SET family_id = EXCLUDED.family_id,
+			    role = EXCLUDED.role`, familyID, parent.id, parent.role); err != nil {
+			return fmt.Errorf("seed demo %s membership: %w", parent.role, err)
+		}
+	}
+	if _, err := tx.Exec(ctx, `
+		INSERT INTO children (id, family_id, name, date_of_birth)
+		VALUES ($1, $2, 'Tara', DATE '2022-08-14')
+		ON CONFLICT (family_id) DO UPDATE
+		SET name = EXCLUDED.name,
+		    date_of_birth = EXCLUDED.date_of_birth`, childID, familyID); err != nil {
+		return fmt.Errorf("seed demo child: %w", err)
+	}
+
+	videos := []struct {
+		userID    uuid.UUID
+		videoID   uuid.UUID
+		progress  int
+		completed bool
+	}{
+		{parents[0].id, uuid.MustParse("11000000-0000-4000-8000-000000000001"), 445, true},
+		{parents[1].id, uuid.MustParse("22000000-0000-4000-8000-000000000004"), 45, false},
+	}
+	now := time.Now().UTC()
+	for _, activity := range videos {
+		if _, err := tx.Exec(ctx, `
+			INSERT INTO video_likes (user_id, video_id)
+			VALUES ($1, $2)
+			ON CONFLICT (user_id, video_id) DO NOTHING`, activity.userID, activity.videoID); err != nil {
+			return fmt.Errorf("seed demo like: %w", err)
+		}
+		var completedAt any
+		if activity.completed {
+			completedAt = now
+		}
+		if _, err := tx.Exec(ctx, `
+			INSERT INTO video_progress (
+				user_id, video_id, furthest_seconds, last_watched_at, completed_at, updated_at
+			)
+			VALUES ($1, $2, $3, $4, $5, $4)
+			ON CONFLICT (user_id, video_id) DO UPDATE
+			SET furthest_seconds = EXCLUDED.furthest_seconds,
+			    last_watched_at = EXCLUDED.last_watched_at,
+			    completed_at = EXCLUDED.completed_at,
+			    updated_at = EXCLUDED.updated_at`, activity.userID, activity.videoID, activity.progress, now, completedAt); err != nil {
+			return fmt.Errorf("seed demo progress: %w", err)
+		}
+	}
+
+	return nil
+}
+
+func demoParents() []demoParentSeed {
+	return []demoParentSeed{
+		{id: uuid.MustParse("31000000-0000-4000-8000-000000000001"), email: "mom.demo@sitaara.example", role: "mom"},
+		{id: uuid.MustParse("32000000-0000-4000-8000-000000000001"), email: "dad.demo@sitaara.example", role: "dad"},
+	}
 }
 
 func videoPosterURL(cloudName, publicID string) string {

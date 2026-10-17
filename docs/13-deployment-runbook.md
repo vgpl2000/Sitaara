@@ -1,6 +1,6 @@
 # Deployment Runbook
 
-**Status:** Approved; hosted runbook in use
+**Status:** Implemented; hosted runbook in use
 **Last updated:** 2026-10-16  
 
 ## Target topology
@@ -8,7 +8,7 @@
 - Go API: Railway public service.
 - Database: Supabase Postgres.
 - Media: Cloudinary public delivery containing licensed demo assets only.
-- Client: signed or clearly marked release Android APK distributed directly.
+- Client: locally signed release Android APK distributed directly.
 - Repository/CI: GitHub.
 
 ## Required accounts
@@ -90,8 +90,8 @@ Prefer backward-compatible expand/deploy/contract changes even though the assign
 ## Seeding procedure
 
 - Content seed uses stable IDs/slugs and upserts metadata intentionally.
-- Demo account seed is explicit, idempotent, and disabled unless requested by command/config.
-- Demo seed never overwrites arbitrary registered users.
+- The assignment seed explicitly runs through the `seed` command and is idempotent; normal API startup never seeds data.
+- Demo seed only upserts its stable assignment-owned UUIDs and email addresses; it never targets arbitrary registered users.
 - Passwords for intentionally public demo accounts are created via the same hashing function as registration.
 - Seed output does not print password hashes, session tokens, or invite codes.
 

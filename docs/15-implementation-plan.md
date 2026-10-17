@@ -1,6 +1,6 @@
 # Implementation Plan
 
-**Status:** Approved and in progress
+**Status:** Implemented; remaining gates tracked in `18-implementation-checklist.md`
 **Last updated:** 2026-10-16  
 
 ## Delivery strategy

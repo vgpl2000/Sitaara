@@ -1,12 +1,12 @@
 # Sitaara Partner Linking and Shared Progress - Documentation
 
-**Status:** Approved documentation index
+**Status:** Current handover documentation index
 **Last updated:** 2026-10-16  
 **Owners:** Project author and Codex  
 
 ## Purpose
 
-This directory is the single source of truth for the Sitaara full-stack assignment. It defines the product, domain rules, mobile experience, visual system, standalone design prototype, backend contracts, security model, testing approach, deployment procedure, and implementation order before production code is written.
+This directory is the single source of truth for the implemented Sitaara full-stack assignment. It defines the product, domain rules, mobile experience, visual system, standalone design prototype, backend contracts, security model, testing evidence, deployment procedure, implementation history, and handover state.
 
 If implementation and documentation disagree, either the implementation must be corrected or the relevant document must be deliberately updated with a decision record. Silent divergence is not acceptable.
 
@@ -31,7 +31,9 @@ If implementation and documentation disagree, either the implementation must be 
 17. [Risks and trade-offs](16-risks-and-tradeoffs.md)
 18. [AI usage and verification](17-ai-usage-and-verification.md)
 19. [Living implementation checklist](18-implementation-checklist.md)
-20. [Architecture decision records](decisions/README.md)
+20. [Handover](19-handover.md)
+21. [Company requirements verification](20-company-requirements-verification.md)
+22. [Architecture decision records](decisions/README.md)
 
 ## Canonical ownership
 
@@ -51,6 +53,8 @@ If implementation and documentation disagree, either the implementation must be 
 | Verification | `12-testing-strategy.md` |
 | Hosted environment | `13-deployment-runbook.md` |
 | Implementation progress and evidence | `18-implementation-checklist.md` |
+| Final artifacts, credentials, and external gates | `19-handover.md` |
+| Company-brief traceability and submission gaps | `20-company-requirements-verification.md` |
 
 ## Status meanings
 

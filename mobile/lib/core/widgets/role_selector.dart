@@ -16,16 +16,8 @@ class RoleSelector extends StatelessWidget {
         width: double.infinity,
         child: SegmentedButton<String>(
           segments: const [
-            ButtonSegment(
-              value: 'mom',
-              label: Text('Mom'),
-              icon: Icon(Icons.person_outline),
-            ),
-            ButtonSegment(
-              value: 'dad',
-              label: Text('Dad'),
-              icon: Icon(Icons.person_outline),
-            ),
+            ButtonSegment(value: 'mom', label: Text('Mom')),
+            ButtonSegment(value: 'dad', label: Text('Dad')),
           ],
           selected: {value},
           onSelectionChanged: (selection) => onChanged(selection.single),

@@ -15,10 +15,10 @@ WITH viewer AS (
     SELECT m.id,
            count(v.id)::integer AS video_count,
            COALESCE(sum(v.duration_seconds), 0)::bigint AS total_duration,
-           COALESCE(sum(LEAST(me_progress.furthest_seconds, v.duration_seconds)), 0)::bigint AS me_watched,
+           COALESCE(sum(LEAST(COALESCE(me_progress.furthest_seconds, 0), v.duration_seconds)), 0)::bigint AS me_watched,
            count(me_progress.completed_at)::integer AS me_completed,
            count(me_like.video_id)::integer AS me_liked,
-           COALESCE(sum(LEAST(partner_progress.furthest_seconds, v.duration_seconds)), 0)::bigint AS partner_watched,
+           COALESCE(sum(LEAST(COALESCE(partner_progress.furthest_seconds, 0), v.duration_seconds)), 0)::bigint AS partner_watched,
            count(partner_progress.completed_at)::integer AS partner_completed,
            COALESCE(bool_or(
                partner_progress.completed_at IS NULL

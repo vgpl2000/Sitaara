@@ -9,6 +9,7 @@ import '../../../core/providers.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/feedback_banner.dart';
 import '../../../core/widgets/page_frame.dart';
+import '../../../core/widgets/sitaara_illustration.dart';
 
 class InviteScreen extends ConsumerStatefulWidget {
   const InviteScreen({super.key});
@@ -61,13 +62,21 @@ class _InviteScreenState extends ConsumerState<InviteScreen> {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const Center(
+          child: SitaaraIllustration(
+            'family_path',
+            height: 130,
+            semanticLabel: 'Two parents connecting as one team',
+          ),
+        ),
+        const SizedBox(height: 10),
         Text(
-          'Learn together',
+          'Bring your partner into the journey',
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 8),
         const Text(
-          'Generate a private, single-use code. Creating a new code disables the previous one.',
+          'Create a private code they can use once. A new code automatically replaces the old one.',
         ),
         const SizedBox(height: 24),
         if (_error != null) ...[
@@ -80,13 +89,17 @@ class _InviteScreenState extends ConsumerState<InviteScreen> {
             child: Text(_busy ? 'Generating…' : 'Generate invite code'),
           )
         else
-          Card(
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.yellowSoft,
+              borderRadius: BorderRadius.circular(30),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
                   const Text(
-                    'YOUR INVITE CODE',
+                    'YOUR PRIVATE CODE',
                     style: TextStyle(
                       color: AppColors.textSecondary,
                       fontWeight: FontWeight.w600,
@@ -105,7 +118,7 @@ class _InviteScreenState extends ConsumerState<InviteScreen> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Expires ${DateFormat.yMMMd().add_jm().format(_invite!.expiresAt.toLocal())}',
+                    'Ready until ${DateFormat.yMMMd().add_jm().format(_invite!.expiresAt.toLocal())}',
                   ),
                   const SizedBox(height: 20),
                   Row(

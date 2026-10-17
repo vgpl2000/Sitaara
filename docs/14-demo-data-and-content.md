@@ -1,6 +1,6 @@
 # Demo Data and Content Plan
 
-**Status:** Implemented technically; licence provenance pending
+**Status:** Implemented and device-verified; licence provenance pending
 **Last updated:** 2026-10-16  
 
 ## Goals
@@ -66,17 +66,18 @@ Titles and descriptions are concise editorial labels derived from the uploaded m
 | `when-your-child-throws-things` | TBD | TBD | TBD | TBD | TBD | 77s | `sitaara/masterclasses/everyday-parenting-insights/04-when-your-child-throws-things` | `https://res.cloudinary.com/g2g9bcrq/video/upload/sitaara/masterclasses/everyday-parenting-insights/04-when-your-child-throws-things.mp4` |
 | `stop-forcing-your-child` | TBD | TBD | TBD | TBD | TBD | 66s | `sitaara/masterclasses/everyday-parenting-insights/05-stop-forcing-your-child` | `https://res.cloudinary.com/g2g9bcrq/video/upload/sitaara/masterclasses/everyday-parenting-insights/05-stop-forcing-your-child.mp4` |
 
-The technical seed is ready, but production/reviewer use remains blocked until every TBD provenance and licence field is resolved.
+The files were supplied/uploaded for this company assignment and are technically ready for its private review. Permission for redistribution outside that review has not been independently verified; complete every TBD field before broader distribution.
 
 ## Seeded accounts
 
-Create one intentionally public linked pair with obvious demo-only addresses:
+The idempotent seed creates one intentionally public linked pair:
 
-- Mom demo account - credentials published in the final README.
-- Dad demo account - credentials published in the final README.
-- Shared fictional child under six.
+- Mom: `mom.demo@sitaara.example`
+- Dad: `dad.demo@sitaara.example`
+- Shared assignment-only password: `SitaaraDemo2026!`
+- Shared fictional child: Tara, born 2022-08-14.
 
-The exact addresses/passwords are chosen at deployment. Public credentials must be unique to this demo and never reused elsewhere.
+These credentials are unique to the assignment and must never be reused elsewhere.
 
 ## Seeded activity narrative
 
@@ -84,11 +85,11 @@ Seed enough contrast to show every state:
 
 - Mom likes a video Dad has not liked.
 - Dad likes a different video.
-- One partner has a 40-60% in-progress video.
+- Dad has a 45-second in-progress video.
 - One partner has at least one completed video.
 - One untouched video shows not started.
 - Masterclasses produce visibly different aggregate percentages.
-- Do not permanently seed `Watching now`, because recency should reflect actual events. Demonstrate it by playing during the live flow.
+- The seed timestamp makes Dad appear as `Watching now` briefly after a seed run; the state naturally expires after the documented ten-minute window.
 
 ## Fresh reviewer flow
 
@@ -116,6 +117,6 @@ No reset endpoint is provided. Reviewers can use unique email aliases for repeat
 
 - Stable UUIDs or deterministic natural keys for content make the seed rerunnable.
 - Upsert content by stable slug and video order.
-- Create demo users only when explicitly enabling demo seed.
+- Create demo users only when explicitly running the seed command; API startup never seeds.
 - Create likes/progress with database constraints and the same domain assumptions as the application.
 - Seed validation verifies two masterclasses with four and five videos, positive real durations, unique Cloudinary public IDs, HTTPS delivery URLs, and complete licence records.

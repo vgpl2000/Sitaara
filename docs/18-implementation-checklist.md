@@ -350,7 +350,7 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ## Phase 5 - Flutter foundation and onboarding
 
-**Status:** Implemented; final two-device scenario pending
+**Status:** Implemented; seeded two-account device flow passed, independent two-device scenario pending
 **Depends on:** Phase 4 API contract and approved prototype baseline  
 **Canonical references:** `05-mobile-screen-specification.md`, `design.md`, `09-api-contract.md`
 
@@ -411,11 +411,20 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ## Phase 6 - Library and video experience
 
-**Status:** Implemented; target-device playback QA pending
+**Status:** Implemented; target-device playback QA passed, broader accessibility QA pending
 **Depends on:** Phase 5  
 **Canonical references:** `05-mobile-screen-specification.md`, `design.md`, `12-testing-strategy.md`
 
 ### Content experience
+
+- [x] `P6-00A` Apply the refined Sitaara visual language: soft gradients, fully rounded actions, custom SVG illustration system, reduced card chrome, and supportive copy.
+- [x] `P6-00B` Add age-banded child illustrations and use them only where child context improves orientation.
+- [x] `P6-00C` Replace circular loading indicators with reusable skeleton states.
+- [x] `P6-00D` Add a compact animated like/unlike control with reduced-motion support.
+- [x] `P6-00E` Lock the Android app to portrait orientation.
+- [x] `P6-00F` Add a portrait-safe full-screen player and rounded video framing for landscape and portrait media.
+- [x] `P6-00G` Add explicit branded Back actions to masterclass and lesson screens.
+- [x] `P6-00H` Redesign Account around the shared family rather than a technical settings card.
 
 - [x] `P6-01` Implement the masterclass library with own and partner summaries.
 - [x] `P6-02` Implement masterclass detail with ordered video rows.
@@ -466,7 +475,7 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ## Phase 7 - Media, demo seed, and hosted environment
 
-**Status:** Pulled-forward tasks partially complete  
+**Status:** Hosted and release-device verification substantially complete; provenance/operations items pending
 **Depends on:** Phase 4 content schema and Phase 6 player  
 **Canonical references:** `13-deployment-runbook.md`, `14-demo-data-and-content.md`, ADR-002, ADR-007
 
@@ -487,7 +496,7 @@ Do not treat a checked documentation task as proof that the corresponding code e
 - [x] `P7-10` Upload assets under stable project-owned public IDs.
 - [ ] `P7-11` Record media public ID, thumbnail public ID, delivery URLs, duration, and licence entry. (Technical metadata is complete; licence provenance remains.)
 - [x] `P7-12` Verify anonymous HTTPS access to every seeded asset.
-- [ ] `P7-13` Verify seeking/range behavior and playback on the target Android player.
+- [x] `P7-13` Verify seeking/range behavior and playback on the target Android player.
 - [ ] `P7-14` Confirm no Cloudinary API secret exists in Git, Railway runtime configuration, or the APK.
 
 ### Supabase Postgres and Railway
@@ -499,19 +508,19 @@ Do not treat a checked documentation task as proof that the corresponding code e
 - [x] `P7-19` Configure required Railway secrets and non-secret settings.
 - [x] `P7-20` Configure health/readiness checks and public HTTPS domain.
 - [x] `P7-21` Apply migrations once through the controlled release procedure.
-- [x] `P7-22` Run the idempotent content seed. (No demo-account seed exists yet.)
+- [x] `P7-22` Run the idempotent content and linked demo-family seed.
 - [ ] `P7-23` Confirm startup/runtime logs expose no secrets.
 
 ### Release APK and hosted smoke test
 
 - [x] `P7-24` Configure the production API base URL using the release flavor/definition.
-- [ ] `P7-25` Create/control Android release-signing material outside Git.
-- [x] `P7-26` Build a signed or clearly marked release APK. (Current artifact is clearly marked debug.)
+- [x] `P7-25` Create/control Android release-signing material outside Git.
+- [x] `P7-26` Build a signed release APK.
 - [ ] `P7-27` Record app ID, version, build number, Git commit, and environment.
-- [ ] `P7-28` Install the APK cleanly and confirm HTTPS-only operation.
-- [ ] `P7-29` Verify health/readiness, registration, login, linking, content, likes, progress, and refresh.
-- [ ] `P7-30` Verify every thumbnail and at least one full video playback/seek on the target network/device.
-- [ ] `P7-31` Verify seeded Mom/Dad accounts and a fresh-account flow.
+- [x] `P7-28` Install the APK cleanly and confirm HTTPS-only operation.
+- [x] `P7-29` Verify health/readiness, registration, login, linking, content, likes, progress, and refresh.
+- [x] `P7-30` Verify every thumbnail and at least one full video playback/seek on the target network/device.
+- [x] `P7-31` Verify seeded Mom/Dad accounts and a fresh-account flow.
 - [x] `P7-32` Document the rollback path for API, database, APK, and Cloudinary asset versions.
 
 ### Exit gate
@@ -525,11 +534,11 @@ Do not treat a checked documentation task as proof that the corresponding code e
 - Railway URL/health result: `https://sitaara-production.up.railway.app`; `/healthz` returned HTTP 200 `ok` and `/readyz` returned HTTP 200 `ready` on 2026-10-16.
 - Hosted database migration evidence: registration, linking, content/activity writes, and readiness succeed; exact Goose version still needs to be captured from the controlled release environment.
 - Cloudinary asset verification: 9/9 videos and generated posters returned HTTPS 200 on 2026-10-16; MP4 byte-range delivery confirmed.
-- APK path/version: `mobile/build/app/outputs/flutter-apk/app-debug.apk`, `1.0.0+1`, debug, 210,457,271 bytes, built 2026-10-16.
+- APK path/version: `artifacts/Sitaara-1.0.0+1-release.apk`, application ID `com.vgpl.sitaara`, `1.0.0+1`, locally signed release, 57,026,176 bytes, SHA-256 `10CAE0145BB3A9B2BCC12F9DB599DE39972DCA4853DE8553A04E0C2E54FF4C4F`, rebuilt and verified with APK Signature Scheme v2.
 
 ## Phase 8 - Final verification and submission
 
-**Status:** Automated verification started
+**Status:** Release verification substantially complete; CI, provenance, and remaining negative-path checks pending
 **Depends on:** All prior phases  
 **Canonical references:** `12-testing-strategy.md`, `13-deployment-runbook.md`, `16-risks-and-tradeoffs.md`, `17-ai-usage-and-verification.md`
 
@@ -546,7 +555,7 @@ Do not treat a checked documentation task as proof that the corresponding code e
 ### Security and data-isolation review
 
 - [x] `P8-08` Inspect tracked files and build configuration for secrets.
-- [ ] `P8-09` Inspect logs for passwords, tokens, invite codes, digests, database URLs, and provider secrets.
+- [x] `P8-09` Inspect logs for passwords, tokens, invite codes, digests, database URLs, and provider secrets.
 - [x] `P8-10` Repeat cross-family IDOR/resource-substitution tests.
 - [x] `P8-11` Repeat invite and refresh concurrency/replay tests.
 - [x] `P8-12` Confirm the APK has no cleartext production traffic or private credentials.
@@ -554,22 +563,22 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 ### Manual release scenario
 
-- [ ] `P8-14` Install the final APK on a clean Android environment.
-- [ ] `P8-15` Log in to both seeded accounts and verify contrasting activity states.
+- [ ] `P8-14` Install the final APK on a clean Android environment. (The prior signed release passed; the refreshed UI artifact awaits device reconnection.)
+- [x] `P8-15` Log in to both seeded accounts and verify contrasting activity states.
 - [ ] `P8-16` Register two fresh accounts in independent sessions.
 - [ ] `P8-17` Create a child, generate an invite, and join as the opposite role.
-- [ ] `P8-18` Like and watch content in one account.
-- [ ] `P8-19` Refresh the partner account and verify correct shared activity.
+- [x] `P8-18` Like and watch content in one account.
+- [x] `P8-19` Refresh the partner account and verify correct shared activity.
 - [ ] `P8-20` Exercise invalid invite, offline, server-error, playback-error, and expired-session recovery.
 - [ ] `P8-21` Confirm unrelated accounts cannot view or mutate the test family's activity.
 
 ### Documentation and handoff
 
 - [x] `P8-22` Finish the root README with prerequisites, setup, architecture, commands, and demo steps.
-- [ ] `P8-23` Publish safe demo credentials and explicitly label them assignment-only.
-- [ ] `P8-24` Update every implementation document from Approved to Implemented where evidence exists.
+- [x] `P8-23` Publish safe demo credentials and explicitly label them assignment-only.
+- [x] `P8-24` Update every implementation document from Approved to Implemented where evidence exists.
 - [ ] `P8-25` Update this checklist and resolve every incomplete release-blocking item.
-- [ ] `P8-26` Complete the AI usage, verification, and mistake log honestly.
+- [x] `P8-26` Complete the AI usage, verification, and mistake log honestly.
 - [x] `P8-27` Review risks/trade-offs against the final code and record deviations.
 - [x] `P8-28` Verify ADRs match the final architecture.
 - [x] `P8-29` Confirm repository history is understandable and contains no manufactured commits.
@@ -587,9 +596,9 @@ Do not treat a checked documentation task as proof that the corresponding code e
 
 - Submission commit: TBD
 - CI run: TBD
-- APK SHA-256 (debug artifact): `FA7FF07388B6DE4114F6D3387198B4825815A18B5BF118615C0CFC9F8316E680`
+- APK SHA-256 (signed release): `10CAE0145BB3A9B2BCC12F9DB599DE39972DCA4853DE8553A04E0C2E54FF4C4F`
 - Final manual test date/device: TBD
-- Artifact links: repository `https://github.com/vgpl2000/Sitaara`, API `https://sitaara-production.up.railway.app`, local debug APK `mobile/build/app/outputs/flutter-apk/app-debug.apk`; demonstration video not yet created.
+- Artifact links: repository `https://github.com/vgpl2000/Sitaara`, API `https://sitaara-production.up.railway.app`, local signed APK `artifacts/Sitaara-1.0.0+1-release.apk`; demonstration video not yet created.
 
 ## Deferred work and non-blocking enhancements
 
@@ -618,3 +627,5 @@ These tasks are intentionally excluded from the assignment release unless all re
 | 2026-10-16 | Implemented and locally verified the Phase 4 API | Added content/activity schema, deterministic metadata seed, measured fixed-shape read queries, idempotent likes, monotonic progress, partner views, and API-only end-to-end coverage |
 | 2026-10-16 | Completed the Flutter implementation pass and hosted content recovery | Added prototype-aligned branded screens, reusable Cloudinary player, bounded/cancellable networking, session/router/form/repository/responsive tests, seeded the hosted 4+5 catalog, and verified a fresh two-account hosted API story |
 | 2026-10-16 | Started final verification | Built the Android debug APK, passed 24 Flutter tests plus analyzer, passed clean-database Go integration/unit/vet/build checks, fixed the stale 60-second integration-test assumption, refreshed the README/docs, scanned tracked configuration for secrets, and recorded the APK checksum |
+| 2026-10-16 | Completed the handover pass | Repaired Flutter's PowerShell selection for Android Studio, added an idempotent linked Mom/Dad/Tara seed, fixed existing-family login reconciliation and sparse-progress aggregation, passed 25 Flutter tests and focused Go integration tests, built/verified a locally signed release APK, and clean-installed/exercised it on a Motorola edge 60 pro |
+| 2026-10-16 | Completed the refined mobile design pass and company-brief audit | Added custom SVG scenes and age-based child art, gradient canvases, pill controls, skeleton loading, animated likes, explicit navigation, family-first Account, portrait-only orientation, rounded adaptive video, full-screen playback, refreshed copy, and a traceability report for every company requirement |

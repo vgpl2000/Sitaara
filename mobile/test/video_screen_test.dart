@@ -42,7 +42,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Retry video'), findsOneWidget);
-      expect(find.text('Like this lesson'), findsOneWidget);
+      expect(find.text('Like'), findsOneWidget);
       await tester.scrollUntilVisible(
         find.text('Dad has not started this lesson.'),
         180,
@@ -50,8 +50,8 @@ void main() {
       );
       expect(find.text('Dad has not started this lesson.'), findsOneWidget);
 
-      await tester.ensureVisible(find.text('Like this lesson'));
-      await tester.tap(find.text('Like this lesson'));
+      await tester.ensureVisible(find.text('Like'));
+      await tester.tap(find.text('Like'));
       await tester.pump();
       expect(find.text('Liked'), findsOneWidget);
 
@@ -60,7 +60,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Like this lesson'), findsOneWidget);
+      expect(find.text('Like'), findsOneWidget);
       expect(find.text('Could not update like.'), findsOneWidget);
     },
   );
